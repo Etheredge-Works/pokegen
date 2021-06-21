@@ -8,22 +8,25 @@ stages:
       size: 387131152
       nfiles: 45310
     - path: src/autoencoder
-      md5: 81d39bd3e5bc14e93800cb2907f0e63b.dir
-      size: 6758
-      nfiles: 5
+      md5: e85b37e90ad5cbf09a388a13fcf6caf0.dir
+      size: 9389
+      nfiles: 7
     - path: src/data
       md5: 761d3e03a0f9b72794d14f177682d5ff.dir
       size: 1159
       nfiles: 2
     outs:
     - path: reports/autoencoder/gen
-      md5: 02be6549863ad3301568f063447d3707.dir
-      size: 4497
-      nfiles: 10
+      md5: c2e65adc50742f81db7e75a9d234c84a.dir
+      size: 45288
+      nfiles: 100
+    - path: reports/autoencoder/gen.gif
+      md5: c9198e1e1be798153cb05c9800c2b836
+      size: 90664
     - path: reports/autoencoder/logs
-      md5: 9cfb30abcd3a717058ef84019f68335d.dir
-      size: 377
+      md5: 0b7aa689d10b5f01ecac738d2d419376.dir
+      size: 3613
       nfiles: 1
     - path: reports/autoencoder/logs.json
-      md5: 4adfde6f96f326d8de75204fcc6c2242
+      md5: e789402b6a3fb016f19651bec75d49d9
       size: 49
