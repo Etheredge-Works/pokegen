@@ -1,3 +1,12 @@
 dvc==2.3.0
 dvclive==0.0.3
-boto3==1.7.94
+boto3==1.17.96
+jupyter==1.0.0
+pillow==8.2.0
+scikit_image==0.18.1
+
+# Torch
+-f https://download.pytorch.org/whl/torch_stable.html
+torch==1.9.0+cpu
+torchvision==0.10.0+cpu
+torchaudio==0.9.0 
