@@ -10,14 +10,17 @@ import utils
 import os
 from pathlib import Path
 import dvclive
+import yaml
 
 
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 #device = 'cuda' if torch.cuda.is_available() else 'cpu'
+with open('params.yaml') as f:
+    config = yaml.safe_load(f)['autoencoder']
 
 # Hypers
 latent_size = 8
-epochs = 100
+epochs = config['epochs']
 log_dir = Path('reports/autoencoder')
 gen_dir = log_dir/'gen'
 dvclive_dir = log_dir/'logs'

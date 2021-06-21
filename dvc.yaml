@@ -5,6 +5,9 @@ stages:
       #- data/external/sprites
       - src/autoencoder
       - src/data
+      - src/utils.py
+    params:
+      - autoencoder
     outs:
       - reports/autoencoder/gen
       - reports/autoencoder/gen.gif

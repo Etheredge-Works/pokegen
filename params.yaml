@@ -1,2 +1,2 @@
 autoencoder:
-  epochs: 10
+  epochs: 100
