@@ -33,7 +33,7 @@ jobs:
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          dvc pull data/external*
+          dvc pull data/external/*
           dvc repro ae_train
 
           echo "## Metrics" >> report.md
