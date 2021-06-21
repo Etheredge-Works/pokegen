@@ -2,7 +2,7 @@ stages:
   ae_train:
     cmd: python src/autoencoder/train.py
     deps:
-      - data/external/sprites
+      #- data/external/sprites
       - src/autoencoder
       - src/data
     outs:
