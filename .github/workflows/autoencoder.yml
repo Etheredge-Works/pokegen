@@ -39,8 +39,9 @@ jobs:
           dvc repro ae_train
 
           echo "## Metrics" >> report.md
-          # dvc fetch metrics diff master --show-md >> 
+          git fetch --prune
+          dvc metrics diff main --target reports/autoencoder/logs.json >> report.md
 
-          cml-publish 'reports/autoencoder/gen.gif'
+          cml-publish --md 'reports/autoencoder/gen.gif' >> report.md
 
-          cml-send-comment report.md
+          cml-send-github-check report.md
