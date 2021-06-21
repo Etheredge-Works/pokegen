@@ -4,29 +4,35 @@ stages:
     cmd: python src/autoencoder/train.py
     deps:
     - path: src/autoencoder
-      md5: 772613421b41ed8d12a2b58aca7ba685.dir
-      size: 9491
+      md5: 733829a2f04e7aac919f1518aa118a71.dir
+      size: 10142
       nfiles: 7
     - path: src/data
-      md5: 761d3e03a0f9b72794d14f177682d5ff.dir
-      size: 1159
-      nfiles: 2
+      md5: fbc7317df95889da9fb3b245b4774d08.dir
+      size: 4467
+      nfiles: 4
+    - path: src/utils.py
+      md5: bcc6681e7b87d2563003ca8dd54de48a
+      size: 509
     params:
       params.yaml:
         autoencoder:
-          epochs: 10
+          epochs: 500
+          log_dir: reports/autoencoder
+          latent_size: 4
+          batch_size: 128
     outs:
     - path: reports/autoencoder/gen
-      md5: 4eec99bfd0fdc1d2fd932ecef46158f3.dir
-      size: 5486
-      nfiles: 10
+      md5: 84d04c7b12f793ecee07cf111effb70e.dir
+      size: 427789
+      nfiles: 500
     - path: reports/autoencoder/gen.gif
-      md5: d3196038797a3a1a5f014cba34a212e8
-      size: 97918
+      md5: 96320b9b6f856ecd5402553ecb6fb32c
+      size: 255028
     - path: reports/autoencoder/logs
-      md5: 770ea941ceff89242c23b96cb1c97ef6.dir
-      size: 378
+      md5: 2b18389751440a7a6c8a9fa42dc50c45.dir
+      size: 19331
       nfiles: 1
     - path: reports/autoencoder/logs.json
-      md5: 53b33a6302d36ea1d40a3287787a72bf
-      size: 49
+      md5: be53c88193243746188bf6146bf1e576
+      size: 52

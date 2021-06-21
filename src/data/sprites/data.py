@@ -1,17 +1,41 @@
 from torch.utils.data import Dataset
 from torchvision import transforms
-
+from PIL import Image
+import os
+import torch
+from pathlib import Path
 
 class PokemonDataset(Dataset):
     
-    normal_sprites_sub_dir = "pokemon"
-    female_sub_dir = "female"
+    normal_sprites_sub_dir = Path("pokemon")
+    female_sub_dir = Path("pokemon/female")
+    shiny_sprites_sub_dir = Path("pokemon/shiny")
+    female_shiny_sprites_sub_dir = Path("pokemon/shiny/female")
+
+    # TODO do I want to use backs?
+    # TODO filter question mark
+    backs_sub_dir = "pokemon/shiny/female"
 
     def __init__(self, sprites_path, transform=None):
-        self.sprites_path = sprites_path
+        self.sprites_path = Path(sprites_path)
         self.transform = transform
-        self.files = os.listdir(os.path.join(sprites_path, self.normal_sprites_sub_dir))
-        print(self.files[:10])
+        self.files = list(self.sprites_path.glob(str(self.normal_sprites_sub_dir/'*.png')))
+        self.files += list(self.sprites_path.glob(str(self.female_sub_dir/'*.png')))
+
+        # TODO create shiny flag to make generation shiny.
+        # TODO shiny generater?
+        # TODO cooler shiny geneator trained with only "good" shinies
+        # TODO mega pokemon generator
+        self.files += list(self.sprites_path.glob(str(self.shiny_sprites_sub_dir/'*.png')))
+        self.files += list(self.sprites_path.glob(str(self.female_shiny_sprites_sub_dir/'*.png')))
+
+        self.files = [str(file) for file in self.files]
+        self.files = [file for file in self.files if "png" in file]
+
+        # TODO figure out why PIL can't open this file
+        self.files = [file for file in self.files if "10180.png" not in file]
+        print(len(self.files))
+
     
     def __len__(self):
         return len(self.files)
@@ -21,21 +45,20 @@ class PokemonDataset(Dataset):
             idx = idx.tolist()
 
         image = Image.open(
-            os.path.join(
-                self.sprites_path, 
-                self.normal_sprites_sub_dir,
-                self.files[idx]),
+                self.files[idx],
         ).convert('RGB')
         #image  = image.astype(float)
 
         if self.transform:
             image = self.transform(image)
 
-        sample = {
-            'image': image
-        }
+        #ksample = {
+            #k'image': image
+        #k}
 
-        return sample
+        # TODO add label to ds
+        #return sample
+        return image
 
 def get_ds(
 	path='data/external/sprites', 

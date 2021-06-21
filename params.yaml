@@ -2,5 +2,7 @@ pokemon:
   input_shape: [3, 96, 96]
 
 autoencoder:
-  epochs: 100
+  epochs: 500
   log_dir: reports/autoencoder
+  latent_size: 4
+  batch_size: 128

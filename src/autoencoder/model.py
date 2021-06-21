@@ -22,7 +22,7 @@ class Encoder(torch.nn.Module):
         x = F.relu(self.dense2(x))
         x = F.relu(self.dense3(x))
         x = F.relu(self.dense4(x))
-        x = F.relu(self.dense5(x))
+        x = F.sigmoid(self.dense5(x))
 
         return x
 
@@ -33,7 +33,6 @@ class Decoder(torch.nn.Module):
         self.output_flatten_shape = torch.prod(torch.tensor(output_shape), 0).item()
         self.output_shape = output_shape
         self.dense = torch.nn.Linear(latent_shape, self.output_flatten_shape)
-
         
         self.dense1 = nn.Linear(latent_shape, 32)
         self.dense2 = nn.Linear(32, 64)
@@ -47,7 +46,7 @@ class Decoder(torch.nn.Module):
         x = F.relu(self.dense2(x))
         x = F.relu(self.dense3(x))
         x = F.relu(self.dense4(x))
-        x = F.relu(self.dense5(x))
+        x = self.dense5(x)
 
         x = torch.reshape(x, [-1, *self.output_shape])
         return x
