@@ -1,0 +1,29 @@
+schema: '2.0'
+stages:
+  ae_train:
+    cmd: python src/autoencoder/train.py
+    deps:
+    - path: data/external/sprites
+      md5: 23e143a3d4f7b30548cd966a889e3b87.dir
+      size: 387131152
+      nfiles: 45310
+    - path: src/autoencoder
+      md5: 81d39bd3e5bc14e93800cb2907f0e63b.dir
+      size: 6758
+      nfiles: 5
+    - path: src/data
+      md5: 761d3e03a0f9b72794d14f177682d5ff.dir
+      size: 1159
+      nfiles: 2
+    outs:
+    - path: reports/autoencoder/gen
+      md5: 02be6549863ad3301568f063447d3707.dir
+      size: 4497
+      nfiles: 10
+    - path: reports/autoencoder/logs
+      md5: 9cfb30abcd3a717058ef84019f68335d.dir
+      size: 377
+      nfiles: 1
+    - path: reports/autoencoder/logs.json
+      md5: 4adfde6f96f326d8de75204fcc6c2242
+      size: 49

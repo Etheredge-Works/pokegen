@@ -6,7 +6,7 @@ stages:
       - src/autoencoder
       - src/data
     outs:
-      - reprots/autoencoder/gen
+      - reports/autoencoder/gen
     plots:
       - reports/autoencoder/logs
     metrics:

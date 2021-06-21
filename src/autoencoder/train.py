@@ -17,11 +17,13 @@ device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
 # Hypers
 latent_size = 8
+epochs=10
 log_dir = Path('reports/autoencoder')
 gen_dir = log_dir/'gen'
+dvclive_dir = log_dir/'logs'
+
 gen_dir.mkdir(exist_ok=True, parents=True)
 
-dvclive_dir = log_dir/'logs'
 dvclive.init(str(dvclive_dir), summary=True)
 
 transform = transforms.Compose([
@@ -47,7 +49,8 @@ rt = torch.rand(latent_size).to(device) # fix values
 
 criterion = nn.MSELoss()
 optimizer = torch.optim.Adam(ae.parameters(), lr=0.001)
-for epoch in range(100):
+for epoch in range(epochs):
+    print(f"{epoch}/{epochs}")
     running_loss = 0
     total = 0 # use total as drop_last=True
     ae.train()
