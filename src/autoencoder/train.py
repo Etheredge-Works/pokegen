@@ -17,7 +17,7 @@ device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
 # Hypers
 latent_size = 8
-epochs=10
+epochs = 100
 log_dir = Path('reports/autoencoder')
 gen_dir = log_dir/'gen'
 dvclive_dir = log_dir/'logs'
@@ -77,4 +77,5 @@ for epoch in range(epochs):
         utils.save(
             ae.decoder(rt.to(device))[0].cpu().data, 
             str(gen_dir/f"{epoch}.jpg"))
-    #dvclive.next_step()
+    dvclive.next_step()
+utils.make_gif(str(gen_dir), str(log_dir/'gen.gif'))

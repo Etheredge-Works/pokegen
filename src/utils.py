@@ -13,13 +13,13 @@ def save(tensor, path):
     im.save(path)
 
 
-def make_gif(path):
-    path = pathlib.Path(path)
+def make_gif(in_path, out_path):
+    path = pathlib.Path(in_path)
     ims = [Image.open(file) for file in path.iterdir()]
-    ims[0].save(path, 
+    ims[0].save(
+        out_path, 
         save_all=True,
         append_images=ims[1:], 
-        optimize=False,
         duration=30,
         loops=0)
 

@@ -1,0 +1,1 @@
+cml-publish 'reports/autoencoder/gen.gif'
