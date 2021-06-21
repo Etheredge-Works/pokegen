@@ -25,17 +25,18 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
+      - name: requirements
+        run: pip install -r requirements.txt
+
       - name: cml_run
         shell: bash
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pip install -r requirements.txt
           dvc pull data/external*
           dvc repro ae_train
 
           echo "## Metrics" >> report.md
-          #dvc fetch metrics diff master --show-md >> 
+          # dvc fetch metrics diff master --show-md >> 
 
           cml-send comment report.md
