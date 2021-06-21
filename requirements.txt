@@ -1,9 +1,8 @@
 # Local
 -e .
 
-dvc==2.3.0
+dvc[s3]==2.3.0
 dvclive==0.0.3
-boto3==1.17.96
 jupyter==1.0.0
 pillow==8.2.0
 
