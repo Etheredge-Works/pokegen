@@ -1,0 +1,3 @@
+# Ignore all as this folder will container generated data
+*
+!.gitignore
