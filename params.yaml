@@ -1,2 +1,6 @@
+pokemon:
+  input_shape: [3, 96, 96]
+
 autoencoder:
   epochs: 100
+  log_dir: reports/autoencoder

@@ -21,7 +21,7 @@ with open('params.yaml') as f:
 # Hypers
 latent_size = 8
 epochs = config['epochs']
-log_dir = Path('reports/autoencoder')
+log_dir = Path(config['log_dir'])
 gen_dir = log_dir/'gen'
 dvclive_dir = log_dir/'logs'
 
