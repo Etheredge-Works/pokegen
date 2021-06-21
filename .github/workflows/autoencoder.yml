@@ -41,4 +41,4 @@ jobs:
 
           cml-publish 'reports/autoencoder/gen.gif'
 
-          cml-send comment report.md
+          cml-send-comment report.md
