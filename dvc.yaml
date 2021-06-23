@@ -1,5 +1,5 @@
 stages:
-  data:
+  sprites_data:
     cmd: tar -xzf data/raw/sprites.tar.gz -C data/raw/
     deps:
       - data/raw/sprites.tar.gz

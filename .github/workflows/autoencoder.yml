@@ -30,7 +30,9 @@ jobs:
 
       - name: pull_data
         shell: bash
-        run: dvc pull data/raw/*
+        run: |
+          dvc pull data/raw/*
+          dvc repro sprites_data
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
