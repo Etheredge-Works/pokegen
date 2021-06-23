@@ -1,3 +1,4 @@
 .vscode/settings.json
 **/*egg-info/
 **/__pycache__/
+report.md
