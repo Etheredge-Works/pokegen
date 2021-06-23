@@ -3,7 +3,7 @@ stages:
   ae_train:
     cmd: python src/autoencoder/train.py
     deps:
-    - path: data/raw/sprites
+    - path: data/external/sprites
       md5: 23e143a3d4f7b30548cd966a889e3b87.dir
       size: 387131152
       nfiles: 45310
@@ -22,24 +22,24 @@ stages:
       params.yaml:
         autoencoder:
           epochs: 500
-          data_dir: data/raw/sprites
+          data_dir: data/external/sprites
           log_dir: reports/autoencoder
           latent_size: 4
           batch_size: 128
     outs:
     - path: reports/autoencoder/gen
-      md5: c603b6d80ac0e5ad6fe14f367bc6d60e.dir
-      size: 2651660
+      md5: 6b0c0ad825a5adb3bb22a07c8d14c4b2.dir
+      size: 2206226
       nfiles: 500
     - path: reports/autoencoder/gen.gif
-      md5: 582ce660a7f9c6f36898d98e1a2239ed
-      size: 7434228
+      md5: 28ff5eb24285ad396f4661dd7b24616d
+      size: 6375824
     - path: reports/autoencoder/logs
-      md5: 13cc4a9cd04c3365799bdec702132bf3.dir
-      size: 19935
+      md5: 40ca905588c65e02ffa478566b388624.dir
+      size: 19809
       nfiles: 1
     - path: reports/autoencoder/logs.json
-      md5: d0c7c42528bc71f61720a2fda5f7fad6
+      md5: e44de84c61860fcf356d60cd143c73f5
       size: 53
   data:
     cmd: tar -xzf data/raw/sprites.tar.gz -C data/raw/
