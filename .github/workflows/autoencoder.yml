@@ -30,7 +30,7 @@ jobs:
 
       - name: pull_data
         shell: bash
-        run: dvc pull data/external/sprites
+        run: dvc pull data/raw/*
 
       - name: cml_run
         shell: bash
