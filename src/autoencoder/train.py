@@ -15,6 +15,7 @@ import yaml
 
 
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+# TODO why does 0 go to gpu1, how does torch order gpus?
 #device = 'cuda' if torch.cuda.is_available() else 'cpu'
 with open('params.yaml') as f:
     raw_config =yaml.safe_load(f)
@@ -97,7 +98,7 @@ for epoch in range(epochs):
             #im.save(str(log_dir/'val'/epoch/f"gen_{idx}.jpg"))
         
         utils.save(
-            ae.decoder(rt.to(device))[0].cpu().data, 
+            ae.decoder(torch.unsqueeze(rt, 0).to(device))[0].cpu().data, 
             str(gen_dir/f"{epoch}.jpg"))
     dvclive.next_step()
 utils.make_gif(str(gen_dir), str(log_dir/'gen.gif'))
