@@ -5,5 +5,5 @@ autoencoder:
   epochs: 500
   data_dir: data/external/sprites
   log_dir: reports/autoencoder
-  latent_size: 4
+  latent_size: 8
   batch_size: 128
