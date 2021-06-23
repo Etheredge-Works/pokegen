@@ -1,7 +1,15 @@
 stages:
+  data:
+    cmd: tar -xzf data/raw/sprites.tar.gz -C data/raw/
+    deps:
+      - data/raw/sprites.tar.gz
+    outs:
+      - data/raw/sprites
+
   ae_train:
     cmd: python src/autoencoder/train.py
     deps:
+      - ${autoencoder.data_dir}
       #- data/external/sprites
       - src/autoencoder
       - src/data

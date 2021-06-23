@@ -43,9 +43,9 @@ transform = transforms.Compose([
 
 from data.sprites import data
 
-train = torchvision.datasets.FashionMNIST('/tmp', download=True, train=True, transform=transform)
+#train = torchvision.datasets.FashionMNIST('/tmp', download=True, train=True, transform=transform)
 train = data.PokemonDataset(
-    'data/external/sprites',
+    config['data_dir'],
     transform=transform
 )
 
