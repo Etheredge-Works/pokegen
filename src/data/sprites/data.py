@@ -5,6 +5,12 @@ import os
 import torch
 from pathlib import Path
 
+# This is for a similar issue: https://github.com/pytorch/pytorch/issues/57273
+import warnings
+warnings.filterwarnings("ignore")
+# NOTE doesn't work...
+
+
 class PokemonDataset(Dataset):
     
     normal_sprites_sub_dir = Path("pokemon")
@@ -36,6 +42,7 @@ class PokemonDataset(Dataset):
         self.files = [file for file in self.files if "10180.png" not in file]
         print(len(self.files))
 
+
     
     def __len__(self):
         return len(self.files)
@@ -45,8 +52,24 @@ class PokemonDataset(Dataset):
             idx = idx.tolist()
 
         image = Image.open(
-                self.files[idx],
+            self.files[idx],
         ).convert('RGB')
+        '''
+        # TODO pull out and test conversion
+        raw_image = Image.open(self.files[idx])
+        #print(raw_image)
+        if raw_image.mode == 'L':
+            image = raw_image.convert('RGB')
+        elif raw_image.mode == 'RGBA' or raw_image.mode == 'P':
+            raw_image = raw_image.convert('RGBA')
+            # Impose white background
+            # TODO test generating png for sprite?
+            raw_image.load()
+            background = Image.new("RGB", raw_image.size, (255, 255, 255))
+            background.paste(raw_image, mask=raw_image.split()[3]) # 3 is alpha channel
+            image = background
+        '''
+
         #image  = image.astype(float)
 
         if self.transform:
