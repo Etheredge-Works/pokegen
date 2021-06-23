@@ -8,8 +8,8 @@ stages:
       size: 387131152
       nfiles: 45310
     - path: src/autoencoder
-      md5: 09c5d1c439f14197ea57503482d3b3e7.dir
-      size: 10136
+      md5: 29669f4a22815117c17f6894644f761e.dir
+      size: 10658
       nfiles: 7
     - path: src/data
       md5: fbc7317df95889da9fb3b245b4774d08.dir
@@ -28,18 +28,18 @@ stages:
           batch_size: 128
     outs:
     - path: reports/autoencoder/gen
-      md5: 6b0c0ad825a5adb3bb22a07c8d14c4b2.dir
-      size: 2206226
+      md5: b6d61c9f68d62562ec1544e4e3c1ffdc.dir
+      size: 686183
       nfiles: 500
     - path: reports/autoencoder/gen.gif
-      md5: 28ff5eb24285ad396f4661dd7b24616d
-      size: 6375824
+      md5: bb813259b3b3fb0326986c0ab191adda
+      size: 946756
     - path: reports/autoencoder/logs
-      md5: 40ca905588c65e02ffa478566b388624.dir
-      size: 19809
+      md5: 8378f674e27959c6241f6632d82a0283.dir
+      size: 19703
       nfiles: 1
     - path: reports/autoencoder/logs.json
-      md5: e44de84c61860fcf356d60cd143c73f5
+      md5: d2d7f476e89c8e0ac75f49396280dbb6
       size: 53
   data:
     cmd: tar -xzf data/raw/sprites.tar.gz -C data/raw/

@@ -7,22 +7,24 @@ class Encoder(torch.nn.Module):
     def __init__(self, input_shape, latent_shape):
         super(Encoder, self).__init__()
         flattened_size = torch.prod(torch.tensor(input_shape), 0)
-        self.dense1 = torch.nn.Linear(flattened_size, 256)
-        self.dense2 = torch.nn.Linear(256, 128)
-        self.dense3 = torch.nn.Linear(128, 64)
-        self.dense4 = torch.nn.Linear(64, 32)
-        self.dense5 = torch.nn.Linear(32, latent_shape)
+        self.conv1 = nn.Conv2d(input_shape[0], 8, 3, stride=2)
+        self.conv2 = nn.Conv2d(8, 16, 3, stride=2)
+        self.conv3 = nn.Conv2d(16, 32, 3, stride=2)
+        self.conv4 = nn.Conv2d(32, 64, 3, stride=2)
+        #TODO global avg poolself.pool = nn.Av
+        self.fc = nn.Linear(64*5*5, latent_shape)
         self.f = nn.Flatten()
         #self.dense = torch.nn.Linear()
 
     def forward(self, x):
-        x = self.f(x)
+            
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+        x = F.relu(self.conv3(x))
+        x = F.relu(self.conv4(x))
 
-        x = F.relu(self.dense1(x))
-        x = F.relu(self.dense2(x))
-        x = F.relu(self.dense3(x))
-        x = F.relu(self.dense4(x))
-        x = F.sigmoid(self.dense5(x))
+        x = self.f(x)
+        x = F.sigmoid(self.fc(x))
 
         return x
 
@@ -32,23 +34,30 @@ class Decoder(torch.nn.Module):
         super(Decoder, self).__init__()
         self.output_flatten_shape = torch.prod(torch.tensor(output_shape), 0).item()
         self.output_shape = output_shape
-        self.dense = torch.nn.Linear(latent_shape, self.output_flatten_shape)
+        # TODO math latent_to_shape form input shape and layers
         
-        self.dense1 = nn.Linear(latent_shape, 32)
-        self.dense2 = nn.Linear(32, 64)
-        self.dense3 = nn.Linear(64, 128)
-        self.dense4 = nn.Linear(128, 256)
-        self.dense5 = nn.Linear(256, self.output_flatten_shape)
+        self.latent_to_shape = (64, 5, 5)
+
+        self.fc = nn.Linear(latent_shape, 64*5*5) # TODO math out better
+        self.conv1 = nn.ConvTranspose2d(64, 32, 3, stride=2)
+        self.conv2 = nn.ConvTranspose2d(32, 16, 3, stride=2)
+        self.conv3 = nn.ConvTranspose2d(16, 8, 3, stride=2)
+        self.conv4 = nn.ConvTranspose2d(8, 3, 3, stride=2, output_padding=1)
+        #self.conv1 = nn.ConvTranspose2d(64, 32)
         #self.dense = torch.nn.Linear()
 
     def forward(self, x):
-        x = F.relu(self.dense1(x))
-        x = F.relu(self.dense2(x))
-        x = F.relu(self.dense3(x))
-        x = F.relu(self.dense4(x))
-        x = self.dense5(x)
+        x = F.relu(self.fc(x))
+        x = x.view(-1, *self.latent_to_shape)
 
-        x = torch.reshape(x, [-1, *self.output_shape])
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+        x = F.relu(self.conv3(x))
+        x = F.relu(self.conv4(x))
+
+        #x = torch.view(x, [-1, *self.output_shape])
+        #x = x.view(-1, *self.output_shape)
+        # TODO test speed view
         return x
 
 
