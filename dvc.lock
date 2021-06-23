@@ -3,9 +3,13 @@ stages:
   ae_train:
     cmd: python src/autoencoder/train.py
     deps:
+    - path: data/raw/sprites
+      md5: 23e143a3d4f7b30548cd966a889e3b87.dir
+      size: 387131152
+      nfiles: 45310
     - path: src/autoencoder
-      md5: 733829a2f04e7aac919f1518aa118a71.dir
-      size: 10142
+      md5: 09c5d1c439f14197ea57503482d3b3e7.dir
+      size: 10136
       nfiles: 7
     - path: src/data
       md5: fbc7317df95889da9fb3b245b4774d08.dir
@@ -18,21 +22,44 @@ stages:
       params.yaml:
         autoencoder:
           epochs: 500
+          data_dir: data/raw/sprites
           log_dir: reports/autoencoder
           latent_size: 4
           batch_size: 128
     outs:
     - path: reports/autoencoder/gen
-      md5: 84d04c7b12f793ecee07cf111effb70e.dir
-      size: 427789
+      md5: c603b6d80ac0e5ad6fe14f367bc6d60e.dir
+      size: 2651660
       nfiles: 500
     - path: reports/autoencoder/gen.gif
-      md5: 96320b9b6f856ecd5402553ecb6fb32c
-      size: 255028
+      md5: 582ce660a7f9c6f36898d98e1a2239ed
+      size: 7434228
     - path: reports/autoencoder/logs
-      md5: 2b18389751440a7a6c8a9fa42dc50c45.dir
-      size: 19331
+      md5: 13cc4a9cd04c3365799bdec702132bf3.dir
+      size: 19935
       nfiles: 1
     - path: reports/autoencoder/logs.json
-      md5: be53c88193243746188bf6146bf1e576
-      size: 52
+      md5: d0c7c42528bc71f61720a2fda5f7fad6
+      size: 53
+  data:
+    cmd: tar -xzf data/raw/sprites.tar.gz -C data/raw/
+    deps:
+    - path: data/raw/sprites.tar.gz
+      md5: 3ef8b4485374026c0896299bd33a7bd6
+      size: 273138408
+    outs:
+    - path: data/raw/sprites
+      md5: 23e143a3d4f7b30548cd966a889e3b87.dir
+      size: 387131152
+      nfiles: 45310
+  sprites_data:
+    cmd: tar -xzf data/raw/sprites.tar.gz -C data/raw/
+    deps:
+    - path: data/raw/sprites.tar.gz
+      md5: 3ef8b4485374026c0896299bd33a7bd6
+      size: 273138408
+    outs:
+    - path: data/raw/sprites
+      md5: 23e143a3d4f7b30548cd966a889e3b87.dir
+      size: 387131152
+      nfiles: 45310
