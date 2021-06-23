@@ -55,7 +55,7 @@ trainloader = DataLoader(
     shuffle=True, 
     drop_last=True, 
     num_workers=8,
-    persistent_workers=True, # makes short epochs start faster
+    persistent_workers=False, # 'True' makes short epochs start faster
     pin_memory=True
 )
 assert len(trainloader) > 0
