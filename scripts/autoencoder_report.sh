@@ -1,3 +1,3 @@
 echo "## Metrics"
 git fetch --prune >& /dev/null
-dvc metrics diff main --target reports/autoencoder/logs.json
+dvc metrics diff main --target reports/autoencoder/logs.json --show-md
