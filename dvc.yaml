@@ -1,8 +1,8 @@
 stages:
   sprites_data:
-    cmd: tar -xzf data/raw/sprites.tar.gz -C data/raw/
+    cmd: tar -xf data/raw/sprites.tar -C data/raw/
     deps:
-      - data/raw/sprites.tar.gz
+      - data/raw/sprites.tar
     outs:
       - data/raw/sprites
 

@@ -53,11 +53,11 @@ stages:
       size: 387131152
       nfiles: 45310
   sprites_data:
-    cmd: tar -xzf data/raw/sprites.tar.gz -C data/raw/
+    cmd: tar -xf data/raw/sprites.tar -C data/raw/
     deps:
-    - path: data/raw/sprites.tar.gz
-      md5: 3ef8b4485374026c0896299bd33a7bd6
-      size: 273138408
+    - path: data/raw/sprites.tar
+      md5: 84ec42a376e159573338ef93b4d6892f
+      size: 421591040
     outs:
     - path: data/raw/sprites
       md5: 23e143a3d4f7b30548cd966a889e3b87.dir
