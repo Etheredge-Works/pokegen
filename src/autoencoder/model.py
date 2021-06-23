@@ -11,9 +11,9 @@ class Encoder(torch.nn.Module):
         self.conv2 = nn.Conv2d(8, 16, 3, stride=2)
         self.conv3 = nn.Conv2d(16, 32, 3, stride=2)
         self.conv4 = nn.Conv2d(32, 64, 3, stride=2)
-        #TODO global avg poolself.pool = nn.Av
-        self.fc = nn.Linear(64*5*5, latent_shape)
         self.f = nn.Flatten()
+        # Pooling here
+        self.fc = nn.Linear(64, latent_shape)
         #self.dense = torch.nn.Linear()
 
     def forward(self, x):
@@ -23,8 +23,13 @@ class Encoder(torch.nn.Module):
         x = F.relu(self.conv3(x))
         x = F.relu(self.conv4(x))
 
+        # TODO was pooling used just to make it easier to construct model? no mathing dims
+        # Pooling
+        x = x.mean([2, 3])
+
         x = self.f(x)
-        x = F.sigmoid(self.fc(x))
+        x = F.relu(self.fc(x))
+        #x = F.sigmoid(self.fc(x))
 
         return x
 
@@ -38,7 +43,8 @@ class Decoder(torch.nn.Module):
         
         self.latent_to_shape = (64, 5, 5)
 
-        self.fc = nn.Linear(latent_shape, 64*5*5) # TODO math out better
+        self.fc = nn.Linear(latent_shape, 64) # TODO math out better
+        self.up = nn.Upsample(scale_factor=5)
         self.conv1 = nn.ConvTranspose2d(64, 32, 3, stride=2)
         self.conv2 = nn.ConvTranspose2d(32, 16, 3, stride=2)
         self.conv3 = nn.ConvTranspose2d(16, 8, 3, stride=2)
@@ -48,12 +54,13 @@ class Decoder(torch.nn.Module):
 
     def forward(self, x):
         x = F.relu(self.fc(x))
-        x = x.view(-1, *self.latent_to_shape)
+        x = x.view(x.size(0), x.size(1), 1, 1) 
+        x = self.up(x)
 
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
         x = F.relu(self.conv3(x))
-        x = F.relu(self.conv4(x))
+        x = F.sigmoid(self.conv4(x))
 
         #x = torch.view(x, [-1, *self.output_shape])
         #x = x.view(-1, *self.output_shape)
