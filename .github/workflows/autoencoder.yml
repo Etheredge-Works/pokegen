@@ -44,7 +44,8 @@ jobs:
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          scripts/autoencoder_report.sh conv > report.md
+          echo "# Conv Autoencoder" >> report.md
+          scripts/autoencoder_report.sh conv >> report.md
           cml-publish --md 'reports/autoencoder/conv/gen.gif' >> report.md
           cml-send-github-check report.md 
 
@@ -62,7 +63,8 @@ jobs:
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          scripts/autoencoder_report.sh dense > report.md
+          echo "# Dense Autoencoder" >> report.md
+          scripts/autoencoder_report.sh dense >> report.md
           cml-publish --md 'reports/autoencoder/dense/gen.gif' >> report.md
           cml-send-github-check report.md 
 
