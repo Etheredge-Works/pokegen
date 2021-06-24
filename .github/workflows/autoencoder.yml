@@ -34,55 +34,49 @@ jobs:
       - name: pull_data
         run: |
           dvc pull data/raw/sprites.dvc
-          #dvc pull ae_dense_train ae_conv_train
 
-          ## Pulling training data is slow. Only do if needed
-          #dvc status ae_conv_train ae_dense_train
-          #if [ $? -ne 0 ]
-          #then
-            #echo "Pulling training data..."
-            #dvc pull data/raw/sprites.dvc
-          #fi
-          #echo "done"
-
-      - name: train_conv_ae
+      - name: train_ae_dense
         run: |
-          dvc pull ae_conv_train
-          dvc repro ae_conv_train
-          dvc push ae_conv_train
-
-      - name: report_conv
-        run: |
-          echo "# Conv Autoencoder" >> report.md
-          scripts/autoencoder_report.sh conv >> report.md
-
-          echo "## Generated" >> report.md
-          gen_dir=reports/autoencoder/conv/gen
-          for f in $(ls $gen_dir/*.gif)
-          do
-            echo "Publishing $f"
-            cml-publish "$f" --md >> report.md
-          done
-          cml-send-github-check report.md 
-
-      # Dense
-      - name: train_dense_ae
-        run: |
-          dvc pull ae_dense_train
-          dvc repro ae_dense_train
-          dvc push ae_dense_train
+          dvc pull ae_dense
+          dvc repro ae_dense
+          dvc push ae_dense
 
       - name: report_dense
         run: |
-          echo "# Dense Autoencoder" >> report.md
-          scripts/autoencoder_report.sh dense >> report.md
+          scripts/autoencoder_report.sh autoencoder dense >> report.md
+          cml-send-github-check report.md 
 
-          echo "## Generated" >> report.md
-          gen_dir=reports/autoencoder/dense/gen
-          for f in $(ls $gen_dir/*.gif)
-          do
-            echo "Publishing $f"
-            cml-publish "$f" --md >> report.md
-          done
+
+      - name: train_ae_conv
+        run: |
+          dvc pull ae_conv
+          dvc repro ae_conv
+          dvc push ae_conv
+
+      - name: report_conv
+        run: |
+          scripts/autoencoder_report.sh autoencoder conv >> report.md
+          cml-send-github-check report.md 
+
+      - name: train_vae_dense
+        run: |
+          dvc pull vae_dense
+          dvc repro vae_dense
+          dvc push vae_dense
+
+      - name: report_vae_dense
+        run: |
+          scripts/autoencoder_report.sh vae dense >> report.md
+          cml-send-github-check report.md 
+
+      - name: train_vae_conv
+        run: |
+          dvc pull vae_conv
+          dvc repro vae_conv
+          dvc push vae_conv
+
+      - name: report_conv
+        run: |
+          scripts/autoencoder_report.sh vae conv >> report.md
           cml-send-github-check report.md 
 
