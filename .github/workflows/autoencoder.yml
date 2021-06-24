@@ -36,11 +36,13 @@ jobs:
           dvc pull ae_dense_train ae_conv_train
 
           # Pulling training data is slow. Only do if needed
+          echo "Pulling training data..."
           dvc status -q ae_conv_train ae_dense_train
           if [ $? -ne 0 ]
           then
             dvc pull data/external/sprites.dvc
           fi
+          echo "done"
 
       - name: train_conv_ae
         run: |
