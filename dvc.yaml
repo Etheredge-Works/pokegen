@@ -12,6 +12,9 @@ stages:
       - ${pokemon_sprites.data_dir}
       - src/autoencoder/train.py
       - src/autoencoder/vanilla_model_dense.py
+      - src/autoencoder/models/vanilla_model.py
+      - src/autoencoder/encoders/dense.py
+      - src/autoencoder/decoders/dense.py
       - src/data/sprites.py
       - src/utils.py
     params:
@@ -41,6 +44,9 @@ stages:
       - ${pokemon_sprites.data_dir}
       - src/autoencoder/train.py
       - src/autoencoder/vanilla_model_conv.py
+      - src/autoencoder/models/vanilla_model.py
+      - src/autoencoder/encoders/conv.py
+      - src/autoencoder/decoders/conv.py
       - src/data/sprites.py
       - src/utils.py
     params:

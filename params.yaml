@@ -12,7 +12,6 @@ autoencoder_dense:
   train_kwargs:
     epochs: 100
     log_dir: reports/autoencoder/dense
-  loader_kwargs:
 
 autoencoder_conv:
   latent_size: 16
@@ -20,4 +19,3 @@ autoencoder_conv:
   train_kwargs:
     epochs: 100
     log_dir: reports/autoencoder/conv
-  loader_kwargs:
