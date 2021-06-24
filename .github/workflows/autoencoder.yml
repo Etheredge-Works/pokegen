@@ -35,7 +35,7 @@ jobs:
         run: |
           dvc pull ae_dense_train ae_conv_train
 
-          # Pulling data is slow. Only do if needed
+          # Pulling training data is slow. Only do if needed
           dvc status -q ae_conv_train ae_dense_train
           if [ $? -ne 0]
           then
