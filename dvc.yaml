@@ -7,9 +7,9 @@ stages:
       - data/raw/sprites
 
   ae_train:
-    cmd: python src/autoencoder/train.py
+    cmd: python src/autoencoder/vanilla_model.py
     deps:
-      - ${autoencoder.data_dir}
+      - ${pokemon_sprites.data_dir}
       #- data/external/sprites
       - src/autoencoder
       - src/data

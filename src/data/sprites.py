@@ -1,14 +1,10 @@
 from torch.utils.data import Dataset
 from torchvision import transforms
 from PIL import Image
-import os
 import torch
 from pathlib import Path
-
-# This is for a similar issue: https://github.com/pytorch/pytorch/issues/57273
-import warnings
-warnings.filterwarnings("ignore")
-# NOTE doesn't work...
+from torch.utils.data import DataLoader
+import yaml
 
 
 class PokemonDataset(Dataset):
@@ -40,8 +36,6 @@ class PokemonDataset(Dataset):
 
         # TODO figure out why PIL can't open this file
         self.files = [file for file in self.files if "10180.png" not in file]
-        print(len(self.files))
-
 
     
     def __len__(self):
@@ -83,13 +77,41 @@ class PokemonDataset(Dataset):
         #return sample
         return image
 
-def get_ds(
-	path='data/external/sprites', 
-	size=96
+
+# TODO put this inside get loader to not use it in main scope
+with open("params.yaml") as f:
+    config = yaml.safe_load(f)['pokemon_sprites']
+
+
+# TODO pull to config file
+
+def get_loader(
+    batch_size: int,
+    path: str = config['data_dir'],
+    resize_shape=config['resize_shape'],
+    normalize_mean=config['normalize_mean'],
+    normalize_std=config['normalize_std']
 ):
-	return PokemonDataset(
-		path,
-		transform=transforms.Compose([
-			transforms.Resize((size,size)),
-			transforms.ToTensor(),
-    ]))
+
+    transform = transforms.Compose([
+        transforms.Resize(resize_shape),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize(normalize_mean, normalize_std)
+        #transforms.RandomErasing(),
+    ])
+
+    train = PokemonDataset(
+        path,
+        transform=transform
+    )
+
+    return DataLoader(
+        train, 
+        batch_size=batch_size, 
+        shuffle=True, 
+        drop_last=True, 
+        num_workers=8,
+        persistent_workers=True, # 'True' makes short epochs start faster
+        pin_memory=True
+    )
