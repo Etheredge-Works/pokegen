@@ -1,6 +1,11 @@
+from autoencoder.train import train_ae
 import torch
 from torch import nn
 from torch.nn import functional as F
+import click
+from pathlib import Path
+import yaml
+from data import sprites
 
 
 class Encoder(torch.nn.Module):
@@ -69,12 +74,36 @@ class Decoder(torch.nn.Module):
 
 
 class AutoEncoder(torch.nn.Module):
-    def __init__(self, input_shape, latent_shape):
+    def __init__(self, input_shape, latent_size):
         super(AutoEncoder, self).__init__()
-        self.encoder = Encoder(input_shape, latent_shape)
-        self.decoder = Decoder(latent_shape, input_shape)
+        self.input_shape = input_shape
+        self.latent_size = latent_size
+        self.encoder = Encoder(input_shape, latent_size)
+        self.decoder = Decoder(latent_size, input_shape)
     
     def forward(self, x):
         x = self.encoder(x)
         x = self.decoder(x)
         return x
+
+
+@click.command()
+def main():
+    with open('params.yaml') as f:
+        raw_config = yaml.safe_load(f)
+        poke_config = raw_config['pokemon_sprites']
+        config = raw_config['autoencoder']
+    ae = AutoEncoder((3, 96, 96), config['latent_size'])
+    loader = sprites.get_loader(
+        batch_size=config['batch_size']
+    )
+
+    train_ae(
+        ae=ae,
+        trainloader=loader,
+        **config['train_kwargs']
+    )
+
+
+if __name__ == "__main__":
+    main()
