@@ -33,19 +33,21 @@ jobs:
 
       - name: pull_data
         run: |
-          dvc pull ae_dense_train ae_conv_train
+          dvc pull data/raw/sprites.dvc
+          #dvc pull ae_dense_train ae_conv_train
 
-          # Pulling training data is slow. Only do if needed
-          dvc status ae_conv_train ae_dense_train
-          if [ $? -ne 0 ]
-          then
-            echo "Pulling training data..."
-            dvc pull data/raw/sprites.dvc
-          fi
-          echo "done"
+          ## Pulling training data is slow. Only do if needed
+          #dvc status ae_conv_train ae_dense_train
+          #if [ $? -ne 0 ]
+          #then
+            #echo "Pulling training data..."
+            #dvc pull data/raw/sprites.dvc
+          #fi
+          #echo "done"
 
       - name: train_conv_ae
         run: |
+          dvc pull ae_conv_train
           dvc repro ae_conv_train
           dvc push ae_conv_train
 
@@ -61,6 +63,7 @@ jobs:
       # Dense
       - name: train_dense_ae
         run: |
+          dvc pull ae_dense_train
           dvc repro ae_dense_train
           dvc push ae_dense_train
 
