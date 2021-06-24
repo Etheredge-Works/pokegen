@@ -18,6 +18,10 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: [self-hosted,gpu]
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      repo_token: ${{ secrets.GITHUB_TOKEN }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -38,16 +42,11 @@ jobs:
           fi
 
       - name: train_conv_ae
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           dvc repro ae_conv_train
           dvc push ae_conv_train
 
       - name: report_conv
-        env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "# Conv Autoencoder" >> report.md
           scripts/autoencoder_report.sh conv >> report.md
@@ -58,16 +57,11 @@ jobs:
 
       # Dense
       - name: train_dense_ae
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           dvc repro ae_dense_train
           dvc push ae_dense_train
 
       - name: report_dense
-        env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "# Dense Autoencoder" >> report.md
           scripts/autoencoder_report.sh dense >> report.md
