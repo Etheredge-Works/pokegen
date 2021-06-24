@@ -1,24 +1,27 @@
 from autoencoder.train import train_ae
+import torch
+from torch import nn
 from torch.nn import functional as F
 import click
+from pathlib import Path
 import yaml
 from data import sprites
-from autoencoder.models import AutoEncoder
-from autoencoder.encoders import ConvEncoder
-from autoencoder.decoders import ConvDecoder
-# TODO why can't I use relative imports here?
+from autoencoder.models import VAE
+from autoencoder.decoders import DenseDecoder
+from autoencoder.encoders import DenseEncoder
 
 
+# TODO pull out to one function that takes args for vae, dense, etc
 @click.command()
 def main():
     with open('params.yaml') as f:
         raw_config = yaml.safe_load(f)
-        config = raw_config['autoencoder_conv']
-    ae = AutoEncoder(
+        config = raw_config['vae_dense']  # <----------- here is change
+    ae = VAE(
         (3, 96, 96), 
         config['latent_size'],
-        ConvEncoder,
-        ConvDecoder)
+        DenseEncoder,
+        DenseDecoder)
     loader = sprites.get_loader(
         batch_size=config['batch_size']
     )
