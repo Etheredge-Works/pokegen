@@ -30,7 +30,13 @@ def train_ae(
     ae = ae.to(device)
 
     # Reference random tensor
-    rt = torch.rand(ae.latent_size).to(device) # fix values
+    # TODO repeat in shape
+    random_tensors = torch.stack([
+        torch.rand(ae.latent_size), # fix values
+        torch.rand(ae.latent_size), # fix values
+        torch.randn(ae.latent_size), # fix values
+        torch.randn(ae.latent_size), # fix values
+    ]).to(device)
 
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(ae.parameters(), lr=0.001)
@@ -40,12 +46,13 @@ def train_ae(
         total = 0 # use total as drop_last=True
         ae.train()
         for image in tqdm(trainloader):
-            optimizer.zero_grad()
             #print(data[0])
             image = image.to(device)
             y_pred = ae(image)
 
             loss = criterion(y_pred, image)
+
+            optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
@@ -62,8 +69,10 @@ def train_ae(
                 #im = transforms.ToPILImage()(ae(train[idx].to(device))[0].cpu().data)
                 #im.save(str(log_dir/'val'/epoch/f"gen_{idx}.jpg"))
             
+            generations = ae.decoder(random_tensors)
             utils.save(
-                ae.decoder(torch.unsqueeze(rt, 0).to(device))[0].cpu().data, 
-                str(gen_dir/f"{epoch}.jpg"))
+                generations.cpu(),
+                str(gen_dir),
+                epoch)
         dvclive.next_step()
-    utils.make_gif(str(gen_dir), str(log_dir/'gen.gif'))
+    utils.make_gifs(str(gen_dir))

@@ -1,5 +1,6 @@
 from torchvision import transforms
 import pathlib
+from pathlib import Path
 from PIL import Image
 
 
@@ -8,18 +9,34 @@ def display(tensor):
     im.show()
 
 
-def save(tensor, path):
-    im = transforms.ToPILImage()(tensor)
-    im.save(path)
+def save(
+    tensor, 
+    path: Path, 
+    step
+):
+    path = pathlib.Path(path)
+
+    for idx, item in enumerate(tensor):
+        im = transforms.ToPILImage()(item)
+
+        item_path = path/str(idx)
+        item_path.mkdir(exist_ok=True, parents=True)
+        im.save(item_path/f"{step}.jpg")
 
 
-def make_gif(in_path, out_path):
-    path = pathlib.Path(in_path)
+def make_gif(path):
+    path = pathlib.Path(path)
     ims = [Image.open(file).resize((128, 128)) for file in path.iterdir()]
     ims[0].save(
-        out_path, 
+        f"{path}.gif", 
         save_all=True,
         append_images=ims[1:], 
         duration=300,
         loops=0)
 
+
+def make_gifs(path):
+    path = pathlib.Path(path)
+    for dir in path.iterdir():
+        print(dir)
+        make_gif(dir)
