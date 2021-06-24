@@ -28,14 +28,20 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: pull_data
-        run: dvc pull data/external/sprites.dvc
+        run: |
+          dvc pull ae_dense_train ae_conv_train
+
+          # Pulling data is slow. Only do if needed
+          if [ dvc status -q ae_conv_train ae_dense_train ] 
+          then
+            dvc pull data/external/sprites.dvc
+          fi
 
       - name: train_conv_ae
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          dvc pull ae_conv_train
           dvc repro ae_conv_train
           dvc push ae_conv_train
 
@@ -56,7 +62,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          dvc pull ae_dense_train
           dvc repro ae_dense_train
           dvc push ae_dense_train
 
