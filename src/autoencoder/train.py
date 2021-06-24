@@ -44,7 +44,6 @@ def train_ae(
         torch.randn(ae.latent_size), # fix values
     ]).to(device)
 
-    criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(ae.parameters(), lr=lr)
 
     for epoch in range(epochs):
@@ -52,19 +51,19 @@ def train_ae(
         running_loss = 0
         total = 0 # use total as drop_last=True
         ae.train()
-        for image in tqdm(trainloader):
+        for image_b in tqdm(trainloader):
             #print(data[0])
-            image = image.to(device)
-            y_pred = ae(image)
+            image_b = image_b.to(device)
+            y_pred = ae(image_b)
 
-            loss = criterion(y_pred, image)
+            loss = ae.criterion(y_pred, image_b)
 
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
             running_loss += loss.item()
-            total += image.size(0)
+            total += image_b.size(0)
 
         print(f"loss: {running_loss/total}")
         dvclive.log("loss", running_loss/total, epoch)

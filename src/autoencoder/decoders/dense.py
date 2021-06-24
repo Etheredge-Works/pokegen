@@ -21,7 +21,7 @@ class DenseDecoder(nn.Module):
         x = F.relu(self.dense2(x))
         x = F.relu(self.dense3(x))
         x = F.relu(self.dense4(x))
-        x = F.relu(self.fc(x))
+        x = torch.sigmoid(self.fc(x))
         x = x.view(-1, *self.output_shape)
         return x
 

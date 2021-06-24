@@ -6,7 +6,7 @@ stages:
     #outs:
       #- data/raw/sprites
 
-  ae_dense_train:
+  ae_dense:
     cmd: python src/autoencoder/vanilla_model_dense.py
     deps:
       - ${pokemon_sprites.data_dir}
@@ -38,7 +38,7 @@ stages:
       - reports/autoencoder/dense/logs.json:
           cache: false
 
-  ae_conv_train:
+  ae_conv:
     cmd: python src/autoencoder/vanilla_model_conv.py
     deps:
       - ${pokemon_sprites.data_dir}
@@ -73,3 +73,58 @@ stages:
     metrics:
       - reports/autoencoder/conv/logs.json:
           cache: false
+
+  # TODO parameterize training
+  vae_conv:
+    cmd: python src/autoencoder/vae_conv.py
+    deps:
+      - ${pokemon_sprites.data_dir}
+      - src/autoencoder/train.py
+      - src/autoencoder/vae_conv.py
+      - src/autoencoder/models/variational_model.py
+      - src/autoencoder/encoders/conv.py
+      - src/autoencoder/decoders/conv.py
+      - src/data/sprites.py
+      - src/utils.py
+    params:
+      - vae_conv
+    outs:
+      - reports/vae/conv/gen/0:
+          cache: false
+      - reports/vae/conv/gen/1:
+          cache: false
+      - reports/vae/conv/gen/0.gif
+      - reports/vae/conv/gen/1.gif
+    plots:
+      - reports/vae/conv/logs
+    metrics:
+      - reports/vae/conv/logs.json:
+          cache: false
+
+
+  vae_dense:
+    cmd: python src/autoencoder/vae_dense.py
+    deps:
+      - ${pokemon_sprites.data_dir}
+      - src/autoencoder/train.py
+      - src/autoencoder/vae_dense.py
+      - src/autoencoder/models/variational_model.py
+      - src/autoencoder/encoders/dense.py
+      - src/autoencoder/decoders/dense.py
+      - src/data/sprites.py
+      - src/utils.py
+    params:
+      - vae_dense
+    outs:
+      - reports/vae/dense/gen/0:
+          cache: false
+      - reports/vae/dense/gen/1:
+          cache: false
+      - reports/vae/dense/gen/0.gif
+      - reports/vae/dense/gen/1.gif
+    plots:
+      - reports/vae/dense/logs
+    metrics:
+      - reports/vae/dense/logs.json:
+          cache: false
+

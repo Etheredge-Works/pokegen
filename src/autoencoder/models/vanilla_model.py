@@ -14,6 +14,8 @@ class AutoEncoder(torch.nn.Module):
         self.latent_size = latent_size
         self.encoder = encoder_constructor(input_shape, latent_size)
         self.decoder = decoder_constructor(latent_size, input_shape)
+
+        self.loss_func = torch.nn.MSELoss()
     
     def forward(self, x):
         x = self.encoder(x)
@@ -22,3 +24,6 @@ class AutoEncoder(torch.nn.Module):
 
     def predict(self, x):
         return self.decoder(x)
+
+    def criterion(self, y_hat, y):
+        return self.loss_func(y_hat, y)

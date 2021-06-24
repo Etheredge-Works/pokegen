@@ -5,6 +5,20 @@ pokemon_sprites:
   normalize_std: [0.229, 0.224, 0.225]
   data_dir: data/raw/sprites
 
+vae_conv:
+  latent_size: 16
+  batch_size: 128
+  train_kwargs:
+    epochs: 100
+    log_dir: reports/vae/conv
+
+vae_dense:
+  latent_size: 16
+  batch_size: 128
+  train_kwargs:
+    epochs: 100
+    log_dir: reports/vae/dense
+
 
 autoencoder_dense:
   latent_size: 16
