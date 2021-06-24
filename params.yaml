@@ -3,13 +3,21 @@ pokemon_sprites:
   resize_shape: [96,96]
   normalize_mean: [0.485, 0.456, 0.406]
   normalize_std: [0.229, 0.224, 0.225]
-  data_dir: data/external/sprites
+  data_dir: data/raw/sprites
 
 
-autoencoder:
+autoencoder_dense:
   latent_size: 8
   batch_size: 128
   train_kwargs:
     epochs: 500
-    log_dir: reports/autoencoder
+    log_dir: reports/autoencoder/dense
+  loader_kwargs:
+
+autoencoder_conv:
+  latent_size: 8
+  batch_size: 128
+  train_kwargs:
+    epochs: 500
+    log_dir: reports/autoencoder/conv
   loader_kwargs:

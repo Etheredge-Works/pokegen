@@ -4,10 +4,9 @@ name: AE
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     #branches: [ main ]
-  pull_request:
+  #pull_request:
     #branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -19,6 +18,10 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: [self-hosted,gpu]
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      repo_token: ${{ secrets.GITHUB_TOKEN }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -29,17 +32,47 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: pull_data
-        run: dvc pull data/external/sprites.dvc
-
-      - name: cml_run
-        run: dvc repro ae_train
-
-      - name: report
-        env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          scripts/autoencoder_report.sh > report.md
-          cml-publish --md 'reports/autoencoder/gen.gif' >> report.md
+          dvc pull data/raw/sprites.dvc
+          #dvc pull ae_dense_train ae_conv_train
+
+          ## Pulling training data is slow. Only do if needed
+          #dvc status ae_conv_train ae_dense_train
+          #if [ $? -ne 0 ]
+          #then
+            #echo "Pulling training data..."
+            #dvc pull data/raw/sprites.dvc
+          #fi
+          #echo "done"
+
+      - name: train_conv_ae
+        run: |
+          dvc pull ae_conv_train
+          dvc repro ae_conv_train
+          dvc push ae_conv_train
+
+      - name: report_conv
+        run: |
+          echo "# Conv Autoencoder" >> report.md
+          scripts/autoencoder_report.sh conv >> report.md
+
+          echo "## Generated" >> report.md
+          cml-publish --md 'reports/autoencoder/conv/gen.gif' >> report.md
           cml-send-github-check report.md 
+
+      # Dense
+      - name: train_dense_ae
+        run: |
+          dvc pull ae_dense_train
+          dvc repro ae_dense_train
+          dvc push ae_dense_train
+
+      - name: report_dense
+        run: |
+          echo "# Dense Autoencoder" >> report.md
+          scripts/autoencoder_report.sh dense >> report.md
+
+          echo "## Generated" >> report.md
+          cml-publish --md 'reports/autoencoder/dense/gen.gif' >> report.md
+          cml-send-github-check report.md 
+
