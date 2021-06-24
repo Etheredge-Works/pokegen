@@ -17,7 +17,7 @@ stages:
     params:
       - autoencoder_dense
     outs:
-      - reports/autoencoder/dense/gen
+      #- reports/autoencoder/dense/gen
       - reports/autoencoder/dense/gen.gif
     plots:
       - reports/autoencoder/dense/logs
@@ -36,7 +36,7 @@ stages:
     params:
       - autoencoder_conv
     outs:
-      - reports/autoencoder/conv/gen
+      #- reports/autoencoder/conv/gen
       - reports/autoencoder/conv/gen.gif
     plots:
       - reports/autoencoder/conv/logs
