@@ -1,10 +1,10 @@
 stages:
-  sprites_data:
-    cmd: tar -xf data/raw/sprites.tar -C data/raw/
-    deps:
-      - data/raw/sprites.tar
-    outs:
-      - data/raw/sprites
+  #sprites_data:
+    #cmd: tar -xf data/raw/sprites.tar -C data/raw/
+    #deps:
+      #- data/raw/sprites.tar
+    #outs:
+      #- data/raw/sprites
 
   ae_dense_train:
     cmd: python src/autoencoder/vanilla_model_dense.py
@@ -22,7 +22,8 @@ stages:
     plots:
       - reports/autoencoder/dense/logs
     metrics:
-      - reports/autoencoder/dense/logs.json
+      - reports/autoencoder/dense/logs.json:
+          cache: false
 
   ae_conv_train:
     cmd: python src/autoencoder/vanilla_model_conv.py
@@ -40,4 +41,5 @@ stages:
     plots:
       - reports/autoencoder/conv/logs
     metrics:
-      - reports/autoencoder/conv/logs.json
+      - reports/autoencoder/conv/logs.json:
+          cache: false

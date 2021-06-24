@@ -66,10 +66,10 @@ stages:
   ae_conv_train:
     cmd: python src/autoencoder/vanilla_model_conv.py
     deps:
-    - path: data/external/sprites
-      md5: 23e143a3d4f7b30548cd966a889e3b87.dir
-      size: 387131152
-      nfiles: 45310
+    - path: data/raw/sprites
+      md5: 447107e2f601c815f08b87b0eea34530.dir
+      size: 242202638
+      nfiles: 30118
     - path: src/autoencoder/train.py
       md5: fd671b821cb046a19c4103cf681f3c41
       size: 2086
@@ -93,26 +93,26 @@ stages:
           loader_kwargs:
     outs:
     - path: reports/autoencoder/conv/gen
-      md5: 5e114818edc94662b423e2f7f46fd540.dir
-      size: 961878
+      md5: c7cd5262d2aedb424c1d7e72c35a770f.dir
+      size: 678862
       nfiles: 500
     - path: reports/autoencoder/conv/gen.gif
-      md5: 19e7504f6a9b8cfa3e8b0602c3197045
-      size: 1723434
+      md5: 9f2a9fa0c3a3b5ee9ae809e677510ebf
+      size: 873744
     - path: reports/autoencoder/conv/logs
-      md5: f3778ecc48fcf5cfcdb0f3df35dc02f8.dir
-      size: 19706
+      md5: 15f5945df87c40a3a5635dc63361ded0.dir
+      size: 19703
       nfiles: 1
     - path: reports/autoencoder/conv/logs.json
-      md5: 6046b818d099951a888fd1a91e1d21db
+      md5: 5b0da05fbe0c799af135f87b6a7ef82a
       size: 53
   ae_dense_train:
     cmd: python src/autoencoder/vanilla_model_dense.py
     deps:
-    - path: data/external/sprites
-      md5: 23e143a3d4f7b30548cd966a889e3b87.dir
-      size: 387131152
-      nfiles: 45310
+    - path: data/raw/sprites
+      md5: 447107e2f601c815f08b87b0eea34530.dir
+      size: 242202638
+      nfiles: 30118
     - path: src/autoencoder/train.py
       md5: fd671b821cb046a19c4103cf681f3c41
       size: 2086
@@ -136,16 +136,16 @@ stages:
           loader_kwargs:
     outs:
     - path: reports/autoencoder/dense/gen
-      md5: 8abc6a88198d964123983d1cb417a803.dir
-      size: 1508473
+      md5: a2adf4333b0f9f40f4db872fde09c9ff.dir
+      size: 418531
       nfiles: 500
     - path: reports/autoencoder/dense/gen.gif
-      md5: d54ff197d028c164f26a58d9da14af0f
-      size: 3069662
+      md5: 4c0573b1b86e4cf6d8d5e0938d6b6835
+      size: 195470
     - path: reports/autoencoder/dense/logs
-      md5: d2c47e37507e03ba9b1e90a6a21c908a.dir
-      size: 19720
+      md5: 927608a401d97927e946e19ac6b435b3.dir
+      size: 19708
       nfiles: 1
     - path: reports/autoencoder/dense/logs.json
-      md5: db5eb94d140ef9fd17718dbd15c82cd0
+      md5: c47887052c6e424641bfb76d4b1adca4
       size: 52
