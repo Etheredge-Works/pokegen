@@ -60,7 +60,7 @@ jobs:
           gen_dir=reports/autoencoder/conv/gen
           for f in $(ls $gen_dir/*.gif)
           do
-            cml-publish --md '$gen_dir/$f' >> report.md
+            cml-publish --md "$gen_dir/$f" >> report.md
           done
           cml-send-github-check report.md 
 
@@ -78,8 +78,8 @@ jobs:
 
           echo "## Generated" >> report.md
           gen_dir=reports/autoencoder/dense/gen
-          for f in $(ls $gen_dir/*.gif)
+          for f in $(ls ${gen_dir}/*.gif)
           do
-            cml-publish --md '$gen_dir/$f' >> report.md
+            cml-publish --md "${gen_dir}/${f}" >> report.md
           cml-send-github-check report.md 
 
