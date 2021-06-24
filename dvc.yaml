@@ -17,8 +17,18 @@ stages:
     params:
       - autoencoder_dense
     outs:
-      #- reports/autoencoder/dense/gen
-      - reports/autoencoder/dense/gen.gif
+      - reports/autoencoder/dense/gen/0:
+          cache: false
+      - reports/autoencoder/dense/gen/1:
+          cache: false
+      - reports/autoencoder/dense/gen/2:
+          cache: false
+      - reports/autoencoder/dense/gen/3:
+          cache: false
+      - reports/autoencoder/dense/gen/0.gif
+      - reports/autoencoder/dense/gen/1.gif
+      - reports/autoencoder/dense/gen/2.gif
+      - reports/autoencoder/dense/gen/3.gif
     plots:
       - reports/autoencoder/dense/logs
     metrics:
@@ -36,8 +46,22 @@ stages:
     params:
       - autoencoder_conv
     outs:
-      #- reports/autoencoder/conv/gen
-      - reports/autoencoder/conv/gen.gif
+      #- reports/autoencoder/conv/gen:
+      - reports/autoencoder/conv/gen/0:
+          cache: false
+      - reports/autoencoder/conv/gen/1:
+          cache: false
+      - reports/autoencoder/conv/gen/2:
+          cache: false
+      - reports/autoencoder/conv/gen/3:
+          cache: false
+      #- reports/autoencoder/conv/gen/gifs # TODO move to dir
+      - reports/autoencoder/conv/gen/0.gif
+      - reports/autoencoder/conv/gen/1.gif
+      - reports/autoencoder/conv/gen/2.gif
+      - reports/autoencoder/conv/gen/3.gif
+
+
     plots:
       - reports/autoencoder/conv/logs
     metrics:
