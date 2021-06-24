@@ -7,17 +7,17 @@ pokemon_sprites:
 
 
 autoencoder_dense:
-  latent_size: 8
+  latent_size: 16
   batch_size: 128
   train_kwargs:
-    epochs: 5
+    epochs: 100
     log_dir: reports/autoencoder/dense
   loader_kwargs:
 
 autoencoder_conv:
-  latent_size: 8
+  latent_size: 16
   batch_size: 128
   train_kwargs:
-    epochs: 5
+    epochs: 100
     log_dir: reports/autoencoder/conv
   loader_kwargs:
