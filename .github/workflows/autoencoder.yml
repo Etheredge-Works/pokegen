@@ -6,9 +6,9 @@ name: AE
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    #branches: [ main ]
   pull_request:
-    branches: [ main ]
+    #branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -32,14 +32,14 @@ jobs:
         run: dvc pull data/external/sprites.dvc
 
       - name: cml_run
-        shell: bash
+        run: dvc repro ae_train
+
+      - name: report
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          dvc repro ae_train
-
-          scripts/autoencoder_report.sh > reports.md
+          scripts/autoencoder_report.sh > report.md
           cml-publish --md 'reports/autoencoder/gen.gif' >> report.md
           cml-send-github-check report.md 

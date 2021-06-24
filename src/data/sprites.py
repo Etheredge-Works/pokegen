@@ -1,9 +1,11 @@
 from torch.utils.data import Dataset
 from torchvision import transforms
 from PIL import Image
-import os
 import torch
 from pathlib import Path
+from torch.utils.data import DataLoader
+import yaml
+
 
 class PokemonDataset(Dataset):
     
@@ -34,7 +36,6 @@ class PokemonDataset(Dataset):
 
         # TODO figure out why PIL can't open this file
         self.files = [file for file in self.files if "10180.png" not in file]
-        print(len(self.files))
 
     
     def __len__(self):
@@ -45,8 +46,24 @@ class PokemonDataset(Dataset):
             idx = idx.tolist()
 
         image = Image.open(
-                self.files[idx],
+            self.files[idx],
         ).convert('RGB')
+        '''
+        # TODO pull out and test conversion
+        raw_image = Image.open(self.files[idx])
+        #print(raw_image)
+        if raw_image.mode == 'L':
+            image = raw_image.convert('RGB')
+        elif raw_image.mode == 'RGBA' or raw_image.mode == 'P':
+            raw_image = raw_image.convert('RGBA')
+            # Impose white background
+            # TODO test generating png for sprite?
+            raw_image.load()
+            background = Image.new("RGB", raw_image.size, (255, 255, 255))
+            background.paste(raw_image, mask=raw_image.split()[3]) # 3 is alpha channel
+            image = background
+        '''
+
         #image  = image.astype(float)
 
         if self.transform:
@@ -60,13 +77,41 @@ class PokemonDataset(Dataset):
         #return sample
         return image
 
-def get_ds(
-	path='data/external/sprites', 
-	size=96
+
+# TODO put this inside get loader to not use it in main scope
+with open("params.yaml") as f:
+    config = yaml.safe_load(f)['pokemon_sprites']
+
+
+# TODO pull to config file
+
+def get_loader(
+    batch_size: int,
+    path: str = config['data_dir'],
+    resize_shape=config['resize_shape'],
+    normalize_mean=config['normalize_mean'],
+    normalize_std=config['normalize_std']
 ):
-	return PokemonDataset(
-		path,
-		transform=transforms.Compose([
-			transforms.Resize((size,size)),
-			transforms.ToTensor(),
-    ]))
+
+    transform = transforms.Compose([
+        transforms.Resize(resize_shape),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize(normalize_mean, normalize_std)
+        #transforms.RandomErasing(),
+    ])
+
+    train = PokemonDataset(
+        path,
+        transform=transform
+    )
+
+    return DataLoader(
+        train, 
+        batch_size=batch_size, 
+        shuffle=True, 
+        drop_last=True, 
+        num_workers=8,
+        persistent_workers=True, # 'True' makes short epochs start faster
+        pin_memory=True
+    )

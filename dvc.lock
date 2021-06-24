@@ -8,12 +8,12 @@ stages:
       size: 387131152
       nfiles: 45310
     - path: src/autoencoder
-      md5: 09c5d1c439f14197ea57503482d3b3e7.dir
-      size: 10136
+      md5: 01db33eca6234137ac19172e6818b387.dir
+      size: 11029
       nfiles: 7
     - path: src/data
-      md5: fbc7317df95889da9fb3b245b4774d08.dir
-      size: 4467
+      md5: 19f3b6e442619e47134b34f6230f7148.dir
+      size: 5322
       nfiles: 4
     - path: src/utils.py
       md5: bcc6681e7b87d2563003ca8dd54de48a
@@ -24,22 +24,22 @@ stages:
           epochs: 500
           data_dir: data/external/sprites
           log_dir: reports/autoencoder
-          latent_size: 4
+          latent_size: 8
           batch_size: 128
     outs:
     - path: reports/autoencoder/gen
-      md5: 6b0c0ad825a5adb3bb22a07c8d14c4b2.dir
-      size: 2206226
+      md5: f8a8dfb30880036eb326480134bd4e3d.dir
+      size: 560019
       nfiles: 500
     - path: reports/autoencoder/gen.gif
-      md5: 28ff5eb24285ad396f4661dd7b24616d
-      size: 6375824
+      md5: 97826c752a798816deca8ed17463a3f1
+      size: 2066867
     - path: reports/autoencoder/logs
-      md5: 40ca905588c65e02ffa478566b388624.dir
-      size: 19809
+      md5: c686d10a0f59ad2034c3e45cb603dca2.dir
+      size: 19736
       nfiles: 1
     - path: reports/autoencoder/logs.json
-      md5: e44de84c61860fcf356d60cd143c73f5
+      md5: 2e09b42eef202d311b99da3c3ffc5e49
       size: 53
   data:
     cmd: tar -xzf data/raw/sprites.tar.gz -C data/raw/

@@ -1,9 +1,15 @@
-pokemon:
+pokemon_sprites:
   input_shape: [3, 96, 96]
+  resize_shape: [96,96]
+  normalize_mean: [0.485, 0.456, 0.406]
+  normalize_std: [0.229, 0.224, 0.225]
+  data_dir: data/external/sprites
+
 
 autoencoder:
-  epochs: 500
-  data_dir: data/external/sprites
-  log_dir: reports/autoencoder
-  latent_size: 4
+  latent_size: 8
   batch_size: 128
+  train_kwargs:
+    epochs: 500
+    log_dir: reports/autoencoder
+  loader_kwargs:
