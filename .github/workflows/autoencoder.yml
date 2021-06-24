@@ -83,5 +83,6 @@ jobs:
           do
             echo "Publishing $f"
             cml-publish "$f" --md >> report.md
+          done
           cml-send-github-check report.md 
 
