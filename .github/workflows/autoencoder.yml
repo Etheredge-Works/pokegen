@@ -36,7 +36,8 @@ jobs:
           dvc pull ae_dense_train ae_conv_train
 
           # Pulling data is slow. Only do if needed
-          if [ dvc status -q ae_conv_train ae_dense_train ] 
+          dvc status -q ae_conv_train ae_dense_train
+          if [ $? -ne 0]
           then
             dvc pull data/external/sprites.dvc
           fi
