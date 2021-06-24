@@ -91,8 +91,7 @@ class AutoEncoder(torch.nn.Module):
 def main():
     with open('params.yaml') as f:
         raw_config = yaml.safe_load(f)
-        poke_config = raw_config['pokemon_sprites']
-        config = raw_config['autoencoder']
+        config = raw_config['autoencoder_conv']
     ae = AutoEncoder((3, 96, 96), config['latent_size'])
     loader = sprites.get_loader(
         batch_size=config['batch_size']

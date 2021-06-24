@@ -31,15 +31,38 @@ jobs:
       - name: pull_data
         run: dvc pull data/external/sprites.dvc
 
-      - name: cml_run
-        run: dvc repro ae_train
-
-      - name: report
+      - name: train_conv_ae
         env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          scripts/autoencoder_report.sh > report.md
-          cml-publish --md 'reports/autoencoder/gen.gif' >> report.md
+          dvc pull ae_conv_train
+          dvc repro ae_conv_train
+          dvc push ae_conv_train
+
+      - name: report_conv
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          scripts/autoencoder_report.sh conv > report.md
+          cml-publish --md 'reports/autoencoder/conv/gen.gif' >> report.md
           cml-send-github-check report.md 
+
+      # Dense
+      - name: train_dense_ae
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          dvc pull ae_dense_train
+          dvc repro ae_dense_train
+          dvc push ae_dense_train
+
+      - name: report_dense
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          scripts/autoencoder_report.sh dense > report.md
+          cml-publish --md 'reports/autoencoder/dense/gen.gif' >> report.md
+          cml-send-github-check report.md 
+

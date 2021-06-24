@@ -6,10 +6,18 @@ pokemon_sprites:
   data_dir: data/external/sprites
 
 
-autoencoder:
+autoencoder_dense:
   latent_size: 8
   batch_size: 128
   train_kwargs:
     epochs: 500
-    log_dir: reports/autoencoder
+    log_dir: reports/autoencoder/dense
+  loader_kwargs:
+
+autoencoder_conv:
+  latent_size: 8
+  batch_size: 128
+  train_kwargs:
+    epochs: 500
+    log_dir: reports/autoencoder/conv
   loader_kwargs:

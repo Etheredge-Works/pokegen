@@ -6,20 +6,38 @@ stages:
     outs:
       - data/raw/sprites
 
-  ae_train:
-    cmd: python src/autoencoder/vanilla_model.py
+  ae_dense_train:
+    cmd: python src/autoencoder/vanilla_model_dense.py
     deps:
       - ${pokemon_sprites.data_dir}
-      #- data/external/sprites
-      - src/autoencoder
-      - src/data
+      - src/autoencoder/train.py
+      - src/autoencoder/vanilla_model_dense.py
+      - src/data/sprites.py
       - src/utils.py
     params:
-      - autoencoder
+      - autoencoder_dense
     outs:
-      - reports/autoencoder/gen
-      - reports/autoencoder/gen.gif
+      - reports/autoencoder/dense/gen
+      - reports/autoencoder/dense/gen.gif
     plots:
-      - reports/autoencoder/logs
+      - reports/autoencoder/dense/logs
     metrics:
-      - reports/autoencoder/logs.json
+      - reports/autoencoder/dense/logs.json
+
+  ae_conv_train:
+    cmd: python src/autoencoder/vanilla_model_conv.py
+    deps:
+      - ${pokemon_sprites.data_dir}
+      - src/autoencoder/train.py
+      - src/autoencoder/vanilla_model_conv.py
+      - src/data/sprites.py
+      - src/utils.py
+    params:
+      - autoencoder_conv
+    outs:
+      - reports/autoencoder/conv/gen
+      - reports/autoencoder/conv/gen.gif
+    plots:
+      - reports/autoencoder/conv/logs
+    metrics:
+      - reports/autoencoder/conv/logs.json
