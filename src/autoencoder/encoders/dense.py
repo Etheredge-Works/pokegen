@@ -21,7 +21,7 @@ class DenseEncoder(torch.nn.Module):
         x = F.relu(self.dense2(x))
         x = F.relu(self.dense3(x))
         x = F.relu(self.dense4(x))
-        x = self.fc(x)
+        x = F.relu(self.fc(x))
         #x = F.sigmoid(self.fc(x))
         return x
 
