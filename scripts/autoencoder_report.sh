@@ -9,10 +9,11 @@ dvc metrics diff main --target reports/$model/$version/logs.json --show-md
 
 echo "## Encoded/Decoded"
 results_dir=reports/$model/$version/results
-for f in $(ls $results_dir/*gif)
+for f in $(ls $results_dir)
 do
-    cml-publish "$f/raw.jpg" --md 
-    cml-publish "$f/result.jpg" --md 
+    echo $f
+    cml-publish "$results_dir/$f/raw.jpg" --md 
+    cml-publish "$results_dir/$f/result.jpg" --md 
     echo "---"
 done
 
