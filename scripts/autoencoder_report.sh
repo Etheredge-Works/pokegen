@@ -7,6 +7,9 @@ echo "## Metrics"
 git fetch --prune >& /dev/null
 dvc metrics diff main --target reports/$model/$version/logs.json --show-md
 
+dvc plots diff --target reports/$model/$version/logs/loss.tsv --show-vega main > /tmp/vega.json
+vl2png /tmp/vega.json | cml-publish --md
+
 echo "## Encoded/Decoded"
 results_dir=reports/$model/$version/results
 for f in $(ls $results_dir)
