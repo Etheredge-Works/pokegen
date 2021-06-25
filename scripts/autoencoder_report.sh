@@ -13,7 +13,7 @@ for f in $(ls $results_dir)
 do
     echo $f
     cml-publish "$results_dir/$f/raw.jpg" --md 
-    cml-publish "$results_dir/$f/result.jpg" --md 
+    cml-publish "$results_dir/$f/encdec.jpg" --md 
     echo "---"
 done
 
