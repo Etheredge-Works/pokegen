@@ -10,11 +10,12 @@ class ConvEncoder(torch.nn.Module):
         latent_shape):
         super(ConvEncoder, self).__init__()
         flattened_size = torch.prod(torch.tensor(input_shape), 0)
+        # TODO enlarge kernel
         self.conv1 = nn.Conv2d(input_shape[0], 8, 3, stride=2)
         self.conv2 = nn.Conv2d(8, 16, 3, stride=2)
         self.conv3 = nn.Conv2d(16, 32, 3, stride=2)
         self.conv4 = nn.Conv2d(32, 64, 3, stride=2)
-        self.f = nn.Flatten()
+        self.flatten = nn.Flatten()
         # Pooling here
         self.fc = nn.Linear(64, latent_shape)
         #self.dense = torch.nn.Linear()
@@ -29,8 +30,9 @@ class ConvEncoder(torch.nn.Module):
         # Pooling
         x = x.mean([2, 3])
 
-        x = self.f(x)
-        x = F.relu(self.fc(x))
+        x = self.flatten(x)
+        #x = F.relu(self.fc(x))
+        x = self.fc(x)
         #x = F.sigmoid(self.fc(x))
 
         return x
