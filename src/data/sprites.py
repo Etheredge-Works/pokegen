@@ -97,7 +97,7 @@ def get_loader(
         transforms.Resize(resize_shape),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
-        transforms.Normalize(normalize_mean, normalize_std)
+        #transforms.Normalize(normalize_mean, normalize_std)
         #transforms.RandomErasing(),
     ])
 
