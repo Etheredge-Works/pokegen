@@ -31,7 +31,6 @@ class ConvEncoder(torch.nn.Module):
         x = x.mean([2, 3])
 
         x = self.flatten(x)
-        x = F.relu(self.fc(x))
-        #x = F.sigmoid(self.fc(x))
+        x = F.tanh(self.fc(x))
 
         return x
