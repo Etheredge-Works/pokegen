@@ -15,7 +15,8 @@ class VAE(torch.nn.Module):
         self.encoder = encoder_constructor(input_shape, latent_size*2)
         self.decoder = decoder_constructor(latent_size, input_shape)
 
-        self.bce = torch.nn.BCELoss(reduction='sum')
+        #self.bce = torch.nn.BCELoss(reduction='sum')
+        self.bce = torch.nn.MSELoss()
     
     @staticmethod
     def reparameterize(mu, log_var):
@@ -43,6 +44,12 @@ class VAE(torch.nn.Module):
         return x, mu, log_var
 
     def predict(self, x):
+        self.eval()
+        with torch.no_grad():
+            y_pred, *_ = self.forward(x)
+        return y_pred
+
+    def generate(self, x):
         x = x.view(-1, 2, self.latent_size)
         mu = x[:, 0, :]
         log_var = x[:, 1, :]
@@ -53,5 +60,8 @@ class VAE(torch.nn.Module):
     def criterion(self, y_hat, y):
         reconstruction, mu, log_var = y_hat
         BCE = self.bce(reconstruction, y) 
+        #print(BCE.item())
         KLD = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp())
+        #print(KLD.item())
+        #input()
         return BCE + KLD

@@ -23,6 +23,11 @@ class AutoEncoder(torch.nn.Module):
         return x
 
     def predict(self, x):
+        self.eval()
+        with torch.no_grad():
+            return self.forward(x)
+
+    def generate(self, x):
         return self.decoder(x)
 
     def criterion(self, y_hat, y):

@@ -32,6 +32,7 @@ stages:
       - reports/autoencoder/dense/gen/1.gif
       - reports/autoencoder/dense/gen/2.gif
       - reports/autoencoder/dense/gen/3.gif
+      - reports/autoencoder/dense/results
     plots:
       - reports/autoencoder/dense/logs
     metrics:
@@ -66,6 +67,7 @@ stages:
       - reports/autoencoder/conv/gen/1.gif
       - reports/autoencoder/conv/gen/2.gif
       - reports/autoencoder/conv/gen/3.gif
+      - reports/autoencoder/conv/results
 
 
     plots:
@@ -95,6 +97,7 @@ stages:
           cache: false
       - reports/vae/conv/gen/0.gif
       - reports/vae/conv/gen/1.gif
+      - reports/vae/conv/results
     plots:
       - reports/vae/conv/logs
     metrics:
@@ -122,6 +125,7 @@ stages:
           cache: false
       - reports/vae/dense/gen/0.gif
       - reports/vae/dense/gen/1.gif
+      - reports/vae/dense/results
     plots:
       - reports/vae/dense/logs
     metrics:
