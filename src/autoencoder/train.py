@@ -28,6 +28,9 @@ def train_ae(
     dvclive_dir = log_dir/'logs'
     gen_dir.mkdir(exist_ok=True, parents=True)
 
+    results_dir = log_dir/'results'
+    results_dir.mkdir(exist_ok=True, parents=True)
+
     dvclive.init(str(dvclive_dir), summary=True)
 
     assert len(trainloader) > 0
@@ -75,13 +78,30 @@ def train_ae(
                 #im = transforms.ToPILImage()(ae(train[idx].to(device))[0].cpu().data)
                 #im.save(str(log_dir/'val'/epoch/f"gen_{idx}.jpg"))
             
-            generations = ae.predict(random_tensors)
+            generations = ae.generate(random_tensors)
             utils.save(
                 generations.cpu(),
                 str(gen_dir),
                 epoch)
         dvclive.next_step()
     utils.make_gifs(str(gen_dir))
+
+    # save off some final results
+    batch = next(iter(trainloader))
+    ae.eval()
+    with torch.no_grad():
+        utils.save(
+            batch[:8].cpu(), # slice after incase of batch norm or something
+            str(results_dir),
+            'raw'
+        )
+        results = ae.predict(batch.to(device))
+        utils.save(
+            results[:8].cpu(), # slice after incase of batch norm or something
+            str(results_dir),
+            'encdec'
+        )
+
 
 @click.command()
 @click.option("--encoder-type", type=click.STRING)

@@ -12,16 +12,20 @@ def display(tensor):
 def save(
     tensor, 
     path: Path, 
-    step
+    step=None
 ):
     path = pathlib.Path(path)
+    path.mkdir(exist_ok=True, parents=True)
 
     for idx, item in enumerate(tensor):
         im = transforms.ToPILImage()(item)
 
-        item_path = path/str(idx)
-        item_path.mkdir(exist_ok=True, parents=True)
-        im.save(item_path/f"{step}.jpg")
+        if step is not None:
+            item_path = path/str(idx)
+            item_path.mkdir(exist_ok=True, parents=True)
+            im.save(item_path/f"{step}.jpg")
+        else:
+            im.save(path/f"{idx}.jpg")
 
 
 def make_gif(path):
