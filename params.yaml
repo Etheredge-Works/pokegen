@@ -9,14 +9,14 @@ vae_conv:
   latent_size: 16
   batch_size: 128
   train_kwargs:
-    epochs: 200
+    epochs: 300
     log_dir: reports/vae/conv
 
 vae_dense:
   latent_size: 16
   batch_size: 128
   train_kwargs:
-    epochs: 200
+    epochs: 300
     log_dir: reports/vae/dense
 
 
@@ -24,12 +24,12 @@ autoencoder_dense:
   latent_size: 16
   batch_size: 128
   train_kwargs:
-    epochs: 200
+    epochs: 300
     log_dir: reports/autoencoder/dense
 
 autoencoder_conv:
   latent_size: 16
   batch_size: 128
   train_kwargs:
-    epochs: 200
+    epochs: 300
     log_dir: reports/autoencoder/conv
