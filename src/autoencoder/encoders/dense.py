@@ -12,8 +12,6 @@ class DenseEncoder(torch.nn.Module):
         input_count = flattened_size
         layers = []
         while(node_count > latent_shape):
-            #layers.append(nn.Linear(input_count, node_count))
-            #layers.append(nn.ReLU())
             layers.append(nn.Linear(input_count, node_count))
             layers.append(nn.ReLU())
 
@@ -23,11 +21,9 @@ class DenseEncoder(torch.nn.Module):
         self.dense = nn.ModuleList(layers) # registers modules
 
         self.fc = nn.Linear(input_count, latent_shape)
-        #self.dense = torch.nn.Linear()
 
     def forward(self, x):
         x = self.f(x)
-        #x = self.dense(x)
         for dense in self.dense:
             x = dense(x)
         x = self.fc(x)

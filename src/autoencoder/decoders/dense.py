@@ -12,8 +12,6 @@ class DenseDecoder(nn.Module):
         input_count = latent_shape
         layers = []
         while(input_count < node_count):
-            #layers.append(nn.Linear(input_count, node_count))
-            #layers.append(nn.ReLU())
             layers.append(nn.Linear(input_count, input_count*2))
             layers.append(nn.ReLU())
 
