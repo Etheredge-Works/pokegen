@@ -35,7 +35,7 @@ def make_gif(path):
         f"{path}.gif", 
         save_all=True,
         append_images=ims[1:], 
-        duration=300,
+        duration=700,
         loops=0)
 
 

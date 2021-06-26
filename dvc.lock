@@ -386,7 +386,7 @@ stages:
       md5: eb3b24072b0bd1f3b0357c8ca5f922ff
       size: 3595
     - path: src/utils.py
-      md5: f2702cf1b93b115f7dd09df7941e6a26
+      md5: b9e9e59ff4d7968464f4489ce04c956d
       size: 1001
     params:
       params.yaml:
@@ -398,29 +398,29 @@ stages:
             log_dir: reports/vae/dense
     outs:
     - path: reports/vae/dense/gen/0
-      md5: 7cf7d842d9e19b8328d3300ff4115e57.dir
-      size: 244539
+      md5: 5dc60f7a81c8b05a0098934cb54a89b4.dir
+      size: 220670
       nfiles: 200
     - path: reports/vae/dense/gen/0.gif
-      md5: 156b9d769abe9d8df6a38016377b2f29
-      size: 609724
+      md5: 9ac270bac5b7684e129ce71a747e6d26
+      size: 486925
     - path: reports/vae/dense/gen/1
-      md5: 4300ea87a6e8dbb3f3fb7b5cdadd450b.dir
-      size: 230737
+      md5: 5948ecb4f13f4fd96507cad62ad619f6.dir
+      size: 208089
       nfiles: 200
     - path: reports/vae/dense/gen/1.gif
-      md5: bd0ff1854e1f5888ac41a13db3e2d334
-      size: 507177
+      md5: 9a410c64647eed937f62344160a75fcd
+      size: 368114
     - path: reports/vae/dense/logs
-      md5: 710025a7fcaa4c79a478a62dc62e958f.dir
-      size: 7271
+      md5: 62313942f05da919bc12499d3faff93b.dir
+      size: 7272
       nfiles: 1
     - path: reports/vae/dense/logs.json
-      md5: cb6e2ad0aab071f62f8ab0cd8d5b0c21
+      md5: 4741d09243a3bef627cbe1a823beea96
       size: 50
     - path: reports/vae/dense/results
-      md5: c5caece144421c4dd6d674e8aaeb8e18.dir
-      size: 26484
+      md5: 9f4c7aaa08dfd80c1f856c48a9b2e597.dir
+      size: 28322
       nfiles: 16
   vae_conv:
     cmd: python src/autoencoder/vae_conv.py
@@ -448,7 +448,7 @@ stages:
       md5: eb3b24072b0bd1f3b0357c8ca5f922ff
       size: 3595
     - path: src/utils.py
-      md5: f2702cf1b93b115f7dd09df7941e6a26
+      md5: b9e9e59ff4d7968464f4489ce04c956d
       size: 1001
     params:
       params.yaml:
@@ -460,27 +460,27 @@ stages:
             log_dir: reports/vae/conv
     outs:
     - path: reports/vae/conv/gen/0
-      md5: cd580c1b3b927c41553631acd264e850.dir
-      size: 349799
+      md5: 4fbf85c6cae402eb9a42f406e194b758.dir
+      size: 348985
       nfiles: 200
     - path: reports/vae/conv/gen/0.gif
-      md5: 6e8122b97337570e5dbf00c757457931
-      size: 1119390
+      md5: 3a172a22fbeb99bc4379f58efadf3819
+      size: 1124249
     - path: reports/vae/conv/gen/1
-      md5: b4086a9d5caf4ed01dee83ce8d3232c0.dir
-      size: 338794
+      md5: 809510c9947465efd6855165f0d6ecdb.dir
+      size: 335877
       nfiles: 200
     - path: reports/vae/conv/gen/1.gif
-      md5: 45becf93adab5db4359aef15fd9eaadd
-      size: 1070349
+      md5: dcf5195d14a25df4d5f21bd2492b1d9c
+      size: 1101615
     - path: reports/vae/conv/logs
-      md5: 3656adc3ce44c56466aec6ef920b0c7c.dir
-      size: 7288
+      md5: 10f53bfd3b68036207c096765db85dfd.dir
+      size: 7291
       nfiles: 1
     - path: reports/vae/conv/logs.json
-      md5: 01cdaecacdaac2a20e483c4906a9d9f6
+      md5: 84bf9be916029b423f57e594be2ca7bf
       size: 50
     - path: reports/vae/conv/results
-      md5: f1724fd04c6b794ec2d9aa9f417fb484.dir
-      size: 26939
+      md5: b89a4921a8b435c5a406f33aa0ebd589.dir
+      size: 28353
       nfiles: 16
