@@ -48,6 +48,9 @@ def train_ae(
     ]).to(device)
 
     optimizer = torch.optim.Adam(ae.parameters(), lr=lr)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+        optimizer, 
+        T_max=epochs)
 
     for epoch in range(epochs):
         print(f"{epoch}/{epochs}")
@@ -83,7 +86,9 @@ def train_ae(
                 generations.cpu(),
                 str(gen_dir),
                 epoch)
+        dvclive.log("lr", scheduler.get_lr()[0])
         dvclive.next_step()
+        scheduler.step()
     utils.make_gifs(str(gen_dir))
 
     # save off some final results

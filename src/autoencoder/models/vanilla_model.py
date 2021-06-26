@@ -31,4 +31,4 @@ class AutoEncoder(torch.nn.Module):
         return self.decoder(x)
 
     def criterion(self, y_hat, y):
-        return self.loss_func(y_hat, y)
+        return torch.nn.functional.binary_cross_entropy(y_hat, y, reduction='sum')
