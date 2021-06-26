@@ -29,7 +29,7 @@ class ConvDecoder(nn.Module):
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
         x = F.relu(self.conv3(x))
-        x = F.sigmoid(self.conv4(x))
+        x = F.relu(self.conv4(x))
 
         #x = torch.view(x, [-1, *self.output_shape])
         #x = x.view(-1, *self.output_shape)
