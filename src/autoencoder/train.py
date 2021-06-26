@@ -22,6 +22,7 @@ def train_ae(
     trainloader: DataLoader,
     ae: torch.nn.Module,
     lr=0.001,
+    gen_log_freq=20,
 ):
     log_dir = Path(log_dir)
     gen_dir = log_dir/'gen'
@@ -81,11 +82,12 @@ def train_ae(
                 #im = transforms.ToPILImage()(ae(train[idx].to(device))[0].cpu().data)
                 #im.save(str(log_dir/'val'/epoch/f"gen_{idx}.jpg"))
             
-            generations = ae.generate(random_tensors)
-            utils.save(
-                generations.cpu(),
-                str(gen_dir),
-                epoch)
+            if epoch % gen_log_freq == 0:
+                generations = ae.generate(random_tensors)
+                utils.save(
+                    generations.cpu(),
+                    str(gen_dir),
+                    epoch)
         dvclive.log("lr", scheduler.get_lr()[0])
         dvclive.next_step()
         scheduler.step()
