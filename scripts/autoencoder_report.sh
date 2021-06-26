@@ -1,3 +1,4 @@
+#! /bin/bash 
 model=$1
 version=$2
 
