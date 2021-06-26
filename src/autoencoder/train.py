@@ -21,7 +21,7 @@ def train_ae(
     epochs: int,
     trainloader: DataLoader,
     ae: torch.nn.Module,
-    lr=0.0001,
+    lr=0.001,
 ):
     log_dir = Path(log_dir)
     gen_dir = log_dir/'gen'
