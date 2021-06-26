@@ -6,30 +6,30 @@ pokemon_sprites:
   data_dir: data/raw/sprites
 
 vae_conv:
-  latent_size: 16
+  latent_size: 32
   batch_size: 128
   train_kwargs:
-    epochs: 100
+    epochs: 200
     log_dir: reports/vae/conv
 
 vae_dense:
-  latent_size: 16
+  latent_size: 32
   batch_size: 128
   train_kwargs:
-    epochs: 100
+    epochs: 200
     log_dir: reports/vae/dense
 
 
 autoencoder_dense:
-  latent_size: 16
+  latent_size: 32
   batch_size: 128
   train_kwargs:
-    epochs: 100
+    epochs: 200
     log_dir: reports/autoencoder/dense
 
 autoencoder_conv:
-  latent_size: 16
+  latent_size: 32
   batch_size: 128
   train_kwargs:
-    epochs: 100
+    epochs: 200
     log_dir: reports/autoencoder/conv
