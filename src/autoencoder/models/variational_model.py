@@ -38,10 +38,10 @@ class VAE(torch.nn.Module):
 
         z = self.reparameterize(mu, log_var)
 
-        x = self.decoder(z)
+        x_hat = self.decoder(z)
         # TODO sigmoid at end?
 
-        return x, mu, log_var
+        return x_hat, mu, log_var
 
     def predict(self, x):
         self.eval()
@@ -59,7 +59,8 @@ class VAE(torch.nn.Module):
         
     def criterion(self, y_hat, y):
         reconstruction, mu, log_var = y_hat
-        BCE = self.bce(reconstruction, y) 
+        #BCE = self.bce(reconstruction, y) 
+        BCE = torch.nn.functional.binary_cross_entropy(reconstruction, y, reduction='sum')
         #print(BCE.item())
         KLD = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp())
         #print(KLD.item())
