@@ -1,4 +1,6 @@
 from data import sprites
+from autoencoder.models import AutoEncoder
+from autoencoder.models import VAE
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from torch import nn
@@ -140,7 +142,7 @@ def main(
     epochs,
     lr,
     batch_size,
-    ):
+):
     encoder_const = DenseEncoder if encoder_type == 'dense' else ConvEncoder
     decoder_const = DenseDecoder if decoder_type == 'dense' else ConvDecoder
 
