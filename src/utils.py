@@ -23,7 +23,7 @@ def save(
         if step is not None:
             item_path = path/str(idx)
             item_path.mkdir(exist_ok=True, parents=True)
-            im.save(item_path/f"{step}.jpg")
+            im.save(item_path/f"{step:08d}.jpg")
         else:
             im.save(path/f"{idx}.jpg")
 
