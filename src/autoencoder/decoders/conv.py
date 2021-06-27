@@ -11,20 +11,41 @@ class ConvDecoder(nn.Module):
         # TODO math latent_to_shape form input shape and layers
         
         self.fc = nn.Linear(latent_shape, 128) # TODO math out better
-        self.up = nn.Upsample(scale_factor=3)  # TODO make not manually determined
-        self.conv1 = nn.ConvTranspose2d(128, 64, 5, stride=2)
-        self.conv2 = nn.ConvTranspose2d(64, 32, 5, stride=2)
-        self.conv3 = nn.ConvTranspose2d(32, 16, 5, stride=2, output_padding=1)
-        self.conv4 = nn.ConvTranspose2d(16, 3, 5, stride=2, output_padding=1)
+        conv_layers = [
+            # Upscale
+            nn.ConvTranspose2d(128, 128, 3, stride=1),
+            nn.ReLU(),
+
+            nn.ConvTranspose2d(128, 128, 5, stride=2, padding=2, output_padding=1),
+            nn.ReLU(),
+            #nn.ConvTranspose2d(256, 256, 3, stride=1, padding=1),
+            #nn.ReLU(),
+            nn.ConvTranspose2d(128, 128, 5, stride=2, padding=2, output_padding=1),
+            nn.ReLU(),
+            #nn.ConvTranspose2d(128, 128, 3, stride=1, padding=1),
+            #nn.ReLU(),
+            nn.ConvTranspose2d(128, 64, 5, stride=2, padding=2, output_padding=1),
+            nn.ReLU(),
+            #nn.ConvTranspose2d(64, 64, 3, stride=1, padding=1),
+            #nn.ReLU(),
+            nn.ConvTranspose2d(64, 32, 5, stride=2, padding=2, output_padding=1),
+            nn.ReLU(),
+            #nn.ConvTranspose2d(32, 32, 3, stride=1,padding=1),
+            #nn.ReLU(),
+            nn.ConvTranspose2d(32, 16, 5, stride=2, padding=2, output_padding=1),
+            nn.ReLU(),
+
+            nn.ConvTranspose2d(16, 3, 5, stride=1, padding=2),
+        ]
+        self.convs = nn.ModuleList(conv_layers)
 
     def forward(self, x):
         x = F.relu(self.fc(x))
         x = x.view(x.size(0), x.size(1), 1, 1) 
-        x = self.up(x)
 
-        x = F.relu(self.conv1(x))
-        x = F.relu(self.conv2(x))
-        x = F.relu(self.conv3(x))
-        x = torch.sigmoid(self.conv4(x))
+        for layer in self.convs:
+            x = layer(x)
+
+        x = torch.sigmoid(x)
 
         return x

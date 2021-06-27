@@ -1,3 +1,4 @@
+from typing_extensions import ParamSpec
 import torch
 from torch import nn
 from torch.nn import functional as F
@@ -11,19 +12,37 @@ class ConvEncoder(torch.nn.Module):
         super(ConvEncoder, self).__init__()
         flattened_size = torch.prod(torch.tensor(input_shape), 0)
         # TODO enlarge kernel
-        self.conv1 = nn.Conv2d(input_shape[0], 16, 5, stride=2)
-        self.conv2 = nn.Conv2d(16, 32, 5, stride=2)
-        self.conv3 = nn.Conv2d(32, 64, 5, stride=2)
-        self.conv4 = nn.Conv2d(64, 128, 5, stride=2)
+        conv_layers = [
+            nn.Conv2d(input_shape[0], 16, 5, stride=1, padding=2),
+            nn.ReLU(),
+            nn.Conv2d(16, 32, 5, stride=2, padding=2),
+            nn.ReLU(),
+            #nn.Conv2d(32, 32, 3, stride=1, padding=1),
+            #nn.ReLU(),
+            nn.Conv2d(32, 64, 5, stride=2, padding=2),
+            nn.ReLU(),
+            #nn.Conv2d(64, 64, 3, stride=1, padding=1),
+            #nn.ReLU(),
+            nn.Conv2d(64, 128, 5, stride=2, padding=2),
+            nn.ReLU(),
+            #nn.Conv2d(128, 128, 3, stride=1, padding=1),
+            #nn.ReLU(),
+            nn.Conv2d(128, 128, 5, stride=2, padding=2),
+            nn.ReLU(),
+            #nn.Conv2d(256, 256, 3, stride=1, padding=1),
+            #nn.ReLU(),
+            nn.Conv2d(128, 128, 5, stride=2, padding=2),
+            nn.ReLU(),
+        ]
+        self.convs = nn.ModuleList(conv_layers)
         self.flatten = nn.Flatten()
         # Pooling here
+        # TODO test laten features from conv layer
         self.fc = nn.Linear(128, latent_shape)
 
     def forward(self, x):
-        x = F.relu(self.conv1(x))
-        x = F.relu(self.conv2(x))
-        x = F.relu(self.conv3(x))
-        x = F.relu(self.conv4(x))
+        for layer in self.convs:
+            x = layer(x)
 
         # TODO was pooling used just to make it easier to construct model? no mathing dims
         # Pooling
