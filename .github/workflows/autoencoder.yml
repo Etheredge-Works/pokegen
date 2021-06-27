@@ -38,9 +38,9 @@ jobs:
 
       - name: train_ae_dense
         run: |
-          dvc pull ae_dense
-          dvc repro ae_dense
-          dvc push ae_dense
+          dvc pull train@ae_dense
+          dvc repro train@ae_dense
+          dvc push train@ae_dense
 
       - name: report_dense
         run: |
@@ -50,9 +50,9 @@ jobs:
 
       - name: train_ae_conv
         run: |
-          dvc pull ae_conv
-          dvc repro ae_conv
-          dvc push ae_conv
+          dvc pull train@ae_conv
+          dvc repro train@ae_conv
+          dvc push train@ae_conv
 
       - name: report_conv
         run: |
@@ -61,9 +61,9 @@ jobs:
 
       - name: train_vae_dense
         run: |
-          dvc pull vae_dense
-          dvc repro vae_dense
-          dvc push vae_dense
+          dvc pull train@vae_dense
+          dvc repro train@vae_dense
+          dvc push train@vae_dense
 
       - name: report_vae_dense
         run: |
@@ -72,9 +72,9 @@ jobs:
 
       - name: train_vae_conv
         run: |
-          dvc pull vae_conv
-          dvc repro vae_conv
-          dvc push vae_conv
+          dvc pull train@vae_conv
+          dvc repro train@vae_conv
+          dvc push train@vae_conv
 
       - name: report_conv
         run: |
