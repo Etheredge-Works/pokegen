@@ -10,6 +10,8 @@ import yaml
 import click
 from autoencoder.encoders import DenseEncoder, ConvEncoder
 from autoencoder.decoders import DenseDecoder, ConvDecoder
+from torchsummary import summary
+from contextlib import redirect_stdout
 
 
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
@@ -32,11 +34,15 @@ def train_ae(
     results_dir = log_dir/'results'
     results_dir.mkdir(exist_ok=True, parents=True)
 
+    ae = ae.to(device)
+
+    with open(log_dir/"summary.txt", 'w') as f:
+        with redirect_stdout(f):
+            summary(ae, input_size=(3, 96, 96))
+
     dvclive.init(str(dvclive_dir), summary=True)
 
     assert len(trainloader) > 0
-
-    ae = ae.to(device)
 
     # Reference random tensor
     # TODO repeat in shape

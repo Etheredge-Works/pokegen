@@ -1,19 +1,25 @@
 #! /bin/bash 
 model=$1
 version=$2
+log_dir=reports/$model/$version
 
 echo "# $model ($version)"
 
+echo "'''"
+cat $log_dir/summary.txt
+
+echo "'''"
+
 echo "## Metrics"
 git fetch --prune >& /dev/null
-dvc metrics diff main --target reports/$model/$version/logs.json --show-md
+dvc metrics diff main --target $log_dir/logs.json --show-md
 
 echo "### Loss"
-dvc plots diff --target reports/$model/$version/logs/loss.tsv --show-vega main > /tmp/vega.json
+dvc plots diff --target $log_dir/logs/loss.tsv --show-vega main > /tmp/vega.json
 vl2png /tmp/vega.json | cml-publish --md
 
 echo "### LR"
-dvc plots diff --target reports/$model/$version/logs/lr.tsv --show-vega main > /tmp/vega.json
+dvc plots diff --target $log_dir/logs/lr.tsv --show-vega main > /tmp/vega.json
 vl2png /tmp/vega.json | cml-publish --md
 
 echo "## Encoded/Decoded"
@@ -27,7 +33,7 @@ do
 done
 
 echo "## Generated"
-gen_dir=reports/$model/$version/gen
+gen_dir=$log_dir/gen
 for f in $(ls $gen_dir/*gif)
 do
     cml-publish "$f" --md 
