@@ -95,7 +95,7 @@ def train_ae(
                 #im = transforms.ToPILImage()(ae(train[idx].to(device))[0].cpu().data)
                 #im.save(str(log_dir/'val'/epoch/f"gen_{idx}.jpg"))
             
-            if epoch % (epochs//30) == 0 or epoch == epochs:
+            if epoch % (epochs//30) == 0 or epoch == (epochs-1):
                 generations = ae.generate(random_tensors)
                 utils.save(
                     generations.cpu(),
