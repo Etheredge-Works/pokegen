@@ -65,7 +65,7 @@ def train_ae(
         running_loss = 0
         total = 0 # use total as drop_last=True
         ae.train()
-        if should_tqdm:
+        if int(should_tqdm) != 0:
             iter_trainloader = tqdm(trainloader)
         else:
             iter_trainloader = trainloader
