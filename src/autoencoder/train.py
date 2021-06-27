@@ -58,7 +58,11 @@ def train_ae(
         running_loss = 0
         total = 0 # use total as drop_last=True
         ae.train()
-        for image_b in tqdm(trainloader):
+        if should_tqdm:
+            iter_trainloader = tqdm(trainloader)
+        else:
+            iter_trainloader = trainloader
+        for image_b in iter_trainloader:
             #print(data[0])
             image_b = image_b.to(device)
             y_pred = ae(image_b)
