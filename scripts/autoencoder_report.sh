@@ -5,10 +5,10 @@ log_dir=reports/$model/$version
 
 echo "# $model ($version)"
 
-echo "'''"
+echo ""
+echo "\`\`\`"
 cat $log_dir/summary.txt
-
-echo "'''"
+echo "\`\`\`"
 
 echo "## Metrics"
 git fetch --prune >& /dev/null
