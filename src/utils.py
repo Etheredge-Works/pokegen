@@ -23,7 +23,9 @@ def save(
         if step is not None:
             item_path = path/str(idx)
             item_path.mkdir(exist_ok=True, parents=True)
-            im.save(item_path/f"{step:08d}.jpg")
+            if type(step) == int:
+                step = f"{step:08d}"
+            im.save(item_path/f"{step}.jpg")
         else:
             im.save(path/f"{idx}.jpg")
 
@@ -35,7 +37,7 @@ def make_gif(path):
         f"{path}.gif", 
         save_all=True,
         append_images=ims[1:], 
-        duration=700,
+        duration=300,
         loops=0)
 
 
