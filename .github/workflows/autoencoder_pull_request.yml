@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: AE
+name: AE_Pull_Request
 
 # Controls when the action will run. 
 on:
