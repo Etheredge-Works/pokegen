@@ -1,4 +1,4 @@
-from autoencoder.models.vanilla_model import AutoEncoder
+from data import sprites
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from torch import nn
@@ -121,25 +121,47 @@ def train_ae(
         )
 
 
+
 @click.command()
 @click.option("--encoder-type", type=click.STRING)
 @click.option("--decoder-type", type=click.STRING)
 @click.option("--ae-type", type=click.STRING)
+@click.option("--log-dir", type=click.Path())
 @click.option("--latent-size", type=click.INT)
+@click.option("--epochs", type=click.INT)
+@click.option("--lr", type=click.FLOAT)
+@click.option("--batch-size", type=click.INT)
 def main(
     encoder_type,
     decoder_type,
     ae_type,
+    log_dir,
     latent_size,
+    epochs,
     lr,
+    batch_size,
     ):
     encoder_const = DenseEncoder if encoder_type == 'dense' else ConvEncoder
     decoder_const = DenseDecoder if decoder_type == 'dense' else ConvDecoder
 
+    # TODO pull out so train file doesn't need these imported
     model_const = VAE if ae_type == 'vae' else AutoEncoder
 
-    #ae = model_const()
-    pass
+    # TODO pull out shape
+    ae = model_const(
+        (3, 96, 96), 
+        latent_size, encoder_const, 
+        decoder_const)
+
+    loader = sprites.get_loader(batch_size=batch_size)
+    print(lr)
+
+    train_ae(
+        log_dir=log_dir, 
+        epochs=epochs, 
+        trainloader=loader, 
+        ae=ae,
+        lr=lr)
 
 
 if __name__ == "__main__":
