@@ -22,6 +22,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       repo_token: ${{ secrets.GITHUB_TOKEN }}
+      SHOULD_TQDM: 0  # disables tqdm in 'src/train_ae.py'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -37,32 +38,32 @@ jobs:
 
       - name: train_ae_dense
         run: |
-          dvc pull ae_dense
-          dvc repro ae_dense
-          dvc push ae_dense
+          dvc pull train@ae_dense
+          dvc repro train@ae_dense
+          dvc push train@ae_dense
 
       - name: report_dense
         run: |
-          scripts/autoencoder_report.sh autoencoder dense >> report.md
+          scripts/autoencoder_report.sh ae dense >> report.md
           cml-send-github-check report.md 
 
 
       - name: train_ae_conv
         run: |
-          dvc pull ae_conv
-          dvc repro ae_conv
-          dvc push ae_conv
+          dvc pull train@ae_conv
+          dvc repro train@ae_conv
+          dvc push train@ae_conv
 
       - name: report_conv
         run: |
-          scripts/autoencoder_report.sh autoencoder conv >> report.md
+          scripts/autoencoder_report.sh ae conv >> report.md
           cml-send-github-check report.md 
 
       - name: train_vae_dense
         run: |
-          dvc pull vae_dense
-          dvc repro vae_dense
-          dvc push vae_dense
+          dvc pull train@vae_dense
+          dvc repro train@vae_dense
+          dvc push train@vae_dense
 
       - name: report_vae_dense
         run: |
@@ -71,9 +72,9 @@ jobs:
 
       - name: train_vae_conv
         run: |
-          dvc pull vae_conv
-          dvc repro vae_conv
-          dvc push vae_conv
+          dvc pull train@vae_conv
+          dvc repro train@vae_conv
+          dvc push train@vae_conv
 
       - name: report_conv
         run: |

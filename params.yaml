@@ -5,31 +5,41 @@ pokemon_sprites:
   normalize_std: [0.229, 0.224, 0.225]
   data_dir: data/raw/sprites
 
-vae_conv:
-  latent_size: 16
-  batch_size: 128
-  train_kwargs:
-    epochs: 300
-    log_dir: reports/vae/conv
+epochs: 20000
+latent_size: 16
+batch_size: 256
+lr: 0.001
 
-vae_dense:
-  latent_size: 16
-  batch_size: 128
-  train_kwargs:
-    epochs: 300
+autoencoders:
+
+  vae_dense:
+    type: dense
+    model: vae
     log_dir: reports/vae/dense
+    model_src: src/autoencoder/models/variational_model.py
+    encoder_src: src/autoencoder/encoders/dense.py
+    decoder_src: src/autoencoder/decoders/dense.py
 
+  vae_conv:
+    type: conv
+    model: vae
+    log_dir: reports/vae/conv
+    model_src: src/autoencoder/models/variational_model.py
+    encoder_src: src/autoencoder/encoders/conv.py
+    decoder_src: src/autoencoder/decoders/conv.py
 
-autoencoder_dense:
-  latent_size: 16
-  batch_size: 128
-  train_kwargs:
-    epochs: 300
-    log_dir: reports/autoencoder/dense
+  ae_dense:
+    type: dense
+    model: ae
+    log_dir: reports/ae/dense
+    model_src: src/autoencoder/models/vanilla_model.py
+    encoder_src: src/autoencoder/encoders/dense.py
+    decoder_src: src/autoencoder/decoders/dense.py
 
-autoencoder_conv:
-  latent_size: 16
-  batch_size: 128
-  train_kwargs:
-    epochs: 300
-    log_dir: reports/autoencoder/conv
+  ae_conv:
+    type: conv
+    model: ae
+    log_dir: reports/ae/conv
+    model_src: src/autoencoder/models/vanilla_model.py
+    encoder_src: src/autoencoder/encoders/conv.py
+    decoder_src: src/autoencoder/decoders/conv.py

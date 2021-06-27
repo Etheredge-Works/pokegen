@@ -1,134 +1,31 @@
 stages:
-  #sprites_data:
-    #cmd: tar -xf data/raw/sprites.tar -C data/raw/
-    #deps:
-      #- data/raw/sprites.tar
-    #outs:
-      #- data/raw/sprites
 
-  ae_dense:
-    cmd: python src/autoencoder/vanilla_model_dense.py
-    deps:
-      - ${pokemon_sprites.data_dir}
-      - src/autoencoder/train.py
-      - src/autoencoder/vanilla_model_dense.py
-      - src/autoencoder/models/vanilla_model.py
-      - src/autoencoder/encoders/dense.py
-      - src/autoencoder/decoders/dense.py
-      - src/data/sprites.py
-      - src/utils.py
-    params:
-      - autoencoder_dense
-    outs:
-      - reports/autoencoder/dense/gen/0:
-          cache: false
-      - reports/autoencoder/dense/gen/1:
-          cache: false
-      - reports/autoencoder/dense/gen/2:
-          cache: false
-      - reports/autoencoder/dense/gen/3:
-          cache: false
-      - reports/autoencoder/dense/gen/0.gif
-      - reports/autoencoder/dense/gen/1.gif
-      - reports/autoencoder/dense/gen/2.gif
-      - reports/autoencoder/dense/gen/3.gif
-      - reports/autoencoder/dense/results
-    plots:
-      - reports/autoencoder/dense/logs
-    metrics:
-      - reports/autoencoder/dense/logs.json:
-          cache: false
-
-  ae_conv:
-    cmd: python src/autoencoder/vanilla_model_conv.py
-    deps:
-      - ${pokemon_sprites.data_dir}
-      - src/autoencoder/train.py
-      - src/autoencoder/vanilla_model_conv.py
-      - src/autoencoder/models/vanilla_model.py
-      - src/autoencoder/encoders/conv.py
-      - src/autoencoder/decoders/conv.py
-      - src/data/sprites.py
-      - src/utils.py
-    params:
-      - autoencoder_conv
-    outs:
-      #- reports/autoencoder/conv/gen:
-      - reports/autoencoder/conv/gen/0:
-          cache: false
-      - reports/autoencoder/conv/gen/1:
-          cache: false
-      - reports/autoencoder/conv/gen/2:
-          cache: false
-      - reports/autoencoder/conv/gen/3:
-          cache: false
-      #- reports/autoencoder/conv/gen/gifs # TODO move to dir
-      - reports/autoencoder/conv/gen/0.gif
-      - reports/autoencoder/conv/gen/1.gif
-      - reports/autoencoder/conv/gen/2.gif
-      - reports/autoencoder/conv/gen/3.gif
-      - reports/autoencoder/conv/results
-
-
-    plots:
-      - reports/autoencoder/conv/logs
-    metrics:
-      - reports/autoencoder/conv/logs.json:
-          cache: false
-
-  # TODO parameterize training
-  vae_conv:
-    cmd: python src/autoencoder/vae_conv.py
-    deps:
-      - ${pokemon_sprites.data_dir}
-      - src/autoencoder/train.py
-      - src/autoencoder/vae_conv.py
-      - src/autoencoder/models/variational_model.py
-      - src/autoencoder/encoders/conv.py
-      - src/autoencoder/decoders/conv.py
-      - src/data/sprites.py
-      - src/utils.py
-    params:
-      - vae_conv
-    outs:
-      - reports/vae/conv/gen/0:
-          cache: false
-      - reports/vae/conv/gen/1:
-          cache: false
-      - reports/vae/conv/gen/0.gif
-      - reports/vae/conv/gen/1.gif
-      - reports/vae/conv/results
-    plots:
-      - reports/vae/conv/logs
-    metrics:
-      - reports/vae/conv/logs.json:
-          cache: false
-
-
-  vae_dense:
-    cmd: python src/autoencoder/vae_dense.py
-    deps:
-      - ${pokemon_sprites.data_dir}
-      - src/autoencoder/train.py
-      - src/autoencoder/vae_dense.py
-      - src/autoencoder/models/variational_model.py
-      - src/autoencoder/encoders/dense.py
-      - src/autoencoder/decoders/dense.py
-      - src/data/sprites.py
-      - src/utils.py
-    params:
-      - vae_dense
-    outs:
-      - reports/vae/dense/gen/0:
-          cache: false
-      - reports/vae/dense/gen/1:
-          cache: false
-      - reports/vae/dense/gen/0.gif
-      - reports/vae/dense/gen/1.gif
-      - reports/vae/dense/results
-    plots:
-      - reports/vae/dense/logs
-    metrics:
-      - reports/vae/dense/logs.json:
-          cache: false
-
+  train:
+    foreach: ${autoencoders}
+    do:
+      cmd: >
+        python src/autoencoder/train.py
+        --encoder-type ${item.type}
+        --decoder-type ${item.type}
+        --ae-type ${item.model}
+        --epochs ${epochs}
+        --batch-size ${batch_size}
+        --latent-size ${latent_size}
+        --log-dir ${item.log_dir}
+        --lr ${lr}
+      deps:
+        - ${pokemon_sprites.data_dir}
+        - src/autoencoder/train.py
+        - ${item.model_src}
+        - ${item.encoder_src}
+        - ${item.decoder_src}
+        - src/data/sprites.py
+        - src/utils.py
+      outs:
+        - ${item.log_dir}/gen
+        - ${item.log_dir}/results
+        - ${item.log_dir}/summary.txt
+      plots:
+        - ${item.log_dir}/logs
+      metrics:
+        - ${item.log_dir}/logs.json
