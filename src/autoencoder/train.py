@@ -88,7 +88,7 @@ def train_ae(
                     generations.cpu(),
                     str(gen_dir),
                     epoch)
-        dvclive.log("lr", scheduler.get_lr()[0])
+        dvclive.log("lr", scheduler.get_last_lr()[0])
         dvclive.next_step()
         scheduler.step()
     utils.make_gifs(str(gen_dir))
