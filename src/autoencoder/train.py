@@ -12,6 +12,7 @@ from autoencoder.encoders import DenseEncoder, ConvEncoder
 from autoencoder.decoders import DenseDecoder, ConvDecoder
 from torchsummary import summary
 from contextlib import redirect_stdout
+import os
 
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
