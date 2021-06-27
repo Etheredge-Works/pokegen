@@ -44,7 +44,7 @@ jobs:
 
       - name: report_dense
         run: |
-          scripts/autoencoder_report.sh autoencoder dense >> report.md
+          scripts/autoencoder_report.sh ae dense >> report.md
           cml-send-github-check report.md 
 
 
@@ -56,7 +56,7 @@ jobs:
 
       - name: report_conv
         run: |
-          scripts/autoencoder_report.sh autoencoder conv >> report.md
+          scripts/autoencoder_report.sh ae conv >> report.md
           cml-send-github-check report.md 
 
       - name: train_vae_dense
