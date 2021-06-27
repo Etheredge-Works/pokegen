@@ -14,7 +14,7 @@ from torchsummary import summary
 from contextlib import redirect_stdout
 
 
-device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 # TODO why does 0 go to gpu1, how does torch order gpus?
 #device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
