@@ -50,12 +50,12 @@ class VAE(torch.nn.Module):
         return y_pred
 
     def generate(self, x):
-        x = x.view(-1, 2, self.latent_size)
-        mu = x[:, 0, :]
-        log_var = x[:, 1, :]
+        #x = x.view(-1, 2, self.latent_size)
+        #mu = x[:, 0, :]
+        #log_var = x[:, 1, :]
 
-        z = self.reparameterize(mu, log_var)
-        return self.decoder(z)
+        #z = self.reparameterize(mu, log_var)
+        return self.decoder(x)
         
     def criterion(self, y_hat, y):
         reconstruction, mu, log_var = y_hat
