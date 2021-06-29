@@ -34,7 +34,7 @@ jobs:
 
       - name: pull_data
         run: |
-          dvc pull data/raw/sprites.dvc
+          dvc pull data/external/sprites.dvc
 
       - name: train_ae_dense
         run: |
