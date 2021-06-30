@@ -90,7 +90,9 @@ def get_loader(
     path: str = config['data_dir'],
     resize_shape=config['resize_shape'],
     normalize_mean=config['normalize_mean'],
-    normalize_std=config['normalize_std']
+    normalize_std=config['normalize_std'],
+    val_ratio=.1,
+    workers=4,
 ):
 
     transform = transforms.Compose([
@@ -101,17 +103,32 @@ def get_loader(
         #transforms.RandomErasing(),
     ])
 
-    train = PokemonDataset(
+    ds = PokemonDataset(
         path,
         transform=transform
     )
 
-    return DataLoader(
+    val_count = int(len(ds) * val_ratio)
+    # TODO note can't find good way to break out val set yet
+    train, val = torch.utils.data.random_split(ds, [len(ds)-val_count, val_count])
+
+
+    trainloader = DataLoader(
         train, 
         batch_size=batch_size, 
         shuffle=True, 
         drop_last=True, 
-        num_workers=8,
+        num_workers=workers,
         persistent_workers=True, # 'True' makes short epochs start faster
         pin_memory=True
     )
+    valloader = DataLoader(
+        val, 
+        batch_size=batch_size, 
+        shuffle=False, 
+        drop_last=False, 
+        num_workers=workers,
+        persistent_workers=True, # 'True' makes short epochs start faster
+        pin_memory=True
+    )
+    return trainloader, valloader

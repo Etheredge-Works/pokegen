@@ -25,6 +25,7 @@ def train_ae(
     log_dir: str,
     epochs: int,
     trainloader: DataLoader,
+    valloader: DataLoader,
     ae: torch.nn.Module,
     lr=0.001,
     should_tqdm=os.getenv('SHOULD_TQDM', 1)  # using env for github action running 
@@ -51,8 +52,12 @@ def train_ae(
     # TODO repeat in shape
     random_tensors = torch.stack([
         # NOTE by doing two of each, two are used at once for VAE
+        torch.rand(ae.latent_size)*3, # fix values
+        torch.rand(ae.latent_size)*3, # fix values
         torch.rand(ae.latent_size), # fix values
         torch.rand(ae.latent_size), # fix values
+        torch.randn(ae.latent_size), # fix values
+        torch.randn(ae.latent_size), # fix values
         torch.randn(ae.latent_size), # fix values
         torch.randn(ae.latent_size), # fix values
     ]).to(device)
@@ -87,6 +92,7 @@ def train_ae(
 
         print(f"loss: {running_loss/total}")
         dvclive.log("loss", running_loss/total, epoch)
+        dvclive.log("lr", scheduler.get_last_lr()[0])
         ae.eval()
         with torch.no_grad():
             #for idx in [0, len(trainloader)//4, len(trainloader)//2]:
@@ -94,6 +100,16 @@ def train_ae(
                 # TODO don't loop, just do all
                 #im = transforms.ToPILImage()(ae(train[idx].to(device))[0].cpu().data)
                 #im.save(str(log_dir/'val'/epoch/f"gen_{idx}.jpg"))
+            running_loss = 0
+            total = 0
+            for image_b in valloader:
+                image_b = image_b.to(device)
+                y_pred = ae(image_b)
+
+                loss = ae.criterion(y_pred, image_b)
+
+                running_loss += loss.item()
+                total += image_b.size(0)
             
             if epoch % (epochs//30) == 0 or epoch == (epochs-1):
                 generations = ae.generate(random_tensors)
@@ -101,7 +117,9 @@ def train_ae(
                     generations.cpu(),
                     str(gen_dir),
                     epoch)
-        dvclive.log("lr", scheduler.get_last_lr()[0])
+        dvclive.log("val_loss", running_loss/total, epoch)
+        print(f"val_loss: {running_loss/total}")
+
         dvclive.next_step()
         scheduler.step()
     utils.make_gifs(str(gen_dir))
@@ -152,16 +170,20 @@ def main(
     # TODO pull out shape
     ae = model_const(
         (3, 96, 96), 
-        latent_size, encoder_const, 
+        latent_size, 
+        encoder_const, 
         decoder_const)
 
-    loader = sprites.get_loader(batch_size=batch_size)
+    trainloader, valloader = sprites.get_loader(
+        batch_size=batch_size,
+        workers=2)
     print(lr)
 
     train_ae(
         log_dir=log_dir, 
         epochs=epochs, 
-        trainloader=loader, 
+        trainloader=trainloader, 
+        valloader=valloader, 
         ae=ae,
         lr=lr)
 
