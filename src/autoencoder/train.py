@@ -154,6 +154,7 @@ def train_ae(
 @click.option("--epochs", type=click.INT)
 @click.option("--lr", type=click.FLOAT)
 @click.option("--batch-size", type=click.INT)
+@click.option("--val-ratio", type=click.FLOAT)
 def main(
     encoder_type,
     decoder_type,
@@ -163,6 +164,7 @@ def main(
     epochs,
     lr,
     batch_size,
+    val_ratio,
 ):
     encoder_const = DenseEncoder if encoder_type == 'dense' else ConvEncoder
     decoder_const = DenseDecoder if decoder_type == 'dense' else ConvDecoder
@@ -179,7 +181,8 @@ def main(
 
     trainloader, valloader = sprites.get_loader(
         batch_size=batch_size,
-        workers=2)
+        workers=4,
+        val_ratio=val_ratio)
 
     train_ae(
         log_dir=log_dir, 
