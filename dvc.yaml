@@ -13,6 +13,7 @@ stages:
         --latent-size ${latent_size}
         --log-dir ${item.log_dir}
         --lr ${lr}
+        --val-ratio ${val_ratio}
       deps:
         - ${pokemon_sprites.data_dir}
         - src/autoencoder/train.py

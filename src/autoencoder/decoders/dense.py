@@ -4,7 +4,12 @@ import torch.nn.functional as F
 
 
 class DenseDecoder(nn.Module):
-    def __init__(self, latent_shape, output_shape, node_count=1024):
+    def __init__(
+        self, 
+        latent_shape, 
+        output_shape, 
+        node_count=1024,
+    ):
         super(DenseDecoder, self).__init__()
         self.output_shape = output_shape
         self.flattened_size = torch.prod(torch.tensor(output_shape), 0)

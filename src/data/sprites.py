@@ -18,18 +18,24 @@ class PokemonDataset(Dataset):
     # TODO filter question mark
     backs_sub_dir = "pokemon/shiny/female"
 
-    def __init__(self, sprites_path, transform=None):
+    def __init__(
+        self, 
+        sprites_path, 
+        transform=None,
+        target_transform=None
+    ):
         self.sprites_path = Path(sprites_path)
         self.transform = transform
+        self.target_transform = target_transform
+
         self.files = list(self.sprites_path.glob(str(self.normal_sprites_sub_dir/'*.png')))
         self.files += list(self.sprites_path.glob(str(self.female_sub_dir/'*.png')))
-
+        self.files += list(self.sprites_path.glob(str(self.shiny_sprites_sub_dir/'*.png')))
+        self.files += list(self.sprites_path.glob(str(self.female_shiny_sprites_sub_dir/'*.png')))
         # TODO create shiny flag to make generation shiny.
         # TODO shiny generater?
         # TODO cooler shiny geneator trained with only "good" shinies
         # TODO mega pokemon generator
-        self.files += list(self.sprites_path.glob(str(self.shiny_sprites_sub_dir/'*.png')))
-        self.files += list(self.sprites_path.glob(str(self.female_shiny_sprites_sub_dir/'*.png')))
 
         self.files = [str(file) for file in self.files]
         self.files = [file for file in self.files if "png" in file]
@@ -64,18 +70,24 @@ class PokemonDataset(Dataset):
             image = background
         '''
 
-        #image  = image.astype(float)
-
         if self.transform:
-            image = self.transform(image)
+            transformed_image = self.transform(image)
 
-        #ksample = {
-            #k'image': image
-        #k}
+        if self.target_transform:
+            label = self.target_transform(image)
 
-        # TODO add label to ds
-        #return sample
-        return image
+        # TODO consider dict when adding meta information
+        #sample = {
+            #'image': image
+        #}
+
+        # TODO return meta information (mega, evo, types, etc)
+        # Return 3 so trainer has more flexibility
+        return {
+            #'pil_image': transforms.ToTensor()(transforms.Reseize(image),
+            'transformed_image': transformed_image, 
+            'label': label
+        }
 
 
 # TODO put this inside get loader to not use it in main scope
@@ -98,14 +110,21 @@ def get_loader(
     transform = transforms.Compose([
         transforms.Resize(resize_shape),
         transforms.RandomHorizontalFlip(),
+        # TODO vertical flip and rot90
         transforms.ToTensor(),
         #transforms.Normalize(normalize_mean, normalize_std)
         #transforms.RandomErasing(),
     ])
 
+    target_transform = transforms.Compose([
+        transforms.Resize(resize_shape),
+        transforms.ToTensor(),
+    ])
+
     ds = PokemonDataset(
         path,
-        transform=transform
+        transform=transform,
+        target_transform=target_transform
     )
 
     val_count = int(len(ds) * val_ratio)
@@ -122,6 +141,7 @@ def get_loader(
         persistent_workers=True, # 'True' makes short epochs start faster
         pin_memory=True
     )
+
     valloader = DataLoader(
         val, 
         batch_size=batch_size, 
