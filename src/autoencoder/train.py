@@ -128,7 +128,8 @@ def train_ae(
     utils.make_gifs(str(gen_dir))
 
     # save off some final results
-    batch = next(iter(trainloader))
+    data = next(iter(trainloader))
+    batch = data['label']
     ae.eval()
     with torch.no_grad():
         utils.save(
