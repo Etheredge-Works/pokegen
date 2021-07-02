@@ -105,11 +105,16 @@ def get_loader(
     normalize_std=config['normalize_std'],
     val_ratio=.1,
     workers=4,
+    seed=4,
 ):
+    torch.manual_seed(seed)
 
     transform = transforms.Compose([
+        #transorms.RandomRotation()
+        #transorms.RandomVerticalFlip()()
         transforms.Resize(resize_shape),
-        transforms.RandomHorizontalFlip(),
+        #transforms.RandomResizedCrop(resize_shape),
+        #transforms.RandomHorizontalFlip(),
         # TODO vertical flip and rot90
         transforms.ToTensor(),
         #transforms.Normalize(normalize_mean, normalize_std)
