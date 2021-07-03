@@ -14,21 +14,21 @@ class ConvEncoder(torch.nn.Module):
         # TODO enlarge kernel
         conv_layers = [
             nn.Conv2d(input_shape[0], 16, 3, stride=1, padding=2),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(16, 32, 3, stride=2, padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(32, 32, 3, stride=1, padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(32, 64, 3, stride=2, padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(64, 64, 3, stride=1, padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(64, 128, 3, stride=2, padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(128, 128, 3, stride=2, padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(128, 128, 3, stride=2, padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
         ]
         self.convs = nn.ModuleList(conv_layers)
         self.flatten = nn.Flatten()

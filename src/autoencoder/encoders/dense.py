@@ -13,7 +13,7 @@ class DenseEncoder(torch.nn.Module):
         layers = []
         while(node_count > latent_shape):
             layers.append(nn.Linear(input_count, node_count))
-            layers.append(nn.ReLU())
+            layers.append(nn.LeakyReLU())
 
             input_count = node_count
             node_count = node_count // 2
