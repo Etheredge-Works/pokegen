@@ -114,7 +114,7 @@ def get_loader(
         #transorms.RandomVerticalFlip()()
         transforms.Resize(resize_shape),
         #transforms.RandomResizedCrop(resize_shape),
-        #transforms.RandomHorizontalFlip(),
+        transforms.RandomHorizontalFlip(),
         # TODO vertical flip and rot90
         transforms.ToTensor(),
         #transforms.Normalize(normalize_mean, normalize_std)
