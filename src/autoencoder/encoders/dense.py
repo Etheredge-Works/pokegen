@@ -4,7 +4,12 @@ from torch.nn import functional as F
 
 
 class DenseEncoder(torch.nn.Module):
-    def __init__(self, input_shape, latent_shape, node_count=1024):
+    def __init__(
+        self, 
+        input_shape, 
+        latent_shape, 
+        node_count=512
+    ):
         super(DenseEncoder, self).__init__()
         flattened_size = torch.prod(torch.tensor(input_shape), 0)
         self.f = nn.Flatten()
@@ -24,8 +29,8 @@ class DenseEncoder(torch.nn.Module):
 
     def forward(self, x):
         x = self.f(x)
-        for dense in self.dense:
-            x = dense(x)
+        for layer in self.dense:
+            x = layer(x)
         x = self.fc(x)
         return x
 

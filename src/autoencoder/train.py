@@ -63,8 +63,9 @@ def train_ae(
         torch.rand(ae.latent_size), # fix values
         torch.randn(ae.latent_size), # fix values
         torch.randn(ae.latent_size), # fix values
-        torch.randn(ae.latent_size), # fix values
-        torch.randn(ae.latent_size), # fix values
+        *torch.unbind(torch.distributions.Normal(
+            torch.zeros(ae.latent_size), torch.ones(ae.latent_size)
+            ).rsample((4,)))
     ]).to(device)
 
     optimizer = torch.optim.Adam(ae.parameters(), lr=lr)
@@ -131,6 +132,7 @@ def train_ae(
     data = next(iter(trainloader))
     batch = data['label']
     ae.eval()
+    # TODO torchvision.make_grid
     with torch.no_grad():
         utils.save(
             batch[:8].cpu(), # slice after incase of batch norm or something

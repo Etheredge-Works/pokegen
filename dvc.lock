@@ -486,7 +486,7 @@ stages:
       nfiles: 16
   train@ae_dense:
     cmd: "python src/autoencoder/train.py --encoder-type dense --decoder-type dense\
-      \ --ae-type ae --epochs 1000 --batch-size 64 --latent-size 16 --log-dir reports/ae/dense\
+      \ --ae-type ae --epochs 500 --batch-size 64 --latent-size 16 --log-dir reports/ae/dense\
       \ --lr 0.001 --val-ratio 0.1\n"
     deps:
     - path: data/external/sprites
@@ -494,45 +494,45 @@ stages:
       size: 387131152
       nfiles: 45310
     - path: src/autoencoder/decoders/dense.py
-      md5: 235b286f165f96eca8179545b2a8d1bf
-      size: 908
+      md5: b33d48a4cd2bf5c66ff641c75c7811ec
+      size: 907
     - path: src/autoencoder/encoders/dense.py
-      md5: 53c0be2894ae27af711dda768c687783
-      size: 865
+      md5: 4597f82976d99e05a536812255de159f
+      size: 905
     - path: src/autoencoder/models/vanilla_model.py
       md5: 1db2b1b9f21021106975e1b2f8c3462f
       size: 886
     - path: src/autoencoder/train.py
-      md5: f5c3de434b0dce4a566522cdc8c40bd6
-      size: 5894
+      md5: 66bc9426aa77c92ea52952cb90065745
+      size: 5974
     - path: src/data/sprites.py
       md5: 7b4e7b33f1296fddc6ca3b3466aead86
       size: 4941
     - path: src/utils.py
-      md5: 51de3b46e88e4e72336e64cb7fa95b71
-      size: 1072
+      md5: 391186a6317d1bbcc71c090adf312ae1
+      size: 1092
     outs:
     - path: reports/ae/dense/gen
-      md5: 733a5e3f09a8778d41714de66591ce50.dir
-      size: 1421137
-      nfiles: 264
+      md5: a67c442b959476e2fcec294ac14dfa45.dir
+      size: 1960813
+      nfiles: 340
     - path: reports/ae/dense/logs
-      md5: 28eb19fa6d662d26386cee1073cb3253.dir
-      size: 115064
+      md5: 2f2b143100d7d75541ea9da54875688c.dir
+      size: 57375
       nfiles: 3
     - path: reports/ae/dense/logs.json
-      md5: b44e9f4716f63cd0c961ba7b2c20295b
-      size: 119
+      md5: ea7dcfb635e6d8a93b5fcaef96b16755
+      size: 118
     - path: reports/ae/dense/results
-      md5: a03c4d24e5b3ae73496fb183a34f43b6.dir
-      size: 42169
+      md5: cfc1447feaefdf5101c269805a8b86c3.dir
+      size: 32759
       nfiles: 16
     - path: reports/ae/dense/summary.txt
-      md5: 7b89695eac095433159bed633f3d9aff
-      size: 2442
+      md5: d213674cc581abba495d57c50e5ab4cc
+      size: 2186
   train@vae_dense:
     cmd: "python src/autoencoder/train.py --encoder-type dense --decoder-type dense\
-      \ --ae-type vae --epochs 1000 --batch-size 64 --latent-size 16 --log-dir reports/vae/dense\
+      \ --ae-type vae --epochs 500 --batch-size 64 --latent-size 16 --log-dir reports/vae/dense\
       \ --lr 0.001 --val-ratio 0.1\n"
     deps:
     - path: data/external/sprites
@@ -540,45 +540,45 @@ stages:
       size: 387131152
       nfiles: 45310
     - path: src/autoencoder/decoders/dense.py
-      md5: 235b286f165f96eca8179545b2a8d1bf
-      size: 908
+      md5: b33d48a4cd2bf5c66ff641c75c7811ec
+      size: 907
     - path: src/autoencoder/encoders/dense.py
-      md5: 53c0be2894ae27af711dda768c687783
-      size: 865
+      md5: 4597f82976d99e05a536812255de159f
+      size: 905
     - path: src/autoencoder/models/variational_model.py
-      md5: 51dab270d69a9b5690178debcfa22069
-      size: 2139
+      md5: ef978f5adc6c68a9c31be4800be44e3a
+      size: 3251
     - path: src/autoencoder/train.py
-      md5: f5c3de434b0dce4a566522cdc8c40bd6
-      size: 5894
+      md5: 66bc9426aa77c92ea52952cb90065745
+      size: 5974
     - path: src/data/sprites.py
       md5: 7b4e7b33f1296fddc6ca3b3466aead86
       size: 4941
     - path: src/utils.py
-      md5: 51de3b46e88e4e72336e64cb7fa95b71
-      size: 1072
+      md5: 391186a6317d1bbcc71c090adf312ae1
+      size: 1092
     outs:
     - path: reports/vae/dense/gen
-      md5: 8ee298a6063ea03c07ab2f36bb2009a4.dir
-      size: 2890067
-      nfiles: 264
+      md5: c36c8b1183abaa39d5dad40307aa67bf.dir
+      size: 2317959
+      nfiles: 340
     - path: reports/vae/dense/logs
-      md5: e70b46f68a8834dc79dd4d86f8e20d05.dir
-      size: 115119
+      md5: 0717298b32b9783c2887f43d1a18db31.dir
+      size: 58614
       nfiles: 3
     - path: reports/vae/dense/logs.json
-      md5: c8b85f5153df14d5725619b938f2ccbd
-      size: 119
+      md5: 62ddb037eccd5528c5229d5ad7c8ded2
+      size: 120
     - path: reports/vae/dense/results
-      md5: 38c3d48616862f87cc2bbdc2137095cb.dir
-      size: 42356
+      md5: 1a002e6538a29c057b5a6bdad6d3d844.dir
+      size: 33210
       nfiles: 16
     - path: reports/vae/dense/summary.txt
-      md5: 77ef958ee9378795407c6705f5219c12
-      size: 2314
+      md5: 0f9e4ddee8a658619b6025e29f748810
+      size: 2058
   train@vae_conv:
     cmd: "python src/autoencoder/train.py --encoder-type conv --decoder-type conv\
-      \ --ae-type vae --epochs 1000 --batch-size 64 --latent-size 16 --log-dir reports/vae/conv\
+      \ --ae-type vae --epochs 500 --batch-size 64 --latent-size 16 --log-dir reports/vae/conv\
       \ --lr 0.001 --val-ratio 0.1\n"
     deps:
     - path: data/external/sprites
@@ -592,39 +592,39 @@ stages:
       md5: 2c74566f3b3279f3d8b9e8c8c788014a
       size: 1539
     - path: src/autoencoder/models/variational_model.py
-      md5: 51dab270d69a9b5690178debcfa22069
-      size: 2139
+      md5: ef978f5adc6c68a9c31be4800be44e3a
+      size: 3251
     - path: src/autoencoder/train.py
-      md5: f5c3de434b0dce4a566522cdc8c40bd6
-      size: 5894
+      md5: 66bc9426aa77c92ea52952cb90065745
+      size: 5974
     - path: src/data/sprites.py
       md5: 7b4e7b33f1296fddc6ca3b3466aead86
       size: 4941
     - path: src/utils.py
-      md5: 51de3b46e88e4e72336e64cb7fa95b71
-      size: 1072
+      md5: 391186a6317d1bbcc71c090adf312ae1
+      size: 1092
     outs:
     - path: reports/vae/conv/gen
-      md5: e3fdf2781850fad94e38fad68b567ce6.dir
-      size: 2184455
-      nfiles: 264
+      md5: 8758cebc6868321ce866ce8411d244e2.dir
+      size: 3340206
+      nfiles: 340
     - path: reports/vae/conv/logs
-      md5: 003739e773bf94846d9ddb40e51fd9fe.dir
-      size: 115292
+      md5: b62215668e40ccfc58dcd075591722ac.dir
+      size: 58714
       nfiles: 3
     - path: reports/vae/conv/logs.json
-      md5: ddc5e088eedcd4d8359509fd17b1abcd
+      md5: adfa7fc79719bbf5700c10fb34984100
       size: 121
     - path: reports/vae/conv/results
-      md5: 0dfff2c31d147ed3c4c6b8f22c0451c2.dir
-      size: 38805
+      md5: 59ba725bfba6e0aa44f9beee5105b61d.dir
+      size: 31101
       nfiles: 16
     - path: reports/vae/conv/summary.txt
-      md5: baa4ce3a9dcc39bdba623d085ba35449
+      md5: 0df10c9634af596c9ac5d09b284e4271
       size: 3014
   train@ae_conv:
     cmd: "python src/autoencoder/train.py --encoder-type conv --decoder-type conv\
-      \ --ae-type ae --epochs 1000 --batch-size 64 --latent-size 16 --log-dir reports/ae/conv\
+      \ --ae-type ae --epochs 500 --batch-size 64 --latent-size 16 --log-dir reports/ae/conv\
       \ --lr 0.001 --val-ratio 0.1\n"
     deps:
     - path: data/external/sprites
@@ -641,30 +641,30 @@ stages:
       md5: 1db2b1b9f21021106975e1b2f8c3462f
       size: 886
     - path: src/autoencoder/train.py
-      md5: f5c3de434b0dce4a566522cdc8c40bd6
-      size: 5894
+      md5: 66bc9426aa77c92ea52952cb90065745
+      size: 5974
     - path: src/data/sprites.py
       md5: 7b4e7b33f1296fddc6ca3b3466aead86
       size: 4941
     - path: src/utils.py
-      md5: 51de3b46e88e4e72336e64cb7fa95b71
-      size: 1072
+      md5: 391186a6317d1bbcc71c090adf312ae1
+      size: 1092
     outs:
     - path: reports/ae/conv/gen
-      md5: 112425a80af07549d25e5b01106d2d9b.dir
-      size: 1062150
-      nfiles: 264
+      md5: 5ec430b0c35696caa5fcfb241ceaba26.dir
+      size: 2135688
+      nfiles: 340
     - path: reports/ae/conv/logs
-      md5: 29114f45615dbc20a336e4aee6a73368.dir
-      size: 115500
+      md5: 88eede4e6a436f0a25fac3bb6d626f65.dir
+      size: 57410
       nfiles: 3
     - path: reports/ae/conv/logs.json
-      md5: a7d7c09f423efb25f800eb1b46abbd3e
-      size: 120
+      md5: 5b86bf87f0f48badb43ea12f1067815d
+      size: 118
     - path: reports/ae/conv/results
-      md5: 36e5fbe202501276c4392c87a1881a47.dir
-      size: 38933
+      md5: 5fe46ddfc30456318fd284c0356011ca.dir
+      size: 31010
       nfiles: 16
     - path: reports/ae/conv/summary.txt
-      md5: c5b83fbbda5ef8ee89f1ad0299bfb165
+      md5: 4c38bb6c2547058a88f5596c4bc73e51
       size: 3014
