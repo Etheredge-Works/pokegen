@@ -1,5 +1,5 @@
 from torch.utils.data import Dataset
-from torchvision import transforms
+from torchvision import transforms as T
 from PIL import Image
 import torch
 from pathlib import Path
@@ -109,21 +109,21 @@ def get_loader(
 ):
     torch.manual_seed(seed)
 
-    transform = transforms.Compose([
-        #transorms.RandomRotation()
-        #transorms.RandomVerticalFlip()()
-        transforms.Resize(resize_shape),
+    transform = T.Compose([
+        #T.RandomRotation(90),
+        #T.RandomVerticalFlip(),
+        T.RandomHorizontalFlip(),
+        T.Resize(resize_shape),
         #transforms.RandomResizedCrop(resize_shape),
-        transforms.RandomHorizontalFlip(),
         # TODO vertical flip and rot90
-        transforms.ToTensor(),
+        T.ToTensor(),
         #transforms.Normalize(normalize_mean, normalize_std)
         #transforms.RandomErasing(),
     ])
 
-    target_transform = transforms.Compose([
-        transforms.Resize(resize_shape),
-        transforms.ToTensor(),
+    target_transform = T.Compose([
+        T.Resize(resize_shape),
+        T.ToTensor(),
     ])
 
     ds = PokemonDataset(

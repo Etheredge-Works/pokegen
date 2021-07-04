@@ -506,26 +506,26 @@ stages:
       md5: 66bc9426aa77c92ea52952cb90065745
       size: 5974
     - path: src/data/sprites.py
-      md5: d2ae0c31cb2f2c66317916e9701df666
-      size: 4940
+      md5: 6d81188e026c55f3ab77ac35002d7b87
+      size: 4868
     - path: src/utils.py
       md5: 391186a6317d1bbcc71c090adf312ae1
       size: 1092
     outs:
     - path: reports/ae/dense/gen
-      md5: b021d7153e6d985ffe45fd64f6e7fc10.dir
-      size: 1860605
+      md5: 3ccfa5fd775cd41229ad6ce89883d2e1.dir
+      size: 1662987
       nfiles: 340
     - path: reports/ae/dense/logs
-      md5: 37c2419d18267ac500f51f485828a121.dir
-      size: 57361
+      md5: d922f9f12998bb1d56b412cb9fb33517.dir
+      size: 57336
       nfiles: 3
     - path: reports/ae/dense/logs.json
-      md5: 14fe420ad3d2844f4514fc259dc26d9d
+      md5: 8fdbaf339539494017ba4e46961a3b6a
       size: 118
     - path: reports/ae/dense/results
-      md5: 2b4c1030bc7d94a58fdf9e62d000c300.dir
-      size: 32457
+      md5: 2d5c3b9b1532d1f13880da61beaf1078.dir
+      size: 32920
       nfiles: 16
     - path: reports/ae/dense/summary.txt
       md5: d213674cc581abba495d57c50e5ab4cc
@@ -552,26 +552,26 @@ stages:
       md5: 66bc9426aa77c92ea52952cb90065745
       size: 5974
     - path: src/data/sprites.py
-      md5: d2ae0c31cb2f2c66317916e9701df666
-      size: 4940
+      md5: 6d81188e026c55f3ab77ac35002d7b87
+      size: 4868
     - path: src/utils.py
       md5: 391186a6317d1bbcc71c090adf312ae1
       size: 1092
     outs:
     - path: reports/vae/dense/gen
-      md5: 9a005d16e12587f70fe2cb6cf6611fd4.dir
-      size: 2659897
+      md5: f004959cacdbe8a2be957d9185b23760.dir
+      size: 1793689
       nfiles: 340
     - path: reports/vae/dense/logs
-      md5: 501b379f44f3b90c610e049746a8eaa2.dir
-      size: 58703
+      md5: 48d1d22a8c8444d1d88b625f7a4654b1.dir
+      size: 58673
       nfiles: 3
     - path: reports/vae/dense/logs.json
-      md5: 5de6f159d13a9f4519893bee78602545
-      size: 120
+      md5: 188ecd5a1c7a8761f312572625e45df0
+      size: 118
     - path: reports/vae/dense/results
-      md5: 574fcef7eb7a02f1f1491298c33153b8.dir
-      size: 33090
+      md5: e87b9e6c4d693d094c8d0043d44c1d7c.dir
+      size: 33127
       nfiles: 16
     - path: reports/vae/dense/summary.txt
       md5: 0f9e4ddee8a658619b6025e29f748810
@@ -598,26 +598,26 @@ stages:
       md5: 66bc9426aa77c92ea52952cb90065745
       size: 5974
     - path: src/data/sprites.py
-      md5: d2ae0c31cb2f2c66317916e9701df666
-      size: 4940
+      md5: 6d81188e026c55f3ab77ac35002d7b87
+      size: 4868
     - path: src/utils.py
       md5: 391186a6317d1bbcc71c090adf312ae1
       size: 1092
     outs:
     - path: reports/vae/conv/gen
-      md5: 7c6227113725bf8885bfe4e918449e43.dir
-      size: 2316265
+      md5: 116cab4e9c83ef85372c226e41714f62.dir
+      size: 2844506
       nfiles: 340
     - path: reports/vae/conv/logs
-      md5: ee90ee4f8482c124490359e55c487ec5.dir
+      md5: bf6109d2dde4882048c7a092428e74a8.dir
       size: 58727
       nfiles: 3
     - path: reports/vae/conv/logs.json
-      md5: 46d2081ebc6536c8c9add9204eff60eb
-      size: 120
+      md5: 8d3f049b52c44548595f815e44b00c93
+      size: 121
     - path: reports/vae/conv/results
-      md5: 19df9f7348118c2650ded91975cfb619.dir
-      size: 30880
+      md5: 156a5c193c2c7cc28ec6635d4991d9b7.dir
+      size: 30915
       nfiles: 16
     - path: reports/vae/conv/summary.txt
       md5: 0df10c9634af596c9ac5d09b284e4271
@@ -644,26 +644,26 @@ stages:
       md5: 66bc9426aa77c92ea52952cb90065745
       size: 5974
     - path: src/data/sprites.py
-      md5: d2ae0c31cb2f2c66317916e9701df666
-      size: 4940
+      md5: 6d81188e026c55f3ab77ac35002d7b87
+      size: 4868
     - path: src/utils.py
       md5: 391186a6317d1bbcc71c090adf312ae1
       size: 1092
     outs:
     - path: reports/ae/conv/gen
-      md5: 9cede2d44139b49f707307013022e4d9.dir
-      size: 3000020
+      md5: 7aa09efe6335a60b0bcf93a450e4162c.dir
+      size: 3185044
       nfiles: 340
     - path: reports/ae/conv/logs
-      md5: 27c0f434183927849c2c3aa7f0ed37d5.dir
-      size: 57517
+      md5: 8ca13ba3a08789e6a845c2d134ee603a.dir
+      size: 57478
       nfiles: 3
     - path: reports/ae/conv/logs.json
-      md5: b15f800d19030bf2dd3fa57e1a4ece49
-      size: 120
+      md5: b2a8aff4e93d67d250dffe6adb42dd2c
+      size: 119
     - path: reports/ae/conv/results
-      md5: deeded87313f164feaf843e5a66a6034.dir
-      size: 30667
+      md5: 952e5d869096078f35e81833d95c0088.dir
+      size: 30788
       nfiles: 16
     - path: reports/ae/conv/summary.txt
       md5: 4c38bb6c2547058a88f5596c4bc73e51
