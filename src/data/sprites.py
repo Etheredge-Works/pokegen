@@ -10,13 +10,15 @@ import yaml
 class PokemonDataset(Dataset):
     
     normal_sprites_sub_dir = Path("pokemon")
-    female_sub_dir = Path("pokemon/female")
-    shiny_sprites_sub_dir = Path("pokemon/shiny")
-    female_shiny_sprites_sub_dir = Path("pokemon/shiny/female")
+    main_dir = Path("pokemon")
+    female_dir = Path("female")
+    shiny_dir = Path("shiny")
+    back_dir = Path("back")
+    models_dir = Path("model")
+    art_dir = Path("other/official-artwork")
 
     # TODO do I want to use backs?
     # TODO filter question mark
-    backs_sub_dir = "pokemon/shiny/female"
 
     def __init__(
         self, 
@@ -28,10 +30,38 @@ class PokemonDataset(Dataset):
         self.transform = transform
         self.target_transform = target_transform
 
-        self.files = list(self.sprites_path.glob(str(self.normal_sprites_sub_dir/'*.png')))
-        self.files += list(self.sprites_path.glob(str(self.female_sub_dir/'*.png')))
-        self.files += list(self.sprites_path.glob(str(self.shiny_sprites_sub_dir/'*.png')))
-        self.files += list(self.sprites_path.glob(str(self.female_shiny_sprites_sub_dir/'*.png')))
+        self.files = []
+        # Main area
+        self.files += list(self.sprites_path.glob(str(
+            self.normal_sprites_sub_dir/'*.png')))
+        self.files += list(self.sprites_path.glob(str(
+            self.main_dir/self.female_dir/'*.png')))
+        # Shinys
+        self.files += list(self.sprites_path.glob(str(
+            self.main_dir/self.shiny_dir/'*.png')))
+        self.files += list(self.sprites_path.glob(str(
+            self.main_dir/self.shiny_dir/self.female_dir/'*.png')))
+
+        # Models
+        self.files += list(self.sprites_path.glob(str(
+            self.main_dir/self.models_dir/'*.png')))
+
+        # Backs
+        self.files += list(self.sprites_path.glob(str(
+            self.main_dir/self.back_dir/'*.png')))
+        self.files += list(self.sprites_path.glob(str(
+            self.main_dir/self.back_dir/self.female_dir/'*.png')))
+        # Shiny Backs
+        self.files += list(self.sprites_path.glob(str(
+            self.main_dir/self.back_dir/self.shiny_dir/'*.png')))
+        self.files += list(self.sprites_path.glob(str(
+            self.main_dir/self.back_dir/self.shiny_dir/self.female_dir/'*.png')))
+
+        # Art
+        #self.files += list(self.sprites_path.glob(str(
+            #self.main_dir/self.art_dir/'*.png')))
+
+        
         # TODO create shiny flag to make generation shiny.
         # TODO shiny generater?
         # TODO cooler shiny geneator trained with only "good" shinies
@@ -112,9 +142,9 @@ def get_loader(
     transform = T.Compose([
         #T.RandomRotation(90),
         #T.RandomVerticalFlip(),
-        T.RandomHorizontalFlip(),
+        #T.RandomHorizontalFlip(),
         T.Resize(resize_shape),
-        #transforms.RandomResizedCrop(resize_shape),
+        #T.RandomResizedCrop(resize_shape),
         # TODO vertical flip and rot90
         T.ToTensor(),
         #transforms.Normalize(normalize_mean, normalize_std)
