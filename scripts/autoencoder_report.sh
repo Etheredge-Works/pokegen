@@ -15,7 +15,13 @@ git fetch --prune >& /dev/null
 dvc metrics diff main --target $log_dir/logs.json --show-md
 
 echo "### Loss"
+#dvc plots show --show-vega $log_dir/logs/loss.tsv $log_dir/logs/val_loss.tsv > /tmp/vega.json
+#vl2png /tmp/vega.json | cml-publish --md
+
 dvc plots diff --target $log_dir/logs/loss.tsv --show-vega main > /tmp/vega.json
+vl2png /tmp/vega.json | cml-publish --md
+
+dvc plots diff --target $log_dir/logs/val_loss.tsv --show-vega main > /tmp/vega.json
 vl2png /tmp/vega.json | cml-publish --md
 
 echo "### LR"

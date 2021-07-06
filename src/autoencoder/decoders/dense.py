@@ -8,7 +8,7 @@ class DenseDecoder(nn.Module):
         self, 
         latent_shape, 
         output_shape, 
-        node_count=1024,
+        node_count=512,
     ):
         super(DenseDecoder, self).__init__()
         self.output_shape = output_shape

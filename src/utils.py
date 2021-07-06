@@ -32,7 +32,7 @@ def save(
 
 def make_gif(path):
     path = pathlib.Path(path)
-    ims = [Image.open(file).resize((128, 128)) for file in path.iterdir()]
+    ims = [Image.open(file).resize((128, 128)) for file in list(sorted(list(path.iterdir())))]
     ims[0].save(
         f"{path}.gif", 
         save_all=True,
