@@ -88,7 +88,7 @@ def train_ae(
             label_b = label_b.to(device)
             y_pred = ae(transformed_image_b)
 
-            loss = ae.criterion(y_pred, label_b)
+            loss = ae.criterion(y_pred, transformed_image_b)
 
             optimizer.zero_grad()
             loss.backward()
