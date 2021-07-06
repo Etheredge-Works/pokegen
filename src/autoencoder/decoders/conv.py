@@ -14,29 +14,29 @@ class ConvDecoder(nn.Module):
         conv_layers = [
             # Upscale
             nn.ConvTranspose2d(128, 128, 3, stride=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
 
             nn.ConvTranspose2d(128, 128, 3, stride=2, padding=1, output_padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.ConvTranspose2d(128, 128, 3, stride=2, padding=1, output_padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.ConvTranspose2d(128, 64, 3, stride=2, padding=1, output_padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.ConvTranspose2d(64, 64, 3, stride=1, padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.ConvTranspose2d(64, 32, 3, stride=2, padding=1, output_padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.ConvTranspose2d(32, 32, 3, stride=1,padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.ConvTranspose2d(32, 16, 3, stride=2, padding=1, output_padding=1),
-            nn.ReLU(),
+            nn.LeakyReLU(),
 
             nn.ConvTranspose2d(16, 3, 3, stride=1, padding=1),
         ]
         self.convs = nn.ModuleList(conv_layers)
 
     def forward(self, x):
-        x = F.relu(self.fc(x))
+        x = F.leaky_relu(self.fc(x))
         x = x.view(x.size(0), x.size(1), 1, 1) 
 
         for layer in self.convs:

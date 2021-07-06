@@ -94,6 +94,7 @@ def train_ae(
             loss.backward()
             optimizer.step()
 
+
             running_loss += loss.item()
             total += transformed_image_b.size(0)
 

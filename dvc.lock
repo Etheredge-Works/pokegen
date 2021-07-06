@@ -586,11 +586,11 @@ stages:
       size: 387131152
       nfiles: 45310
     - path: src/autoencoder/decoders/conv.py
-      md5: 15a1a62885477aee0ed2bff1053db144
-      size: 1631
+      md5: 53f39987e10a76e0748e0f5c2d38eceb
+      size: 1677
     - path: src/autoencoder/encoders/conv.py
-      md5: 2c74566f3b3279f3d8b9e8c8c788014a
-      size: 1539
+      md5: 825075059a11884c32e10ee9c73b9822
+      size: 1579
     - path: src/autoencoder/models/variational_model.py
       md5: ef978f5adc6c68a9c31be4800be44e3a
       size: 3251
@@ -605,6 +605,7 @@ stages:
       size: 1092
     outs:
     - path: reports/vae/conv/gen
+
       md5: ab8411f7166a7d64f9165733a62a97aa.dir
       size: 2129939
       nfiles: 340
@@ -632,15 +633,16 @@ stages:
       size: 387131152
       nfiles: 45310
     - path: src/autoencoder/decoders/conv.py
-      md5: 15a1a62885477aee0ed2bff1053db144
-      size: 1631
+      md5: 53f39987e10a76e0748e0f5c2d38eceb
+      size: 1677
     - path: src/autoencoder/encoders/conv.py
-      md5: 2c74566f3b3279f3d8b9e8c8c788014a
-      size: 1539
+      md5: 825075059a11884c32e10ee9c73b9822
+      size: 1579
     - path: src/autoencoder/models/vanilla_model.py
       md5: 1db2b1b9f21021106975e1b2f8c3462f
       size: 886
     - path: src/autoencoder/train.py
+
       md5: 9753ffca5f01f86ce765c768b73d0ec6
       size: 5986
     - path: src/data/sprites.py

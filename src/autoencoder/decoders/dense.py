@@ -18,7 +18,7 @@ class DenseDecoder(nn.Module):
         layers = []
         while(input_count < node_count):
             layers.append(nn.Linear(input_count, input_count*2))
-            layers.append(nn.ReLU())
+            layers.append(nn.LeakyReLU())
 
             input_count *= 2
 
