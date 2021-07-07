@@ -69,9 +69,12 @@ def train_ae(
     ]).to(device)
 
     optimizer = torch.optim.Adam(ae.parameters(), lr=lr)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+    #scheduler = torch.optim.lr_scheduler.CosineAnnealingLR( NOTE cosine decay seems not as good
+    scheduler = torch.optim.lr_scheduler.OneCycleLR(
         optimizer, 
-        T_max=epochs)
+        max_lr=lr,
+        steps_per_epoch=10,
+        epochs=epochs)
 
     for epoch in range(epochs):
         print(f"{epoch}/{epochs}")
