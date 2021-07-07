@@ -14,6 +14,7 @@ stages:
         --log-dir ${item.log_dir}
         --lr ${lr}
         --val-ratio ${val_ratio}
+        --reg-rate ${item.reg_rate}
       deps:
         - ${pokemon_sprites.data_dir}
         - src/autoencoder/train.py

@@ -93,6 +93,7 @@ def train_ae(
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            ae.reset()
 
 
             running_loss += loss.item()
@@ -158,6 +159,8 @@ def train_ae(
 @click.option("--lr", type=click.FLOAT)
 @click.option("--batch-size", type=click.INT)
 @click.option("--val-ratio", type=click.FLOAT)
+@click.option("--reg-type", type=click.STRING, default='l2')
+@click.option("--reg-rate", type=click.FLOAT, default='0.001')
 def main(
     encoder_type,
     decoder_type,
@@ -168,6 +171,8 @@ def main(
     lr,
     batch_size,
     val_ratio,
+    reg_type,
+    reg_rate
 ):
     encoder_const = DenseEncoder if encoder_type == 'dense' else ConvEncoder
     decoder_const = DenseDecoder if decoder_type == 'dense' else ConvDecoder
@@ -179,6 +184,8 @@ def main(
     ae = model_const(
         (3, 96, 96), 
         latent_size, 
+        reg_type,
+        reg_rate,
         encoder_const, 
         decoder_const)
 

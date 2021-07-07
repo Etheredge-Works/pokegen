@@ -1,11 +1,11 @@
 pokemon_sprites:
   input_shape: [3, 96, 96]
-  resize_shape: [96,96]
+  resize_shape: [96, 96]
   normalize_mean: [0.485, 0.456, 0.406]
   normalize_std: [0.229, 0.224, 0.225]
   data_dir: data/external/sprites
 
-epochs: 500
+epochs: 200
 latent_size: 16
 batch_size: 64
 lr: 0.001
@@ -20,6 +20,7 @@ autoencoders:
     model_src: src/autoencoder/models/variational_model.py
     encoder_src: src/autoencoder/encoders/dense.py
     decoder_src: src/autoencoder/decoders/dense.py
+    reg_rate: 0.01
 
   vae_conv:
     type: conv
@@ -28,6 +29,7 @@ autoencoders:
     model_src: src/autoencoder/models/variational_model.py
     encoder_src: src/autoencoder/encoders/conv.py
     decoder_src: src/autoencoder/decoders/conv.py
+    reg_rate: 0.001
 
   ae_dense:
     type: dense
@@ -36,6 +38,7 @@ autoencoders:
     model_src: src/autoencoder/models/vanilla_model.py
     encoder_src: src/autoencoder/encoders/dense.py
     decoder_src: src/autoencoder/decoders/dense.py
+    reg_rate: 0.01
 
   ae_conv:
     type: conv
@@ -44,3 +47,4 @@ autoencoders:
     model_src: src/autoencoder/models/vanilla_model.py
     encoder_src: src/autoencoder/encoders/conv.py
     decoder_src: src/autoencoder/decoders/conv.py
+    reg_rate: 0.001
