@@ -94,7 +94,7 @@ class VAE(torch.nn.Module):
         #log_var = x[:, 1, :]
 
         #z = self.reparameterize(mu, log_var)
-        x_hat, *_ = self.decoder(x)
+        x_hat = self.decoder(x)
         return x_hat
         
     def gaussian_likelihood(self, x_hat, logscale, x):
