@@ -16,10 +16,14 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: [self-hosted]
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      repo_token: ${{ secrets.GITHUB_TOKEN }}
+    container:
+      image: dvcorg/cml-py3
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.MINIO_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.MINIO_AWS_SECRET_ACCESS_KEY }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        SHOULD_TQDM: 0  # disables tqdm in 'src/train_ae.py'
+      options: --gpus all
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
