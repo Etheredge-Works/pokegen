@@ -50,10 +50,6 @@ def train_ae(
 
     # Reference random tensor
     # TODO repeat in shape
-    rand = torch.rand(ae.latent_size, 8)
-    rand3 = torch.rand(ae.latent_size, 8) * 3
-    randn = torch.randn(ae.latent_size, 8)
-    randn3 = torch.randn(ae.latent_size, 8) * 3
 
     random_tensors = torch.stack([
         # NOTE by doing two of each, two are used at once for VAE
