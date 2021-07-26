@@ -18,7 +18,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: [self-hosted,gpu]
+    runs-on: [self-hosted,gpu,training]
     container:
       image: dvcorg/cml-py3
       env:
