@@ -9,7 +9,7 @@ class DenseDecoder(nn.Module):
         latent_shape, 
         output_shape, 
         activation_regularization_func=lambda _: 0,
-        node_count=512,
+        node_count=256,
     ):
         super(DenseDecoder, self).__init__()
 
@@ -43,4 +43,3 @@ class DenseDecoder(nn.Module):
         x = torch.sigmoid(self.fc(x))
         x = x.view(-1, *self.output_shape)
         return x
-

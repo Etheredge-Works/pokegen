@@ -10,7 +10,7 @@ class DenseEncoder(torch.nn.Module):
         input_shape, 
         latent_shape, 
         activation_regularization_func: lambda _: 0,
-        node_count=512,
+        node_count=256,
     ):
         super(DenseEncoder, self).__init__()
 
