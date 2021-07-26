@@ -6,18 +6,34 @@ class VAE(torch.nn.Module):
         self, 
         input_shape, 
         latent_size,
+        reg_type,
+        reg_rate,
         encoder_constructor,
-        decoder_constructor
+        decoder_constructor,
+        beta=0.,
     ):
         super(VAE, self).__init__()
+
+        if reg_type == 'l1':
+            reg_func = lambda x: reg_rate * x.abs().sum()
+        elif reg_type == 'l2':
+            reg_func = lambda x: reg_rate * torch.sqrt((x**2).sum())
+        else:
+            raise ValueError
+
         self.input_shape = input_shape
         self.latent_size = latent_size
-        self.encoder = encoder_constructor(input_shape, latent_size*2)
-        self.decoder = decoder_constructor(latent_size, input_shape)
+        self.encoder = encoder_constructor(input_shape, 
+                                           latent_size*2, 
+                                           activation_regularization_func=reg_func)
+        self.decoder = decoder_constructor(latent_size, 
+                                           input_shape,
+                                           activation_regularization_func=reg_func)
 
         #self.bce = torch.nn.BCELoss(reduction='sum')
         self.bce = torch.nn.MSELoss()
         self.log_scale = torch.nn.Parameter(torch.Tensor([0.0]))
+        self.beta = beta
     
     @staticmethod
     def reparameterize(mu, log_var):
@@ -52,20 +68,18 @@ class VAE(torch.nn.Module):
 
     def forward(self, x):
         x = self.encoder(x)
+        # NOTE must use self.activation_total to keep using pretty summaries 
+        #      Since two returns on forward breaks things
+        #encoder_activations = self.encoder.activation_total
 
         x = x.view(-1, 2, self.latent_size)
         mu = x[:, 0, :]
         log_var = x[:, 1, :]
-        try:
-            z, std = self.reparameterize(mu, log_var)
-        except ValueError:
-            print(mu.size())
-            print(mu.cpu())
-            print(log_var.size())
-            print(log_var.cpu())
-            input()
+
+        z, std = self.reparameterize(mu, log_var)
 
         x_hat = self.decoder(z)
+        #decoder_activations = self.decoder.activation_total
         # TODO sigmoid at end?
 
         return x_hat, z, mu, log_var, std
@@ -82,7 +96,8 @@ class VAE(torch.nn.Module):
         #log_var = x[:, 1, :]
 
         #z = self.reparameterize(mu, log_var)
-        return self.decoder(x)
+        x_hat = self.decoder(x)
+        return x_hat
         
     def gaussian_likelihood(self, x_hat, logscale, x):
         scale = torch.exp(logscale)
@@ -101,5 +116,18 @@ class VAE(torch.nn.Module):
 
         kl = self.kl_divergence(z, mu, std)
 
-        elbo = (kl - recon_loss)
-        return elbo.mean()
+        elbo = ((self.beta*kl) - recon_loss)
+        loss =  elbo.mean() + self.encoder.activations_total + self.decoder.activations_total
+
+        return loss
+
+    def reset(self, beta=None):
+        self.decoder.activations_total = None
+        self.encoder.activations_total = None
+        # https://stats.stackexchange.com/questions/341954/balancing-reconstruction-vs-kl-loss-variational-autoencoder
+        #https://arxiv.org/pdf/1511.06349.pdf
+        if beta is not None:
+            self.beta = beta
+        else:
+            self.beta = max(self.beta+0.003, 1.0)
+        # TODO use mlflow and log both losses

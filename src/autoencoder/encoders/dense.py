@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 from torch.nn import functional as F
+from torch.nn.modules import activation
 
 
 class DenseEncoder(torch.nn.Module):
@@ -8,9 +9,13 @@ class DenseEncoder(torch.nn.Module):
         self, 
         input_shape, 
         latent_shape, 
-        node_count=512
+        activation_regularization_func: lambda _: 0,
+        node_count=256,
     ):
         super(DenseEncoder, self).__init__()
+
+        self.activation_regularization_func = activation_regularization_func
+
         flattened_size = torch.prod(torch.tensor(input_shape), 0)
         self.f = nn.Flatten()
 
@@ -18,7 +23,6 @@ class DenseEncoder(torch.nn.Module):
         layers = []
         while(node_count > latent_shape):
             layers.append(nn.Linear(input_count, node_count))
-            layers.append(nn.LeakyReLU())
 
             input_count = node_count
             node_count = node_count // 2
@@ -27,10 +31,19 @@ class DenseEncoder(torch.nn.Module):
 
         self.fc = nn.Linear(input_count, latent_shape)
 
+        self.activations_total = None
+
     def forward(self, x):
+        if self.activations_total is None:
+            self.activations_total = torch.Tensor([0.]).to(x.device)
+
         x = self.f(x)
         for layer in self.dense:
             x = layer(x)
+            F.leaky_relu_(x)
+            self.activations_total += self.activation_regularization_func(x)
+
         x = self.fc(x)
+        self.activations_total += self.activation_regularization_func(x)
         return x
 

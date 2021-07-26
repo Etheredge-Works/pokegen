@@ -50,10 +50,6 @@ def train_ae(
 
     # Reference random tensor
     # TODO repeat in shape
-    rand = torch.rand(ae.latent_size, 8)
-    rand3 = torch.rand(ae.latent_size, 8) * 3
-    randn = torch.randn(ae.latent_size, 8)
-    randn3 = torch.randn(ae.latent_size, 8) * 3
 
     random_tensors = torch.stack([
         # NOTE by doing two of each, two are used at once for VAE
@@ -69,9 +65,11 @@ def train_ae(
     ]).to(device)
 
     optimizer = torch.optim.Adam(ae.parameters(), lr=lr)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+    #scheduler = torch.optim.lr_scheduler.CosineAnnealingLR( NOTE cosine decay seems not as good
+    scheduler = torch.optim.lr_scheduler.OneCycleLR(
         optimizer, 
-        T_max=epochs)
+        max_lr=lr,
+        total_steps=epochs)
 
     for epoch in range(epochs):
         print(f"{epoch}/{epochs}")
@@ -92,7 +90,9 @@ def train_ae(
 
             optimizer.zero_grad()
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(ae.parameters(), max_norm=1) #TODO param
             optimizer.step()
+            ae.reset()
 
 
             running_loss += loss.item()
@@ -158,6 +158,8 @@ def train_ae(
 @click.option("--lr", type=click.FLOAT)
 @click.option("--batch-size", type=click.INT)
 @click.option("--val-ratio", type=click.FLOAT)
+@click.option("--reg-type", type=click.STRING, default='l2')
+@click.option("--reg-rate", type=click.FLOAT, default='0.001')
 def main(
     encoder_type,
     decoder_type,
@@ -168,6 +170,8 @@ def main(
     lr,
     batch_size,
     val_ratio,
+    reg_type,
+    reg_rate
 ):
     encoder_const = DenseEncoder if encoder_type == 'dense' else ConvEncoder
     decoder_const = DenseDecoder if decoder_type == 'dense' else ConvDecoder
@@ -179,6 +183,8 @@ def main(
     ae = model_const(
         (3, 96, 96), 
         latent_size, 
+        reg_type,
+        reg_rate,
         encoder_const, 
         decoder_const)
 
