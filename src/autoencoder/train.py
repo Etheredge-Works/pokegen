@@ -69,8 +69,7 @@ def train_ae(
     scheduler = torch.optim.lr_scheduler.OneCycleLR(
         optimizer, 
         max_lr=lr,
-        steps_per_epoch=10,
-        epochs=epochs)
+        total_steps=epochs)
 
     for epoch in range(epochs):
         print(f"{epoch}/{epochs}")
