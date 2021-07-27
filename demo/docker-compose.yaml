@@ -16,6 +16,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.pokegen_demo.rule=Host(`${DOMAIN_URL}`)"
       - "traefik.http.routers.pokegen_demo.entrypoints=websecure"
+      - "traefik.http.routers.contradictions_demo.tls.certresolver=myresolver"
 
 networks:
     traefik_proxy:
