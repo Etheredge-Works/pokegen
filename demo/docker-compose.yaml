@@ -10,3 +10,7 @@ services:
     build: .
     ports:
       - "8501:8501"
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.pokegen_demo.rule=Host(`${DOMAIN_URL}`)"
+        - "traefik.http.routers.pokegen_demo.entrypoints=websecure"
