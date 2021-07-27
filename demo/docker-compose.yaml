@@ -9,7 +9,7 @@ services:
         - API_PASSWORD=${API_PASSWORD}
     build: .
     network:
-        - proxy
+        - traefik_proxy
     ports:
       - "8501:8501"
     labels:
@@ -18,5 +18,5 @@ services:
         - "traefik.http.routers.pokegen_demo.entrypoints=websecure"
 
 networks:
-    proxy:
-        external: 
+    traefik_proxy:
+        external: true
