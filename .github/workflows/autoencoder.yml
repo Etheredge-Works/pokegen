@@ -5,6 +5,11 @@ name: AE
 # Controls when the action will run. 
 on:
   push:
+    paths:
+      - 'src/**'
+      - 'dvc.yaml'
+      - 'params.yaml'
+      - 'scripts/**'
     #branches: [ main ]
   #pull_request:
     #branches: [ main ]
