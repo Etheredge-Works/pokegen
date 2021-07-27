@@ -8,7 +8,7 @@ services:
         - API_USERNAME=${API_USERNAME}
         - API_PASSWORD=${API_PASSWORD}
     build: .
-    network:
+    networks:
         - traefik_proxy
     ports:
       - "8501:8501"
