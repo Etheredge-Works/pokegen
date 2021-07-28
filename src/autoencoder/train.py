@@ -22,6 +22,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def train_ae(
+    model_path: str,
     log_dir: str,
     epochs: int,
     trainloader: DataLoader,
@@ -146,12 +147,14 @@ def train_ae(
             str(results_dir),
             'encdec'
         )
+    torch.save(ae.state_dict(), str(model_path))
 
 
 @click.command()
 @click.option("--encoder-type", type=click.STRING)
 @click.option("--decoder-type", type=click.STRING)
 @click.option("--ae-type", type=click.STRING)
+@click.option("--model-path", type=click.Path())
 @click.option("--log-dir", type=click.Path())
 @click.option("--latent-size", type=click.INT)
 @click.option("--epochs", type=click.INT)
@@ -164,6 +167,7 @@ def main(
     encoder_type,
     decoder_type,
     ae_type,
+    model_path,
     log_dir,
     latent_size,
     epochs,
@@ -194,6 +198,7 @@ def main(
         val_ratio=val_ratio)
 
     train_ae(
+        model_path=model_path,
         log_dir=log_dir, 
         epochs=epochs, 
         trainloader=trainloader, 
