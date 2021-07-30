@@ -154,7 +154,7 @@ def train_ae(
 @click.option("--encoder-type", type=click.STRING)
 @click.option("--decoder-type", type=click.STRING)
 @click.option("--ae-type", type=click.STRING)
-@click.option("--model-path", type=click.Path())
+@click.option("--model-path", type=click.STRING)
 @click.option("--log-dir", type=click.Path())
 @click.option("--latent-size", type=click.INT)
 @click.option("--epochs", type=click.INT)

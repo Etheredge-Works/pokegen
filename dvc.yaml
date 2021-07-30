@@ -8,6 +8,7 @@ stages:
         --encoder-type ${item.type}
         --decoder-type ${item.type}
         --ae-type ${item.model}
+        --model-path ${item.model_path}
         --epochs ${epochs}
         --batch-size ${batch_size}
         --latent-size ${latent_size}
@@ -24,6 +25,7 @@ stages:
         - src/data/sprites.py
         - src/utils.py
       outs:
+        - ${item.model_path}
         - ${item.log_dir}/gen
         - ${item.log_dir}/results
         - ${item.log_dir}/summary.txt
