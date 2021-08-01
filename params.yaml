@@ -22,6 +22,7 @@ autoencoders:
     decoder_src: src/autoencoder/decoders/dense.py
     model_path: models/vae_dense
     reg_rate: 0.01
+    model_file: src/autoencoder/models/variational_model.py
 
   vae_conv:
     type: conv
@@ -32,6 +33,7 @@ autoencoders:
     decoder_src: src/autoencoder/decoders/conv.py
     model_path: models/vae_conv
     reg_rate: 0.001
+    model_file: src/autoencoder/models/variational_model.py
 
   ae_dense:
     type: dense
@@ -42,6 +44,7 @@ autoencoders:
     decoder_src: src/autoencoder/decoders/dense.py
     model_path: models/ae_dense
     reg_rate: 0.01
+    model_file: src/autoencoder/models/vanilla_model.py
 
   ae_conv:
     type: conv
@@ -52,3 +55,4 @@ autoencoders:
     decoder_src: src/autoencoder/decoders/conv.py
     model_path: models/ae_conv
     reg_rate: 0.001
+    model_file: src/autoencoder/models/vanilla_model.py

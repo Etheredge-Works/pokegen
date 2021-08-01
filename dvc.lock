@@ -680,3 +680,51 @@ stages:
     - path: reports/ae/conv/summary.txt
       md5: 860b661194e0c020d3adcc26137ab351
       size: 3463
+  create_serving_model@vae_dense:
+    cmd: "torch-model-archiver  --model-file src/autoencoder/models/variational_model.py\
+      \ --model-name vae_dense  --serialized-file models/vae_dense -v 1.0  --handler\
+      \ image_classifier  --export-path models/serving\n"
+    deps:
+    - path: models/vae_dense
+      md5: 8f93dcd82d1fb34c31be1e82cc1c2b07
+      size: 57089388
+    outs:
+    - path: models/serving/vae_dense.mar
+      md5: d26fb7078be79b37b3483a79afc9ed5f
+      size: 52990543
+  create_serving_model@vae_conv:
+    cmd: "torch-model-archiver  --model-file src/autoencoder/models/variational_model.py\
+      \ --model-name vae_conv  --serialized-file models/vae_conv -v 1.0  --handler\
+      \ image_classifier  --export-path models/serving\n"
+    deps:
+    - path: models/vae_conv
+      md5: 7cf39aacdfe60be1bfe2563f37ecafa4
+      size: 11296079
+    outs:
+    - path: models/serving/vae_conv.mar
+      md5: 07e24666e5a82419ecfabce1e46a9b4b
+      size: 10461262
+  create_serving_model@ae_dense:
+    cmd: "torch-model-archiver  --model-file src/autoencoder/models/vanilla_model.py\
+      \ --model-name ae_dense  --serialized-file models/ae_dense -v 1.0  --handler\
+      \ image_classifier  --export-path models/serving\n"
+    deps:
+    - path: models/ae_dense
+      md5: f1149048c0e53f4d263d853182b7c54b
+      size: 57091753
+    outs:
+    - path: models/serving/ae_dense.mar
+      md5: e453f25e397b0a779af3ba62105cad94
+      size: 52987285
+  create_serving_model@ae_conv:
+    cmd: "torch-model-archiver  --model-file src/autoencoder/models/vanilla_model.py\
+      \ --model-name ae_conv  --serialized-file models/ae_conv -v 1.0  --handler image_classifier\
+      \  --export-path models/serving\n"
+    deps:
+    - path: models/ae_conv
+      md5: 4790c418293b73e53178720985faa493
+      size: 10706001
+    outs:
+    - path: models/serving/ae_conv.mar
+      md5: 3477951ef4a1f34b1d50142f6a8ed7aa
+      size: 9903179
