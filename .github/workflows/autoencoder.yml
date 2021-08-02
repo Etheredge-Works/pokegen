@@ -10,6 +10,8 @@ on:
       - 'dvc.yaml'
       - 'params.yaml'
       - 'scripts/**'
+      - 'requirements.txt'
+      - 'scripts/*reports.sh'
     #branches: [ main ]
   #pull_request:
     #branches: [ main ]
@@ -28,8 +30,8 @@ jobs:
     container:
       image: dvcorg/cml-py3
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.MINIO_AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.MINIO_AWS_SECRET_ACCESS_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         SHOULD_TQDM: 0  # disables tqdm in 'src/train_ae.py'
       options: --gpus all
@@ -92,3 +94,7 @@ jobs:
           scripts/autoencoder_report.sh vae conv >> report.md
           cml-send-github-check report.md 
 
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Latest Github Action DVC Run"
+          file_pattern: dvc.lock

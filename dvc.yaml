@@ -8,6 +8,7 @@ stages:
         --encoder-type ${item.type}
         --decoder-type ${item.type}
         --ae-type ${item.model}
+        --model-path ${item.model_path}
         --epochs ${epochs}
         --batch-size ${batch_size}
         --latent-size ${latent_size}
@@ -24,6 +25,8 @@ stages:
         - src/data/sprites.py
         - src/utils.py
       outs:
+        - ${item.model_path}.pt
+        - ${item.model_path}_kwargs.yaml
         - ${item.log_dir}/gen
         - ${item.log_dir}/results
         - ${item.log_dir}/summary.txt
@@ -31,3 +34,20 @@ stages:
         - ${item.log_dir}/logs
       metrics:
         - ${item.log_dir}/logs.json
+
+  create_serving_model:
+    foreach: ${autoencoders}
+    do:
+      cmd: >
+        torch-model-archiver 
+        --model-file ${item.model_file}
+        --model-name ${item.model}_${item.type} 
+        --serialized-file ${item.model_path}.pt
+        -v 1.0 
+        --handler image_classifier 
+        --export-path models/serving
+      deps:
+        - ${item.model_path}.pt
+        - ${item.model_path}_kwargs.yaml
+      outs:
+        - models/serving/${item.model}_${item.type}.mar

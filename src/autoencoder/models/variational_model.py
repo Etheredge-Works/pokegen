@@ -1,15 +1,18 @@
 import torch
+from autoencoder.encoders import DenseEncoder, ConvEncoder
+from autoencoder.decoders import DenseDecoder, ConvDecoder
+
 
 # Reference: https://debuggercafe.com/getting-started-with-variational-autoencoder-using-pytorch/
 class VAE(torch.nn.Module):
     def __init__(
         self, 
-        input_shape, 
+        input_shape,
         latent_size,
         reg_type,
         reg_rate,
-        encoder_constructor,
-        decoder_constructor,
+        encoder_type,
+        decoder_type,
         beta=0.,
     ):
         super(VAE, self).__init__()
@@ -23,6 +26,9 @@ class VAE(torch.nn.Module):
 
         self.input_shape = input_shape
         self.latent_size = latent_size
+
+        encoder_constructor = DenseEncoder if encoder_type == 'dense' else ConvEncoder
+        decoder_constructor = DenseDecoder if decoder_type == 'dense' else ConvDecoder
         self.encoder = encoder_constructor(input_shape, 
                                            latent_size*2, 
                                            activation_regularization_func=reg_func)

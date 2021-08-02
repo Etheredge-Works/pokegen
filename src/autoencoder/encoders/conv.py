@@ -59,10 +59,10 @@ class ConvEncoder(torch.nn.Module):
                 nn.Conv2d(256, 256, 3, stride=1, padding=1, bias=False),
                 nn.BatchNorm2d(256)
             ),
-            (
-                nn.Conv2d(256, 512, 3, stride=2, padding=1, bias=False),
-                nn.BatchNorm2d(512)
-            ),
+            #(
+                #nn.Conv2d(256, 512, 3, stride=2, padding=1, bias=False),
+                #nn.BatchNorm2d(512)
+            #),
         ]
         self.convs = nn.ModuleList([nn.ModuleList(layer_group) for layer_group in conv_layers])
         self.flatten = nn.Flatten()

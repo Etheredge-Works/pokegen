@@ -22,6 +22,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def train_ae(
+    model_path: str,
     log_dir: str,
     epochs: int,
     trainloader: DataLoader,
@@ -152,6 +153,7 @@ def train_ae(
 @click.option("--encoder-type", type=click.STRING)
 @click.option("--decoder-type", type=click.STRING)
 @click.option("--ae-type", type=click.STRING)
+@click.option("--model-path", type=click.STRING)
 @click.option("--log-dir", type=click.Path())
 @click.option("--latent-size", type=click.INT)
 @click.option("--epochs", type=click.INT)
@@ -164,6 +166,7 @@ def main(
     encoder_type,
     decoder_type,
     ae_type,
+    model_path,
     log_dir,
     latent_size,
     epochs,
@@ -173,8 +176,6 @@ def main(
     reg_type,
     reg_rate
 ):
-    encoder_const = DenseEncoder if encoder_type == 'dense' else ConvEncoder
-    decoder_const = DenseDecoder if decoder_type == 'dense' else ConvDecoder
 
     # TODO pull out so train file doesn't need these imported
     model_const = VAE if ae_type == 'vae' else AutoEncoder
@@ -185,8 +186,9 @@ def main(
         latent_size, 
         reg_type,
         reg_rate,
-        encoder_const, 
-        decoder_const)
+        encoder_type, 
+        decoder_type)
+    
 
     trainloader, valloader = sprites.get_loader(
         batch_size=batch_size,
@@ -194,12 +196,27 @@ def main(
         val_ratio=val_ratio)
 
     train_ae(
+        model_path=model_path,
         log_dir=log_dir, 
         epochs=epochs, 
         trainloader=trainloader, 
         valloader=valloader, 
         ae=ae,
         lr=lr)
+
+    # Save model
+    torch.save(ae.state_dict(), str(model_path)+'.pt')
+    with open(str(model_path)+"_kwargs.yaml", 'w') as f:
+        #yaml.dump(locals(), f)  NOTE cool locals() thing
+        kwargs = {
+            "input_shape": (3, 96, 96),
+            "latent_size": latent_size,
+            "reg_type": reg_type,
+            "reg_rate": reg_rate,
+            "encoder_type": encoder_type,
+            "decoder_type": decoder_type
+        }
+        yaml.dump(kwargs, f)
 
 
 if __name__ == "__main__":

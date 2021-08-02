@@ -14,3 +14,8 @@ torchvision==0.10.0+cu111
 torchaudio==0.9.0 
 
 torchsummary==1.5.1
+
+# Torch Serve
+torchserve==0.4.1
+torch-model-archiver==0.4.1
+torch-workflow-archiver==0.1.1
