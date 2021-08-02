@@ -16,6 +16,6 @@ torchaudio==0.9.0
 torchsummary==1.5.1
 
 # Torch Serve
-torchserve==1.5.1
+torchserve==0.4.1
 torch-model-archiver==0.4.1
 torch-workflow-archiver==0.1.1
