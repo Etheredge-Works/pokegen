@@ -177,8 +177,6 @@ def main(
     reg_type,
     reg_rate
 ):
-    encoder_const = DenseEncoder if encoder_type == 'dense' else ConvEncoder
-    decoder_const = DenseDecoder if decoder_type == 'dense' else ConvDecoder
 
     # TODO pull out so train file doesn't need these imported
     model_const = VAE if ae_type == 'vae' else AutoEncoder
@@ -189,8 +187,9 @@ def main(
         latent_size, 
         reg_type,
         reg_rate,
-        encoder_const, 
-        decoder_const)
+        encoder_type, 
+        decoder_type)
+    
 
     trainloader, valloader = sprites.get_loader(
         batch_size=batch_size,
