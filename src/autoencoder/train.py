@@ -147,7 +147,6 @@ def train_ae(
             str(results_dir),
             'encdec'
         )
-    torch.save(ae.state_dict(), str(model_path))
 
 
 @click.command()
@@ -204,6 +203,20 @@ def main(
         valloader=valloader, 
         ae=ae,
         lr=lr)
+
+    # Save model
+    torch.save(ae.state_dict(), str(model_path)+'.pt')
+    with open(str(model_path)+"_kwargs.yaml", 'w') as f:
+        #yaml.dump(locals(), f)  NOTE cool locals() thing
+        kwargs = {
+            "input_shape": (3, 96, 96),
+            "latent_size": latent_size,
+            "reg_type": reg_type,
+            "reg_rate": reg_rate,
+            "encoder_type": encoder_type,
+            "decoder_type": decoder_type
+        }
+        yaml.dump(kwargs, f)
 
 
 if __name__ == "__main__":
