@@ -25,7 +25,8 @@ stages:
         - src/data/sprites.py
         - src/utils.py
       outs:
-        - ${item.model_path}
+        - ${item.model_path}.pt
+        - ${item.model_path}_kwargs.yaml
         - ${item.log_dir}/gen
         - ${item.log_dir}/results
         - ${item.log_dir}/summary.txt
