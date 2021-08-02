@@ -92,3 +92,7 @@ jobs:
           scripts/autoencoder_report.sh vae conv >> report.md
           cml-send-github-check report.md 
 
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Latest Github Action DVC Run"
+          file_pattern: dvc.lock
