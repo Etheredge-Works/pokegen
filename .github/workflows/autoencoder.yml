@@ -35,7 +35,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         SHOULD_TQDM: 0  # disables tqdm in 'src/train_ae.py'
-      options: --gpus all --shm-size=4G
+      options: "--gpus all --shm-size=4G"
     timeout-minutes: 1440  # Increased job runtime since ML is slow
 
     # Steps represent a sequence of tasks that will be executed as part of the job
