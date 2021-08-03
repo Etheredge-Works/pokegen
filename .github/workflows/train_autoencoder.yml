@@ -4,7 +4,8 @@ name: Autoencoder Training
 
 # Controls when the action will run. 
 on:
-  push:
+  pull_request:
+    branches: [ main ]
     paths:
       - 'src/**'
       - 'dvc.yaml'
@@ -12,10 +13,6 @@ on:
       - 'scripts/**'
       - 'requirements.txt'
       - 'scripts/*reports.sh'
-    branches-ignore: 
-      - main
-  #pull_request:
-    #branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -58,7 +55,6 @@ jobs:
           scripts/autoencoder_report.sh ae dense >> report.md
           cml-send-github-check report.md 
 
-
       - name: train_ae_conv
         run: |
           dvc pull --run-cache train@ae_conv
@@ -92,13 +88,13 @@ jobs:
           scripts/autoencoder_report.sh vae conv >> report.md
           cml-send-github-check report.md 
 
-      # Update to final report
-      - name: report_all
-        run: |
-          scripts/all_autoencoder_reports.sh > report.md
-          cml-send-github-check report.md
-
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Latest Github Action DVC Run"
           file_pattern: dvc.lock
+
+      # Update to final report
+      - name: report_all
+        run: |
+          scripts/all_autoencoder_reports.sh > report.md
+          cml-send-comment report.md
