@@ -5,9 +5,9 @@ pokemon_sprites:
   normalize_std: [0.229, 0.224, 0.225]
   data_dir: data/external/sprites
 
-epochs: 250
+epochs: 200
 latent_size: 16
-batch_size: 64
+batch_size: 96
 lr: 0.001
 val_ratio: 0.1
 
