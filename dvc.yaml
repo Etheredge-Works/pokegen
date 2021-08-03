@@ -16,6 +16,7 @@ stages:
         --lr ${lr}
         --val-ratio ${val_ratio}
         --reg-rate ${item.reg_rate}
+        --reg-type ${item.reg_type}
       deps:
         - ${pokemon_sprites.data_dir}
         - src/autoencoder/train.py

@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: AE
+name: Autoencoder Training
 
 # Controls when the action will run. 
 on:
@@ -12,7 +12,8 @@ on:
       - 'scripts/**'
       - 'requirements.txt'
       - 'scripts/*reports.sh'
-    #branches: [ main ]
+    branches-ignore: 
+      - main
   #pull_request:
     #branches: [ main ]
 
@@ -20,11 +21,8 @@ on:
   workflow_dispatch:
 
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: [self-hosted,gpu,training]
 
     container:
@@ -34,7 +32,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         SHOULD_TQDM: 0  # disables tqdm in 'src/train_ae.py'
-      options: --gpus all
+      options: --gpus all --shm-size=4G
     timeout-minutes: 1440  # Increased job runtime since ML is slow
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -93,6 +91,12 @@ jobs:
         run: |
           scripts/autoencoder_report.sh vae conv >> report.md
           cml-send-github-check report.md 
+
+      # Update to final report
+      - name: report_all
+        run: |
+          scripts/all_autoencoder_reports.sh > report.md
+          cml-send-github-check report.md
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:

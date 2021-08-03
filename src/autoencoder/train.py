@@ -160,8 +160,8 @@ def train_ae(
 @click.option("--lr", type=click.FLOAT)
 @click.option("--batch-size", type=click.INT)
 @click.option("--val-ratio", type=click.FLOAT)
-@click.option("--reg-type", type=click.STRING, default='l2')
-@click.option("--reg-rate", type=click.FLOAT, default='0.001')
+@click.option("--reg-type", type=click.STRING)
+@click.option("--reg-rate", type=click.FLOAT)
 def main(
     encoder_type,
     decoder_type,
