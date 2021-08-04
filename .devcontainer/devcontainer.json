@@ -38,11 +38,13 @@
 		"eamodio.gitlens"
 	],
 
+	"runArgs": ["--gpus", "all", "--env-file", ".env"],
+
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install --user -r requirements.txt && dvc pull data/exteranl/*",
+	"postCreateCommand": "pip3 install -e . && dvc pull data/external/*",
 
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
