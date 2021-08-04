@@ -22,9 +22,11 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def train_ae(
+    model_path: str,
     log_dir: str,
     epochs: int,
     trainloader: DataLoader,
+    valloader: DataLoader,
     ae: torch.nn.Module,
     lr=0.001,
     should_tqdm=os.getenv('SHOULD_TQDM', 1)  # using env for github action running 
@@ -49,18 +51,26 @@ def train_ae(
 
     # Reference random tensor
     # TODO repeat in shape
+
     random_tensors = torch.stack([
         # NOTE by doing two of each, two are used at once for VAE
+        torch.rand(ae.latent_size)*3, # fix values
+        torch.rand(ae.latent_size)*3, # fix values
         torch.rand(ae.latent_size), # fix values
         torch.rand(ae.latent_size), # fix values
         torch.randn(ae.latent_size), # fix values
         torch.randn(ae.latent_size), # fix values
+        *torch.unbind(torch.distributions.Normal(
+            torch.zeros(ae.latent_size), torch.ones(ae.latent_size)
+            ).rsample((4,)))
     ]).to(device)
 
     optimizer = torch.optim.Adam(ae.parameters(), lr=lr)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+    #scheduler = torch.optim.lr_scheduler.CosineAnnealingLR( NOTE cosine decay seems not as good
+    scheduler = torch.optim.lr_scheduler.OneCycleLR(
         optimizer, 
-        T_max=epochs)
+        max_lr=lr,
+        total_steps=epochs)
 
     for epoch in range(epochs):
         print(f"{epoch}/{epochs}")
@@ -71,29 +81,41 @@ def train_ae(
             iter_trainloader = tqdm(trainloader)
         else:
             iter_trainloader = trainloader
-        for image_b in iter_trainloader:
-            #print(data[0])
-            image_b = image_b.to(device)
-            y_pred = ae(image_b)
+        for data in iter_trainloader:
+            transformed_image_b, label_b = data['transformed_image'], data['label']
+            transformed_image_b = transformed_image_b.to(device)
+            label_b = label_b.to(device)
+            y_pred = ae(transformed_image_b)
 
-            loss = ae.criterion(y_pred, image_b)
+            loss = ae.criterion(y_pred, transformed_image_b)
 
             optimizer.zero_grad()
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(ae.parameters(), max_norm=1) #TODO param
             optimizer.step()
+            ae.reset()
+
 
             running_loss += loss.item()
-            total += image_b.size(0)
+            total += transformed_image_b.size(0)
 
         print(f"loss: {running_loss/total}")
         dvclive.log("loss", running_loss/total, epoch)
+        dvclive.log("lr", scheduler.get_last_lr()[0])
         ae.eval()
         with torch.no_grad():
-            #for idx in [0, len(trainloader)//4, len(trainloader)//2]:
-                #im.save(str(log_dir/'val'/epoch/f"{idx}.jpg"))
-                # TODO don't loop, just do all
-                #im = transforms.ToPILImage()(ae(train[idx].to(device))[0].cpu().data)
-                #im.save(str(log_dir/'val'/epoch/f"gen_{idx}.jpg"))
+            running_loss = 0
+            total = 0
+            for data in valloader:
+                label_b = data['label']
+
+                label_b = label_b.to(device)
+                y_pred = ae(label_b)
+
+                loss = ae.criterion(y_pred, label_b)
+
+                running_loss += loss.item()
+                total += label_b.size(0)
             
             if epoch % (epochs//30) == 0 or epoch == (epochs-1):
                 generations = ae.generate(random_tensors)
@@ -101,14 +123,18 @@ def train_ae(
                     generations.cpu(),
                     str(gen_dir),
                     epoch)
-        dvclive.log("lr", scheduler.get_last_lr()[0])
+        dvclive.log("val_loss", running_loss/total, epoch)
+        print(f"val_loss: {running_loss/total}")
+
         dvclive.next_step()
         scheduler.step()
     utils.make_gifs(str(gen_dir))
 
     # save off some final results
-    batch = next(iter(trainloader))
+    data = next(iter(trainloader))
+    batch = data['label']
     ae.eval()
+    # TODO torchvision.make_grid
     with torch.no_grad():
         utils.save(
             batch[:8].cpu(), # slice after incase of batch norm or something
@@ -123,28 +149,33 @@ def train_ae(
         )
 
 
-
 @click.command()
 @click.option("--encoder-type", type=click.STRING)
 @click.option("--decoder-type", type=click.STRING)
 @click.option("--ae-type", type=click.STRING)
+@click.option("--model-path", type=click.STRING)
 @click.option("--log-dir", type=click.Path())
 @click.option("--latent-size", type=click.INT)
 @click.option("--epochs", type=click.INT)
 @click.option("--lr", type=click.FLOAT)
 @click.option("--batch-size", type=click.INT)
+@click.option("--val-ratio", type=click.FLOAT)
+@click.option("--reg-type", type=click.STRING)
+@click.option("--reg-rate", type=click.FLOAT)
 def main(
     encoder_type,
     decoder_type,
     ae_type,
+    model_path,
     log_dir,
     latent_size,
     epochs,
     lr,
     batch_size,
+    val_ratio,
+    reg_type,
+    reg_rate
 ):
-    encoder_const = DenseEncoder if encoder_type == 'dense' else ConvEncoder
-    decoder_const = DenseDecoder if decoder_type == 'dense' else ConvDecoder
 
     # TODO pull out so train file doesn't need these imported
     model_const = VAE if ae_type == 'vae' else AutoEncoder
@@ -152,18 +183,40 @@ def main(
     # TODO pull out shape
     ae = model_const(
         (3, 96, 96), 
-        latent_size, encoder_const, 
-        decoder_const)
+        latent_size, 
+        reg_type,
+        reg_rate,
+        encoder_type, 
+        decoder_type)
+    
 
-    loader = sprites.get_loader(batch_size=batch_size)
-    print(lr)
+    trainloader, valloader = sprites.get_loader(
+        batch_size=batch_size,
+        workers=4,
+        val_ratio=val_ratio)
 
     train_ae(
+        model_path=model_path,
         log_dir=log_dir, 
         epochs=epochs, 
-        trainloader=loader, 
+        trainloader=trainloader, 
+        valloader=valloader, 
         ae=ae,
         lr=lr)
+
+    # Save model
+    torch.save(ae.state_dict(), str(model_path)+'.pt')
+    with open(str(model_path)+"_kwargs.yaml", 'w') as f:
+        #yaml.dump(locals(), f)  NOTE cool locals() thing
+        kwargs = {
+            "input_shape": (3, 96, 96),
+            "latent_size": latent_size,
+            "reg_type": reg_type,
+            "reg_rate": reg_rate,
+            "encoder_type": encoder_type,
+            "decoder_type": decoder_type
+        }
+        yaml.dump(kwargs, f)
 
 
 if __name__ == "__main__":

@@ -4,8 +4,17 @@ import torch.nn.functional as F
 
 
 class DenseDecoder(nn.Module):
-    def __init__(self, latent_shape, output_shape, node_count=1024):
+    def __init__(
+        self, 
+        latent_shape, 
+        output_shape, 
+        activation_regularization_func=lambda _: 0,
+        node_count=256,
+    ):
         super(DenseDecoder, self).__init__()
+
+        self.act_reg_func = activation_regularization_func
+
         self.output_shape = output_shape
         self.flattened_size = torch.prod(torch.tensor(output_shape), 0)
 
@@ -13,19 +22,24 @@ class DenseDecoder(nn.Module):
         layers = []
         while(input_count < node_count):
             layers.append(nn.Linear(input_count, input_count*2))
-            layers.append(nn.ReLU())
-
             input_count *= 2
 
         self.dense = nn.ModuleList(layers) # registers modules
 
         self.fc = nn.Linear(node_count, self.flattened_size)
 
+        self.activations_total = None
+
     def forward(self, x):
+        
+        if self.activations_total is None:
+            self.activations_total = torch.tensor([0.0]).to(x.device)
+
         for layer in self.dense:
             x = layer(x)
+            F.leaky_relu_(x)
+            self.activations_total += self.act_reg_func(x)
 
         x = torch.sigmoid(self.fc(x))
         x = x.view(-1, *self.output_shape)
         return x
-
