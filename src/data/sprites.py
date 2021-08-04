@@ -150,7 +150,7 @@ def get_loader(
         #T.RandomResizedCrop(resize_shape),
         # TODO vertical flip and rot90
         T.ToTensor(),
-        #transforms.Normalize(normalize_mean, normalize_std)
+        T.Normalize(normalize_mean, normalize_std)
         #transforms.RandomErasing(),
     ])
 
