@@ -38,7 +38,7 @@
 		"eamodio.gitlens"
 	],
 
-	"runArgs": ["--gpus", "all", "--env-file", ".env"],
+	"runArgs": ["--shm-size=512m", "--env-file=.env", "--gpus=all"],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
