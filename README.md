@@ -1,4 +1,6 @@
 # pokegen
+[![Deploy Demo Site](https://github.com/Etheredge-Works/pokegen/actions/workflows/demo.yml/badge.svg)](https://github.com/Etheredge-Works/pokegen/actions/workflows/demo.yml)
+[![Autoencoder Training](https://github.com/Etheredge-Works/pokegen/actions/workflows/train_autoencoder.yml/badge.svg)](https://github.com/Etheredge-Works/pokegen/actions/workflows/train_autoencoder.yml)
 ## Setup
 Copy `.env.sample` to `.env` and fill in with your own s3 credentials. Modify the S3 remote in `.dvc/config` to point to your own s3 bucket. This is used to store intermediate results and pipeline outpus (e.g. models and metrics).
 
