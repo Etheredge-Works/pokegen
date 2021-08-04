@@ -7,8 +7,8 @@ Copy `.env.sample` to `.env` and fill in with your own s3 credentials. Modify th
 ### Option 1: With devcontainer
 This repo uses vscode devcontainers. If you are using vscode and have the devcontainers extension, there's potentially nothing you have to do to setup an environment. Just open the repo in vscode.
 
-If you have nvidia containers setups (`--gpus all` support), there's nothing to do.
-If you don't have nvidia container support, remove `"--gpus", "all",` option from `.devcontainer/devcontainer.json`.
+If you have nvidia containers setups (`--gpus=all` support), there's nothing to do.
+If you don't have nvidia container support, remove `"--gpus=all",` option from `.devcontainer/devcontainer.json`.
 
 ### Option 2: Without devcontainer
 Without devcontainers, just run the following in whatever environment you use.
