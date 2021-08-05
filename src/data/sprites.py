@@ -151,12 +151,14 @@ def get_loader(
         # TODO vertical flip and rot90
         T.ToTensor(),
         T.Normalize(normalize_mean, normalize_std)
+        # TODO test moving norm up before resize
         #transforms.RandomErasing(),
     ])
 
     target_transform = T.Compose([
         T.Resize(resize_shape),
         T.ToTensor(),
+        T.Normalize(normalize_mean, normalize_std)
     ])
 
     ds = PokemonDataset(
