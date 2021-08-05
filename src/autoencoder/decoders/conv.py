@@ -80,9 +80,10 @@ class ConvDecoder(nn.Module):
         x = self.unflatten(x)
         #x = x.view(x.size(0), x.size(1), 1, 1) 
 
-        for conv_layer, batch_norm_layer in self.convs:
+        #for conv_layer, batch_norm_layer in self.convs:
+        for conv_layer in self.convs:
             x = conv_layer(x)
-            x = batch_norm_layer(x)
+            #x = batch_norm_layer(x)
             F.leaky_relu_(x)
             self.activations_total += self.act_reg_func(x)
 

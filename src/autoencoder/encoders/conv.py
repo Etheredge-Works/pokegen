@@ -75,9 +75,10 @@ class ConvEncoder(torch.nn.Module):
         if self.activations_total is None:
             self.activations_total = torch.tensor([0.0]).to(x.device)
 
-        for layer, batch_norm in self.convs:
+        #for layer, batch_norm in self.convs:
+        for layer in self.convs:
             x = layer(x)
-            x = batch_norm(x)
+            #x = batch_norm(x)
             F.leaky_relu_(x)
             self.activations_total += self.act_reg_func(x)
 
