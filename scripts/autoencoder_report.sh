@@ -3,6 +3,10 @@ model=$1
 version=$2
 log_dir=reports/$model/$version
 
+echo "<details>"
+echo "    <summary>$model ($version)</summary>"
+echo ""
+
 echo "# $model ($version)"
 
 echo ""
@@ -44,3 +48,5 @@ for f in $(ls $gen_dir/*gif)
 do
     cml-publish "$f" --md 
 done
+
+echo "</details>"
