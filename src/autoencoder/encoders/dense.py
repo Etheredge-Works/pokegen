@@ -34,8 +34,6 @@ class DenseEncoder(torch.nn.Module):
         self.activations_total = None
 
     def forward(self, x):
-        if self.activations_total is None:
-            self.activations_total = torch.Tensor([0.]).to(x.device)
 
         x = self.f(x)
         for layer in self.dense:

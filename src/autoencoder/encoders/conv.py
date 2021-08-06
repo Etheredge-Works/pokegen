@@ -72,8 +72,6 @@ class ConvEncoder(torch.nn.Module):
         self.activations_total = None
 
     def forward(self, x):
-        if self.activations_total is None:
-            self.activations_total = torch.tensor([0.0]).to(x.device)
 
         #for layer, batch_norm in self.convs:
         for layer, batch_norm in self.convs:

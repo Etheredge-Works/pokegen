@@ -71,8 +71,6 @@ class ConvDecoder(nn.Module):
         self.activations_total = None
 
     def forward(self, x):
-        if self.activations_total is None:
-            self.activations_total = torch.tensor([0.]).to(x.device)
 
         x = F.leaky_relu(self.fc(x))
         self.activations_total += self.act_reg_func(x)
