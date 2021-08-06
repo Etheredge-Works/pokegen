@@ -24,7 +24,7 @@ jobs:
     runs-on: [self-hosted,gpu,training]
 
     container:
-      image: etheredgeb/pokegen:cicd-${GITHUB_REF##*/}
+      image: etheredgeb/pokegen:cicd
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.MINIO_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.MINIO_AWS_SECRET_ACCESS_KEY }}
