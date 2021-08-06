@@ -81,6 +81,7 @@ def train_ae(
             iter_trainloader = tqdm(trainloader)
         else:
             iter_trainloader = trainloader
+
         for data in iter_trainloader:
             transformed_image_b, label_b = data['transformed_image'], data['label']
             transformed_image_b = transformed_image_b.to(device)
@@ -88,12 +89,12 @@ def train_ae(
             y_pred = ae(transformed_image_b)
 
             optimizer.zero_grad()
+            ae.reset()
             loss = ae.criterion(y_pred, transformed_image_b)
 
             loss.backward()
             torch.nn.utils.clip_grad_norm_(ae.parameters(), max_norm=1) #TODO param
             optimizer.step()
-            ae.reset()
 
             running_loss += loss.item()
             total += transformed_image_b.size(0)
