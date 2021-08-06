@@ -7,6 +7,7 @@ on:
   pull_request:
     branches: [ main ]
     paths:
+      - '.github/workflows/train_autoencoder.yml'
       - 'src/**'
       - 'dvc.yaml'
       - 'params.yaml'
