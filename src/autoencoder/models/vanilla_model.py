@@ -2,6 +2,8 @@ import torch
 from autoencoder.encoders import DenseEncoder, ConvEncoder
 from autoencoder.decoders import DenseDecoder, ConvDecoder
 
+# TODO cleanup
+DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class AutoEncoder(torch.nn.Module):
     def __init__(
@@ -33,6 +35,7 @@ class AutoEncoder(torch.nn.Module):
         self.decoder = decoder_constructor(latent_size, 
                                            input_shape,
                                            activation_regularization_func=reg_func)
+        self.reset()
     
     def forward(self, x):
         x = self.encoder(x)
@@ -52,6 +55,6 @@ class AutoEncoder(torch.nn.Module):
         return loss
     
     def reset(self):
-        self.decoder.activations_total = None
-        self.encoder.activations_total = None
+        self.decoder.activations_total = torch.tensor([0.0]).to(DEVICE)
+        self.encoder.activations_total = torch.tensor([0.0]).to(DEVICE)
 

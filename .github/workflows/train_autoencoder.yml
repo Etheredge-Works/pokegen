@@ -7,6 +7,7 @@ on:
   pull_request:
     branches: [ main ]
     paths:
+      - '.github/workflows/train_autoencoder.yml'
       - 'src/**'
       - 'dvc.yaml'
       - 'params.yaml'
@@ -23,13 +24,13 @@ jobs:
     runs-on: [self-hosted,gpu,training]
 
     container:
-      image: dvcorg/cml-py3
+      image: etheredgeb/pokegen:cicd
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.MINIO_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.MINIO_AWS_SECRET_ACCESS_KEY }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         SHOULD_TQDM: 0  # disables tqdm in 'src/train_ae.py'
-      options: --gpus all --shm-size=4G
+      options: --gpus all --shm-size=1G
     timeout-minutes: 1440  # Increased job runtime since ML is slow
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -37,40 +38,40 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: requirements
-        run: pip install -r requirements.txt -e .
+      - name: Install as local package
+        run: pip install -e .
 
       - name: pull_data
-        run: |
-          dvc pull data/external/sprites.dvc
+        run: dvc pull data/external/sprites.dvc
+
+      - name: pull_repros
+        continue-on-error: true
+        run: dvc pull train@ae_dense train@ae_conv train@vae_dense train@vae_conv
 
       - name: train_ae_dense
         run: |
-          dvc pull --run-cache train@ae_dense
-          dvc repro train@ae_dense
-          dvc push --run-cache train@ae_dense
+          dvc repro train@ae_dense  
+          dvc push train@ae_dense
 
-      - name: report_dense
+      - name: report_ae_dense
         run: |
           scripts/autoencoder_report.sh ae dense >> report.md
           cml-send-github-check report.md 
 
       - name: train_ae_conv
         run: |
-          dvc pull --run-cache train@ae_conv
           dvc repro train@ae_conv
-          dvc push --run-cache train@ae_conv
+          dvc push train@ae_conv
 
-      - name: report_conv
+      - name: report_ae_conv
         run: |
           scripts/autoencoder_report.sh ae conv >> report.md
           cml-send-github-check report.md 
 
       - name: train_vae_dense
         run: |
-          dvc pull --run-cache train@vae_dense
           dvc repro train@vae_dense
-          dvc push --run-cache train@vae_dense
+          dvc push train@vae_dense
 
       - name: report_vae_dense
         run: |
@@ -79,11 +80,10 @@ jobs:
 
       - name: train_vae_conv
         run: |
-          dvc pull --run-cache train@vae_conv
           dvc repro train@vae_conv
-          dvc push --run-cache train@vae_conv
+          dvc push train@vae_conv
 
-      - name: report_conv
+      - name: report_vae_conv
         run: |
           scripts/autoencoder_report.sh vae conv >> report.md
           cml-send-github-check report.md 

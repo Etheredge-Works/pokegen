@@ -32,8 +32,6 @@ class DenseDecoder(nn.Module):
 
     def forward(self, x):
         
-        if self.activations_total is None:
-            self.activations_total = torch.tensor([0.0]).to(x.device)
 
         for layer in self.dense:
             x = layer(x)

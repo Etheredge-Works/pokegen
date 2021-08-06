@@ -2,6 +2,8 @@ import torch
 from autoencoder.encoders import DenseEncoder, ConvEncoder
 from autoencoder.decoders import DenseDecoder, ConvDecoder
 
+# TODO cleanup
+DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 # Reference: https://debuggercafe.com/getting-started-with-variational-autoencoder-using-pytorch/
 class VAE(torch.nn.Module):
@@ -40,6 +42,7 @@ class VAE(torch.nn.Module):
         self.bce = torch.nn.MSELoss()
         self.log_scale = torch.nn.Parameter(torch.Tensor([0.0]))
         self.beta = beta
+        self.reset(0.0)
     
     @staticmethod
     def reparameterize(mu, log_var):
@@ -131,12 +134,12 @@ class VAE(torch.nn.Module):
         return loss
 
     def reset(self, beta=None):
-        self.decoder.activations_total = None
-        self.encoder.activations_total = None
+        self.decoder.activations_total = torch.tensor([0.]).to(DEVICE)
+        self.encoder.activations_total = torch.tensor([0.]).to(DEVICE)
         # https://stats.stackexchange.com/questions/341954/balancing-reconstruction-vs-kl-loss-variational-autoencoder
         #https://arxiv.org/pdf/1511.06349.pdf
         if beta is not None:
             self.beta = beta
         else:
-            self.beta = max(self.beta+0.003, 1.0)
+            self.beta = min(self.beta+0.003, 1.0)
         # TODO use mlflow and log both losses
