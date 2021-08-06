@@ -25,8 +25,8 @@ jobs:
     container:
       image: dvcorg/cml-py3
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.MINIO_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.MINIO_AWS_SECRET_ACCESS_KEY }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         SHOULD_TQDM: 0  # disables tqdm in 'src/train_ae.py'
       options: --gpus all --shm-size=4G
@@ -92,6 +92,12 @@ jobs:
         with:
           commit_message: "Latest Github Action DVC Run"
           file_pattern: dvc.lock
+
+      - name: main_push
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          run: dvc push -r s3
 
       # Update to final report
       - name: report_all

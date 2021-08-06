@@ -1,7 +1,9 @@
 [core]
-    remote = s3
+    remote = minio
+    
+['remote "s3"']
+    url = s3://etheredge-dvc/remote/pokegen
+
 ['remote "minio"']
     url = s3://dvc/remote/pokegen
     endpointurl = https://minio.etheredge.co
-['remote "s3"']
-    url = s3://etheredge-dvc/remote/pokegen
