@@ -30,7 +30,7 @@ jobs:
           file: cicd.Dockerfile
           push: true
           tags: etheredgeb/pokegen:cicd
--
+      -
         name: Build and push CI/CD Image
         id: docker_build
         uses: docker/build-push-action@v2
