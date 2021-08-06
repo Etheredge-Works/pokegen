@@ -3,7 +3,7 @@ name: Build Docker Images
 on:
   push:
     paths:
-      - '.github/workflow/cicd_docker_build.yaml'
+      - '.github/workflow/cicd_docker_build.yml'
       - '*Dockerfile'
       - 'requirements.txt'
 
