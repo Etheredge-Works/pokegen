@@ -46,8 +46,8 @@ jobs:
 
       - name: train_ae_dense
         run: |
-          dvc pull --run-cache train@ae_dense
-          dvc repro train@ae_dense
+          dvc pull --run-cache train@ae_dense ; \
+          dvc repro train@ae_dense  
           dvc push --run-cache train@ae_dense
 
       - name: report_ae_dense
@@ -57,7 +57,7 @@ jobs:
 
       - name: train_ae_conv
         run: |
-          dvc pull --run-cache train@ae_conv
+          dvc pull --run-cache train@ae_conv ; \
           dvc repro train@ae_conv
           dvc push --run-cache train@ae_conv
 
@@ -68,7 +68,7 @@ jobs:
 
       - name: train_vae_dense
         run: |
-          dvc pull --run-cache train@vae_dense
+          dvc pull --run-cache train@vae_dense ; \
           dvc repro train@vae_dense
           dvc push --run-cache train@vae_dense
 
@@ -79,7 +79,7 @@ jobs:
 
       - name: train_vae_conv
         run: |
-          dvc pull --run-cache train@vae_conv
+          dvc pull --run-cache train@vae_conv ; \
           dvc repro train@vae_conv
           dvc push --run-cache train@vae_conv
 
