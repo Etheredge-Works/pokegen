@@ -129,6 +129,8 @@ with open("params.yaml") as f:
 
 
 # TODO pull to config file
+def denormalize(data):
+    return data.mul(torch.as_tensor(config['normalize_mean'])).add(torch.as_tensor(config['normalize_std']))
 
 def get_loader(
     batch_size: int,
@@ -145,18 +147,20 @@ def get_loader(
     transform = T.Compose([
         #T.RandomRotation(90),
         #T.RandomVerticalFlip(),
-        #T.RandomHorizontalFlip(),
+        T.RandomHorizontalFlip(),
         T.Resize(resize_shape),
         #T.RandomResizedCrop(resize_shape),
         # TODO vertical flip and rot90
         T.ToTensor(),
-        #transforms.Normalize(normalize_mean, normalize_std)
+        T.Normalize(normalize_mean, normalize_std)
+        # TODO test moving norm up before resize
         #transforms.RandomErasing(),
     ])
 
     target_transform = T.Compose([
         T.Resize(resize_shape),
         T.ToTensor(),
+        T.Normalize(normalize_mean, normalize_std)
     ])
 
     ds = PokemonDataset(

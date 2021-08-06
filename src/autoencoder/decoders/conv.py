@@ -31,39 +31,39 @@ class ConvDecoder(nn.Module):
             #),
             (
                 nn.ConvTranspose2d(256, 256, 3, stride=1, padding=1, bias=False),
-                nn.BatchNorm2d(256)
+                #nn.BatchNorm2d(256)
             ),
             (
                 nn.ConvTranspose2d(256, 128, 3, stride=2, padding=1, output_padding=1, bias=False),
-                nn.BatchNorm2d(128)
+                #nn.BatchNorm2d(128)
             ),
             (
                 nn.ConvTranspose2d(128, 128, 3, stride=1, padding=1, bias=False),
-                nn.BatchNorm2d(128)
+                #nn.BatchNorm2d(128)
             ),
             (
                 nn.ConvTranspose2d(128, 64, 3, stride=2, padding=1, output_padding=1, bias=False),
-                nn.BatchNorm2d(64)
+                #nn.BatchNorm2d(64)
             ),
             (
                 nn.ConvTranspose2d(64, 64, 3, stride=1, padding=1, bias=False),
-                nn.BatchNorm2d(64)
+                #nn.BatchNorm2d(64)
             ),
             (
                 nn.ConvTranspose2d(64, 32, 3, stride=2, padding=1, output_padding=1, bias=False),
-                nn.BatchNorm2d(32)
+                #nn.BatchNorm2d(32)
             ),
             (
                 nn.ConvTranspose2d(32, 32, 3, stride=1,padding=1, bias=False),
-                nn.BatchNorm2d(32)
+                #nn.BatchNorm2d(32)
             ),
             (
                 nn.ConvTranspose2d(32, 16, 3, stride=2, padding=1, output_padding=1, bias=False),
-                nn.BatchNorm2d(16)
+                #nn.BatchNorm2d(16)
             ),
             (
                 nn.ConvTranspose2d(16, 16, 3, stride=1, padding=1, bias=False),
-                nn.BatchNorm2d(16)
+                #nn.BatchNorm2d(16)
             )
         ]
         self.convs = nn.ModuleList([nn.ModuleList(layer_group) for layer_group in conv_layers])
@@ -80,9 +80,10 @@ class ConvDecoder(nn.Module):
         x = self.unflatten(x)
         #x = x.view(x.size(0), x.size(1), 1, 1) 
 
-        for conv_layer, batch_norm_layer in self.convs:
+        #for conv_layer, batch_norm_layer in self.convs:
+        for conv_layer in self.convs:
             x = conv_layer(x)
-            x = batch_norm_layer(x)
+            #x = batch_norm_layer(x)
             F.leaky_relu_(x)
             self.activations_total += self.act_reg_func(x)
 

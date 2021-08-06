@@ -47,9 +47,12 @@ class VAE(torch.nn.Module):
         :param mu: mean from the encoder's latent space
         :param log_var: log variance from the encoder's latent space
         """
-        std = torch.exp(log_var / 2)
-        q = torch.distributions.Normal(mu, std)
-        z = q.rsample()
+        std = torch.exp(log_var * 0.5)
+        #q = torch.distributions.Normal(mu, std)
+        #z = q.rsample()
+        eps = torch.randn_like(std)
+        z = mu + (eps*std)
+
         return z, std
     
     # https://towardsdatascience.com/variational-autoencoder-demystified-with-pytorch-implementation-3a06bee395ed

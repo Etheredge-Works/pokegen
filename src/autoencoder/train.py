@@ -87,14 +87,13 @@ def train_ae(
             label_b = label_b.to(device)
             y_pred = ae(transformed_image_b)
 
+            optimizer.zero_grad()
             loss = ae.criterion(y_pred, transformed_image_b)
 
-            optimizer.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_norm_(ae.parameters(), max_norm=1) #TODO param
             optimizer.step()
             ae.reset()
-
 
             running_loss += loss.item()
             total += transformed_image_b.size(0)
@@ -188,7 +187,6 @@ def main(
         reg_rate,
         encoder_type, 
         decoder_type)
-    
 
     trainloader, valloader = sprites.get_loader(
         batch_size=batch_size,
