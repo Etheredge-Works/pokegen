@@ -30,4 +30,4 @@ jobs:
           context: .
           file: cicd.Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pokegen:cicd
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pokegen:cicd-${GITHUB_REF##*/}
