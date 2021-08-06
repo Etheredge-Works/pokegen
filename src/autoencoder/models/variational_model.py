@@ -138,5 +138,5 @@ class VAE(torch.nn.Module):
         if beta is not None:
             self.beta = beta
         else:
-            self.beta = max(self.beta+0.003, 1.0)
+            self.beta = min(self.beta+0.003, 1.0)
         # TODO use mlflow and log both losses
