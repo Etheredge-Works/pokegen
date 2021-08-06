@@ -24,7 +24,7 @@ jobs:
     runs-on: [self-hosted,gpu,training]
 
     container:
-      image: ${{ secrets.DOCKERHUB_USERNAME }}/pokegen:cicd
+      image: etheredgeb/pokegen:cicd-${GITHUB_REF##*/}
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.MINIO_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.MINIO_AWS_SECRET_ACCESS_KEY }}
