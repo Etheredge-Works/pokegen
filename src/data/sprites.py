@@ -152,7 +152,7 @@ def get_loader(
         #T.RandomResizedCrop(resize_shape),
         # TODO vertical flip and rot90
         T.ToTensor(),
-        T.Normalize(normalize_mean, normalize_std)
+        #T.Normalize(normalize_mean, normalize_std)
         # TODO test moving norm up before resize
         #transforms.RandomErasing(),
     ])
@@ -160,7 +160,7 @@ def get_loader(
     target_transform = T.Compose([
         T.Resize(resize_shape),
         T.ToTensor(),
-        T.Normalize(normalize_mean, normalize_std)
+        #T.Normalize(normalize_mean, normalize_std)
     ])
 
     ds = PokemonDataset(
