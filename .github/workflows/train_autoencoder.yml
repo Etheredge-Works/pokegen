@@ -44,9 +44,12 @@ jobs:
       - name: pull_data
         run: dvc pull data/external/sprites.dvc
 
+      - name: pull_repros
+        continue-on-error: true
+        run: dvc pull train@ae_dense train@ae_conv train@vae_dense train@vae_conv
+
       - name: train_ae_dense
         run: |
-          dvc pull train@ae_dense
           dvc repro train@ae_dense  
           dvc push train@ae_dense
 
@@ -57,7 +60,6 @@ jobs:
 
       - name: train_ae_conv
         run: |
-          dvc pull train@ae_conv
           dvc repro train@ae_conv
           dvc push train@ae_conv
 
@@ -68,7 +70,6 @@ jobs:
 
       - name: train_vae_dense
         run: |
-          dvc pull train@vae_dense
           dvc repro train@vae_dense
           dvc push train@vae_dense
 
@@ -79,7 +80,6 @@ jobs:
 
       - name: train_vae_conv
         run: |
-          dvc pull train@vae_conv
           dvc repro train@vae_conv
           dvc push train@vae_conv
 
