@@ -8,8 +8,22 @@ on:
 
 
 jobs:
-  build:
-    runs-on: [self-hosted,big-gpu,training]
+  setup_sql:
+    runs-on: [self-hosted,ec2,deploy]
+    env: 
+      DB_URL: ${{ secrets.DB_URL }}
+      PASSWORD: ${{ secrets.DB_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: deploy
+        run: docker-compose -f hyper/docker-compose.yaml up --build -d
+  
+
+  run:
+    runs-on: [self-hosted,gpu,training]
+    strategy:
+      matrix:
+        _: [1, 2, 3] # 3 gpu runners available
 
     container:
       image: etheredgeb/pokegen:cicd
@@ -18,6 +32,8 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.MINIO_AWS_SECRET_ACCESS_KEY }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         SHOULD_TQDM: 0  # disables tqdm in 'src/train_ae.py'
+        DB_URL: ${{ secrets.DB_URL }}
+        PASSWORD: ${{ secrets.DB_PASSWORD }}
       options: --gpus all --shm-size=1G
     timeout-minutes: 1440  # Increased job runtime since ML is slow
 
@@ -39,7 +55,7 @@ jobs:
         run: dvc pull --run-cache train@vae
 
       - name: hyper
-        run: python src/hyper/run.py vae 100 reports/hyper.yaml
+        run: python src/hyper/run.py vae 1 reports/hyper.yaml
 
       - name: repoort
         run: |

@@ -41,7 +41,16 @@ def main(name, trails_count, param_path):
             result = log['val_loss']
         return result
 
-    study = optuna.create_study(direction="minimize")
+
+    db_url = os.environ.get('DB_URL')
+    db_password = os.environ.get('DB_PASSWORD')
+    if db_url is None or db_password:
+        study = optuna.create_study(direction="minimize")
+    else:
+        study = optuna.create_study(
+            direction="minimize",
+            load_if_exists=True,
+            storage=f"mysql://user:{db_password}@{db_url}")
     study.optimize(objective, n_trials=trails_count)
     print(study.best_params)
     with open(param_path) as f:

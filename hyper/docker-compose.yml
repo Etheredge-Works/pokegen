@@ -1,0 +1,22 @@
+version: "3.9"
+    
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: {PASSWORD}
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: ${PASSWORD}
+    export:
+      - 3306 
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pokegen_hyper_db.rule=Host(`${DB_URL}`)"
+      - "traefik.http.routers.pokegen_hyper_db.entrypoints=websecure"
+      - "traefik.http.routers.pokegen_hyper_db.tls.certresolver=myresolver"
+    
+volumes:
+  db_data: {}
+  wordpress_data: {}
