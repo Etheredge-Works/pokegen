@@ -1,0 +1,47 @@
+# This is a basic workflow to help you get started with Actions
+
+name: VAE Hypers
+
+# Controls when the action will run. 
+on:
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: [self-hosted,big-gpu,training]
+
+    container:
+      image: etheredgeb/pokegen:cicd
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.MINIO_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.MINIO_AWS_SECRET_ACCESS_KEY }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        SHOULD_TQDM: 0  # disables tqdm in 'src/train_ae.py'
+      options: --gpus all --shm-size=1G
+    timeout-minutes: 1440  # Increased job runtime since ML is slow
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }} # https://github.com/stefanzweifel/git-auto-commit-action
+
+      - name: Install as local package
+        run: pip install -e .
+
+      - name: pull_data
+        run: dvc pull data/external/sprites.dvc
+
+      - name: pull_repros
+        continue-on-error: true
+        run: dvc pull --run-cache train@vae
+
+      - name: hyper
+        run: python src/hyper/run.py vae
+          
+      - name: report
+        run: |
+          scripts/hyper_report.sh vae >> report.md
+          cml-send-github-check report.md 
