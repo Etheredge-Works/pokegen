@@ -117,7 +117,7 @@ def train_ae(
                 running_loss += loss.item()
                 total += label_b.size(0)
             
-            if epoch % (epochs//30) == 0 or epoch == (epochs-1):
+            if epoch % (epochs//10) == 0 or epoch == (epochs-1):
                 generations = ae.generate(random_tensors)
                 utils.save(
                     generations.cpu(),
