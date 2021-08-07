@@ -34,7 +34,7 @@ def main(name, trails_count, param_path):
                        f"train@{name}"]
         command_txt = " ".join(command)
         print(command_txt)
-        subprocess.run(command, shell=True)
+        subprocess.run(command_txt, shell=True)
 
         with open(f"reports/{name}/{name}/logs.json") as f:
             log = yaml.safe_load(f)
