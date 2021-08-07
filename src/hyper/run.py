@@ -28,13 +28,13 @@ def main(name, trails_count, param_path):
             #params[f"{name}.reg_rate"] = trial.suggest_float(
                 #"reg_rate", 1e-10, 1, log=True),
 
-        param_list = [f"-S {key}={value}" for key, value in params.items()]
+        param_list = [f"--set-param {key}={value}" for key, value in params.items()]
         command = ["dvc", "exp", "run", 
                         " ".join(param_list),
                        f"train@{name}"]
         command_txt = " ".join(command)
         print(command_txt)
-        subprocess.run(command)
+        subprocess.run(command, shell=True)
 
         with open(f"reports/{name}/{name}/logs.json") as f:
             log = yaml.safe_load(f)
