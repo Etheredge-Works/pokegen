@@ -36,19 +36,19 @@ stages:
       metrics:
         - ${item.log_dir}/logs.json
 
-  create_serving_model:
-    foreach: ${autoencoders}
-    do:
-      cmd: >
-        torch-model-archiver 
-        --model-file ${item.model_file}
-        --model-name ${item.model}_${item.type} 
-        --serialized-file ${item.model_path}.pt
-        -v 1.0 
-        --handler image_classifier 
-        --export-path models/serving
-      deps:
-        - ${item.model_path}.pt
-        - ${item.model_path}_kwargs.yaml
-      outs:
-        - models/serving/${item.model}_${item.type}.mar
+  #create_serving_model:
+    #foreach: ${autoencoders}
+    #do:
+      #cmd: >
+        #torch-model-archiver 
+        #--model-file ${item.model_file}
+        #--model-name ${item.model}_${item.type} 
+        #--serialized-file ${item.model_path}.pt
+        #-v 1.0 
+        #--handler image_classifier 
+        #--export-path models/serving
+      #deps:
+        #- ${item.model_path}.pt
+        #- ${item.model_path}_kwargs.yaml
+      #outs:
+        #- models/serving/${item.model}_${item.type}.mar
