@@ -41,7 +41,3 @@ jobs:
       - name: hyper
         run: python src/hyper/run.py vae
           
-      - name: report
-        run: |
-          scripts/hyper_report.sh vae >> report.md
-          cml-send-github-check report.md 
