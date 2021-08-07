@@ -10,7 +10,7 @@ class DenseDecoder(nn.Module):
         latent_shape, 
         output_shape, 
         activation_regularization_func=lambda _: 0,
-        node_count=256,
+        node_count=512,
     ):
         super(DenseDecoder, self).__init__()
 
