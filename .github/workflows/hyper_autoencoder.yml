@@ -39,5 +39,10 @@ jobs:
         run: dvc pull --run-cache train@vae
 
       - name: hyper
-        run: python src/hyper/run.py vae
+        run: python src/hyper/run.py vae 100 reports/hyper.yaml
+
+      - name: repoort
+        run: |
+          ./script/hyper_report.sh reports/hyper.yaml > report.md
+          cml-send-github-check report.md 
           
