@@ -9,7 +9,7 @@ on:
 
 jobs:
   setup_sql:
-    runs-on: [self-hosted,ec2,deploy]
+    runs-on: [self-hosted,ec2-micro,deploy]
     env: 
       DB_URL: ${{ secrets.DB_URL }}
       PASSWORD: ${{ secrets.DB_PASSWORD }}
