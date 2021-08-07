@@ -12,6 +12,17 @@ lr: 0.001
 val_ratio: 0.1
 
 autoencoders:
+  vae:
+    type: conv
+    model: vae
+    log_dir: reports/vae/vae
+    model_src: src/autoencoder/models/variational_model.py
+    encoder_src: src/autoencoder/encoders/conv.py
+    decoder_src: src/autoencoder/decoders/conv.py
+    model_path: models/vae
+    reg_rate: 0.01
+    reg_type: l1
+    model_file: src/autoencoder/models/variational_model.py
 
   vae_dense:
     type: dense

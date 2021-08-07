@@ -22,7 +22,7 @@ class AutoEncoder(torch.nn.Module):
         elif reg_type == 'l2':
             reg_func = lambda x: reg_rate * torch.sqrt((x**2).sum()) # TODO switch to norm
         else:
-            raise ValueError
+            reg_func = lambda _: 0
 
         self.input_shape = input_shape
         self.latent_size = latent_size
