@@ -1,13 +1,13 @@
-md5: c9433282dce1ba412186052f9e6e7f64
+md5: efdd79d359932fa77f2f6b3f149144f4
 frozen: true
 deps:
 - path: sprites
   repo:
     url: https://github.com/PokeAPI/sprites.git
-    rev: d41c408f7e5be9848260f470e34069c264091a69
-    rev_lock: d41c408f7e5be9848260f470e34069c264091a69
+    rev: 620b6da2dbf05241d1c93ceffac5e6bc6da05e74
+    rev_lock: 620b6da2dbf05241d1c93ceffac5e6bc6da05e74
 outs:
-- md5: 23e143a3d4f7b30548cd966a889e3b87.dir
+- md5: 640cb98abd46245d2ce478deb25ee8e1.dir
   size: 387131152
   nfiles: 45310
   path: sprites
