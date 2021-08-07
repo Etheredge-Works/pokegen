@@ -20,9 +20,9 @@ def main(name, trails_count, param_path):
             "latent_size": trial.suggest_int("latent_size", 1, 512),
             "batch_size": trial.suggest_int("batch_size", 1, 1024),
             "lr": trial.suggest_float("lr", 1e-6, 1e-2, log=True),
-            f"{name}.reg_type": trial.suggest_categorical("reg_type", ['l1', 'l2', None]),
-            f"{name}.type": trial.suggest_categorical("type", ['conv', 'dense']),
-            f"{name}.reg_rate": trial.suggest_float("reg_rate", 1e-10, 1, log=True),
+            f"autoencoders.{name}.reg_type": trial.suggest_categorical("reg_type", ['l1', 'l2', None]),
+            f"autoencoders.{name}.type": trial.suggest_categorical("type", ['conv', 'dense']),
+            f"autoencoders.{name}.reg_rate": trial.suggest_float("reg_rate", 1e-10, 1, log=True),
         }
         #if params[f"{name}.reg_type"] is not None:
             #params[f"{name}.reg_rate"] = trial.suggest_float(
