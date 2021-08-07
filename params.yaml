@@ -33,7 +33,7 @@ autoencoders:
     decoder_src: src/autoencoder/decoders/dense.py
     model_path: models/vae_dense
     reg_rate: 0.01
-    reg_type: l1
+    reg_type: l2
     model_file: src/autoencoder/models/variational_model.py
 
   vae_conv:
@@ -45,7 +45,7 @@ autoencoders:
     decoder_src: src/autoencoder/decoders/conv.py
     model_path: models/vae_conv
     reg_rate: 0.001
-    reg_type: l1
+    reg_type: l2
     model_file: src/autoencoder/models/variational_model.py
 
   ae_dense:
@@ -57,7 +57,7 @@ autoencoders:
     decoder_src: src/autoencoder/decoders/dense.py
     model_path: models/ae_dense
     reg_rate: 0.01
-    reg_type: l1
+    reg_type: l2
     model_file: src/autoencoder/models/vanilla_model.py
 
   ae_conv:
@@ -69,7 +69,7 @@ autoencoders:
     decoder_src: src/autoencoder/decoders/conv.py
     model_path: models/ae_conv
     reg_rate: 0.001
-    reg_type: l1
+    reg_type: l2
     model_file: src/autoencoder/models/vanilla_model.py
 ' epochs': 5 -S latent_size=51 -S batch_size=35 -S lr=3.128223625896539e-06 -S vae.reg_type=l1
   -S vae.type=conv -S vae.reg_rate=4.725503044311088e-10
