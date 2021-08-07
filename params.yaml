@@ -71,5 +71,3 @@ autoencoders:
     reg_rate: 0.001
     reg_type: l2
     model_file: src/autoencoder/models/vanilla_model.py
-' epochs': 5 -S latent_size=1 -S batch_size=25 -S lr=1.5162410352129217e-06 -S vae.reg_type=l1
-  -S vae.type=conv -S vae.reg_rate=5.582744387235447e-07
