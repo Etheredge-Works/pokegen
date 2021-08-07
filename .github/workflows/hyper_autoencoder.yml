@@ -20,6 +20,7 @@ jobs:
   
 
   run:
+    needs: setup_sql
     runs-on: [self-hosted,gpu,training]
     strategy:
       matrix:
@@ -33,7 +34,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         SHOULD_TQDM: 0  # disables tqdm in 'src/train_ae.py'
         DB_URL: ${{ secrets.DB_URL }}
-        PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       options: --gpus all --shm-size=1G
     timeout-minutes: 1440  # Increased job runtime since ML is slow
 
