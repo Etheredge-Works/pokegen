@@ -19,12 +19,13 @@ class VAE(torch.nn.Module):
     ):
         super(VAE, self).__init__()
 
+        # TODO pull out
         if reg_type == 'l1':
             reg_func = lambda x: reg_rate * x.abs().sum()
         elif reg_type == 'l2':
             reg_func = lambda x: reg_rate * torch.sqrt((x**2).sum())
         else:
-            raise ValueError
+            reg_func = lambda _: 0
 
         self.input_shape = input_shape
         self.latent_size = latent_size
