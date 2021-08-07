@@ -17,7 +17,6 @@ def main(name, trails_count, param_path):
         
         params = {
             "epochs": trial.suggest_int("epochs", 10, 1000, step=5),
-            "epochs": 5,
             "latent_size": trial.suggest_int("latent_size", 1, 512),
             "batch_size": trial.suggest_int("batch_size", 1, 1024),
             "lr": trial.suggest_float("lr", 1e-6, 1e-2, log=True),
@@ -30,8 +29,9 @@ def main(name, trails_count, param_path):
                 #"reg_rate", 1e-10, 1, log=True),
 
         param_list = [f"-S {key}={value}" for key, value in params.items()]
-        command = ["dvc", "exp", "run", f"train@{name}",
-                        " ".join(param_list)]
+        command = ["dvc", "exp", "run", 
+                        " ".join(param_list),
+                       f"train@{name}"]
         command_txt = " ".join(command)
         print(command_txt)
         subprocess.run(command)
