@@ -72,7 +72,7 @@ jobs:
       - name: hyper
         run: |
           git config --global user.name "Benjamin Etheredge"
-          git config --global user.email "benjamin.etheredge@gmail.com
+          git config --global user.email "benjamin.etheredge@gmail.com"
           python src/hyper/run.py vae 1000 reports/hyper.yaml
 
       - name: report
