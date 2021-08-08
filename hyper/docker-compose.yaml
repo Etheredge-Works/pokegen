@@ -15,9 +15,10 @@ services:
       - traefik_proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pokegen_hyper_db.rule=Host(`${DB_URL}`)"
+      - "traefik.http.routers.pokegen_hyper_db.rule=HostSNI(`${DB_URL}`)"
       - "traefik.http.routers.pokegen_hyper_db.entrypoints=websecure"
-      - "traefik.http.routers.pokegen_hyper_db.tls.certresolver=myresolver"
+      - "traefik.http.routers.pokegen_hyper_db.tls.certresolver=sql"
+      - "traefik.tcp.services.pokegen_hyper_db.loadbalancer.server.port=3306"
     
 networks:
     traefik_proxy:
