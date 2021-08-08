@@ -32,10 +32,10 @@ jobs:
 
   sweeper:
     needs: setup_sql
-    runs-on: [self-hosted,gpu,training]
+    runs-on: [self-hosted,big-gpu,training]
     strategy:
       matrix:
-        _: [1, 2, 3] # 3 gpu runners available
+        _: [1, 2] # 3 gpu runners available
 
     container:
       image: etheredgeb/pokegen:cicd
