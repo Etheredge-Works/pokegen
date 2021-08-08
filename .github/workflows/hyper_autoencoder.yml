@@ -16,6 +16,7 @@ concurrency: hyper
 jobs:
   setup_sql:
     runs-on: [self-hosted,ec2-micro,deploy]
+    timeout-minutes: 10
     env: 
       DB_URL: ${{ secrets.DB_URL }}
       # TODO swap this for random value
@@ -29,6 +30,7 @@ jobs:
     if: always()
     needs: [setup_sql, sweeper]
     runs-on: [self-hosted,ec2-micro,deploy]
+    timeout-minutes: 10
     env: 
       DB_URL: ${{ secrets.DB_URL }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
@@ -40,6 +42,7 @@ jobs:
   sweeper:
     needs: setup_sql
     runs-on: [self-hosted,gpu,training]
+    timeout-minutes: 1440  # Increased job runtime since ML is slow
     strategy:
       fail-fast: false
       matrix:
@@ -55,7 +58,6 @@ jobs:
         DB_URL: ${{ secrets.DB_URL }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       options: --gpus all --shm-size=1G
-    timeout-minutes: 1440  # Increased job runtime since ML is slow
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
