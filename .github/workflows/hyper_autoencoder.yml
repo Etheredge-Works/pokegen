@@ -6,6 +6,7 @@ name: VAE Hypers
 on:
   workflow_dispatch:
 
+concurrency: hyper
 
 jobs:
   setup_sql:
@@ -33,7 +34,7 @@ jobs:
 
   sweeper:
     needs: setup_sql
-    runs-on: [self-hosted,big-gpu,training]
+    runs-on: [self-hosted,gpu,training]
     strategy:
       fail-fast: false
       matrix:
