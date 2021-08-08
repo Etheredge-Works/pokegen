@@ -48,7 +48,7 @@ jobs:
 
       - name: pull_repros
         continue-on-error: true
-        run: dvc pull --run-cache train@ae_dense train@ae_conv train@vae_dense train@vae_conv
+        run: dvc pull --run-cache train@ae_dense train@ae_conv train@vae_dense train@vae_conv train@vae
 
       - name: train_ae_dense
         run: |
@@ -88,6 +88,16 @@ jobs:
       - name: report_vae_conv
         run: |
           scripts/autoencoder_report.sh vae conv >> report.md
+          cml-send-github-check report.md 
+
+      - name: train_vae
+        run: |
+          dvc repro train@vae
+          dvc push train@vae
+
+      - name: report_vae
+        run: |
+          scripts/autoencoder_report.sh vae vae >> report.md
           cml-send-github-check report.md 
 
       - uses: stefanzweifel/git-auto-commit-action@v4
