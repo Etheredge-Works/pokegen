@@ -6,7 +6,7 @@ pillow==8.2.0
 
 # Optuna
 optuna==2.9.1
-mysqlclient==2.0.3
+mysqlclient
 
 # Torch
 -f https://download.pytorch.org/whl/torch_stable.html
