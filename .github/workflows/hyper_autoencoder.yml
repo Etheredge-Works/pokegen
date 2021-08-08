@@ -69,7 +69,7 @@ jobs:
         run: dvc pull --run-cache train@vae
 
       - name: hyper
-        run: python src/hyper/run.py vae 1 reports/hyper.yaml
+        run: python src/hyper/run.py vae 10 reports/hyper.yaml
 
       - name: report
         run: |
