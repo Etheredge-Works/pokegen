@@ -103,13 +103,11 @@ jobs:
 
       - name: report_all
         if: steps.auto-commit-action.outputs.changes_detected == 'true'
-        run: |
-          scripts/all_autoencoder_reports.sh > report.md
+        run: scripts/all_autoencoder_reports.sh > report.md
 
       - name: no_changes
         if: steps.auto-commit-action.outputs.changes_detected == 'false'
-        run: |
-          echo "No changes" > report.md
+        run: echo "No changes" > report.md
 
       - name: final_report
-          cml-send-comment report.md
+        run: cml-send-comment report.md
