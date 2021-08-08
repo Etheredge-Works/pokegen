@@ -37,7 +37,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        _: [1, 2] # 3 gpu runners available
+        _: [1, 2, 3] # 3 gpu runners available
 
     container:
       image: etheredgeb/pokegen:cicd
