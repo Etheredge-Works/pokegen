@@ -48,7 +48,7 @@ jobs:
 
       - name: pull_repros
         continue-on-error: true
-        run: dvc pull train@ae_dense train@ae_conv train@vae_dense train@vae_conv
+        run: dvc pull --run-cache train@ae_dense train@ae_conv train@vae_dense train@vae_conv
 
       - name: train_ae_dense
         run: |
