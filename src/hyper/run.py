@@ -11,7 +11,7 @@ import os
 @click.argument('name', type=click.STRING)
 @click.argument('trails-count', type=click.INT)
 @click.argument('param-path', type=click.Path())
-@click.argument('log-path', type=click.Path())
+@click.argument('log-path', type=click.Path(), default='/tmp/logs')
 def main(name, trails_count, param_path, log_path):
 
     def objective(trial):
@@ -36,7 +36,7 @@ def main(name, trails_count, param_path, log_path):
         print(command_text)
         subprocess.run(command_text, shell=True)
 
-        with open(f"reports/{name}/{name}/logs.json") as f:
+        with open(f"{log_path}/logs.json") as f:
             log = yaml.safe_load(f)
             result = log['val_loss']
         return result
