@@ -57,4 +57,7 @@ class AutoEncoder(torch.nn.Module):
     def reset(self):
         self.decoder.activations_total = torch.tensor([0.0]).to(DEVICE)
         self.encoder.activations_total = torch.tensor([0.0]).to(DEVICE)
+    
+    def epoch_reset(self):
+        pass
 

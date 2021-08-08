@@ -128,6 +128,9 @@ def train_ae(
 
         dvclive.next_step()
         scheduler.step()
+
+        ae.epoch_reset()
+
     utils.make_gifs(str(gen_dir))
 
     # save off some final results
