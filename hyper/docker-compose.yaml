@@ -9,7 +9,7 @@ services:
       MYSQL_DATABASE: db
       MYSQL_USER: user
       MYSQL_PASSWORD: ${DB_PASSWORD}
-    export:
+    expose:
       - 3306 
     labels:
       - "traefik.enable=true"
