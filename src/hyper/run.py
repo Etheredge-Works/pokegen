@@ -44,7 +44,7 @@ def main(name, trails_count, param_path):
 
     db_url = os.environ.get('DB_URL')
     db_password = os.environ.get('DB_PASSWORD')
-    if db_url is None or db_password:
+    if db_url is None or db_password is None:
         study = optuna.create_study(direction="minimize")
     else:
         study = optuna.create_study(
