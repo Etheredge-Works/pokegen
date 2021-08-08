@@ -5,10 +5,10 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: {PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: db
       MYSQL_USER: user
-      MYSQL_PASSWORD: ${PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     export:
       - 3306 
     labels:

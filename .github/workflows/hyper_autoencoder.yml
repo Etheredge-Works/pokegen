@@ -12,7 +12,7 @@ jobs:
     runs-on: [self-hosted,ec2-micro,deploy]
     env: 
       DB_URL: ${{ secrets.DB_URL }}
-      PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       - name: deploy
