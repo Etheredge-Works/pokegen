@@ -11,30 +11,30 @@ import os
 @click.argument('name', type=click.STRING)
 @click.argument('trails-count', type=click.INT)
 @click.argument('param-path', type=click.Path())
-def main(name, trails_count, param_path):
+@click.argument('log-path', type=click.Path())
+def main(name, trails_count, param_path, log_path):
 
     def objective(trial):
         
-        params = {
-            "epochs": trial.suggest_int("epochs", 10, 1000, step=5),
-            "latent_size": trial.suggest_int("latent_size", 1, 512),
-            "batch_size": trial.suggest_int("batch_size", 1, 1024),
-            "lr": trial.suggest_float("lr", 1e-6, 1e-2, log=True),
-            f"autoencoders.{name}.reg_type": trial.suggest_categorical("reg_type", ['l1', 'l2', None]),
-            f"autoencoders.{name}.type": trial.suggest_categorical("type", ['conv', 'dense']),
-            f"autoencoders.{name}.reg_rate": trial.suggest_float("reg_rate", 1e-10, 1, log=True),
-        }
-        #if params[f"{name}.reg_type"] is not None:
-            #params[f"{name}.reg_rate"] = trial.suggest_float(
-                #"reg_rate", 1e-10, 1, log=True),
+        command = [
+            f"python", "src/autoencoder/train.py",
+            f"--encoder-type {trial.suggest_categorical('encoder_type', ['conv', 'dense'])}",
+            f"--decoder-type {trial.suggest_categorical('decoder_type', ['conv', 'dense'])}",
+            f"--ae-type {name}",
+            f"--model-path /tmp/model",
+            f"--epochs {trial.suggest_int('epochs', 10, 1000, step=5)}",
+            f"--batch-size {trial.suggest_int('batch_size', 1, 1024)}",
+            f"--latent-size {trial.suggest_int('latent_size', 1, 512)}",
+            f"--log-dir {log_path}",
+            f"--lr {trial.suggest_float('lr', 1e-6, 1e-2, log=True)}",
+            f"--val-ratio 0.1",
+            f"--reg-rate {trial.suggest_float('reg_rate', 1e-10, 1, log=True)}",
+            f"--reg-type {trial.suggest_categorical('reg_type', ['l1', 'l2', None])}",
+        ]
 
-        param_list = [f"--set-param {key}={value}" for key, value in params.items()]
-        command = ["dvc", "exp", "run", 
-                        " ".join(param_list),
-                       f"train@{name}"]
-        command_txt = " ".join(command)
-        print(command_txt)
-        subprocess.run(command_txt, shell=True)
+        command_text = " ".join(command)
+        print(command_text)
+        subprocess.run(command_text, shell=True)
 
         with open(f"reports/{name}/{name}/logs.json") as f:
             log = yaml.safe_load(f)
