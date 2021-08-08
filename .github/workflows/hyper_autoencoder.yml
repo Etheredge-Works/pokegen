@@ -5,6 +5,11 @@ name: VAE Hypers
 # Controls when the action will run. 
 on:
   workflow_dispatch:
+    inputs:
+      n_trails:
+        description: "Number of Trials"
+        required: true
+        default: 100
 
 concurrency: hyper
 
@@ -72,11 +77,13 @@ jobs:
       - name: hyper
         run: |
           git config --global user.name "Benjamin Etheredge"
-          git config --global user.email "benjamin.etheredge@gmail.com
-          python src/hyper/run.py vae 1000 reports/hyper.yaml
+          git config --global user.email "benjamin.etheredge@gmail.com"
+          python src/hyper/run.py vae ${{ github.event.inputs.n_trails }} reports/hyper.yaml
 
       - name: report
         run: |
           ./script/hyper_report.sh reports/hyper.yaml > report.md
           cml-send-github-check report.md 
+      # TODO retrain with best params (dvc will maybe have it in cache)
+      # check in dvc.lock with latest run
           
