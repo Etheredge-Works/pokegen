@@ -1,3 +1,5 @@
+# TODO could be cool to have a build branch
+#      that shinks down docker files
 FROM dvcorg/cml-py3
 COPY requirements.txt /tmp/pip-tmp/
 # NOTE can be made smaller, but it makes failure harder to debug
