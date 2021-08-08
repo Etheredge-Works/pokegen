@@ -18,6 +18,16 @@ jobs:
       - name: deploy
         run: docker-compose -f hyper/docker-compose.yaml up --build -d
   
+  down_sql:
+    needs: run
+    runs-on: [self-hosted,ec2-micro,deploy]
+    env: 
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: deploy
+        run: docker-compose -f hyper/docker-compose.yaml down --remove-orphans
 
   run:
     needs: setup_sql
