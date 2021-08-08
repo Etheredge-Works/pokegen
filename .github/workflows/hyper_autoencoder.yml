@@ -12,6 +12,7 @@ jobs:
     runs-on: [self-hosted,ec2-micro,deploy]
     env: 
       DB_URL: ${{ secrets.DB_URL }}
+      # TODO swap this for random value
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
