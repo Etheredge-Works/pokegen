@@ -73,7 +73,7 @@ def train_ae(
         total_steps=epochs)
 
     for epoch in range(epochs):
-        print(f"{epoch}/{epochs}")
+        #print(f"{epoch}/{epochs}")
         running_loss = 0
         total = 0 # use total as drop_last=True
         ae.train()
@@ -99,7 +99,7 @@ def train_ae(
             running_loss += loss.item()
             total += transformed_image_b.size(0)
 
-        print(f"loss: {running_loss/total}")
+        #print(f"loss: {running_loss/total}")
         dvclive.log("loss", running_loss/total, epoch)
         dvclive.log("lr", scheduler.get_last_lr()[0])
         ae.eval()
@@ -124,7 +124,7 @@ def train_ae(
                     str(gen_dir),
                     epoch)
         dvclive.log("val_loss", running_loss/total, epoch)
-        print(f"val_loss: {running_loss/total}")
+        #print(f"val_loss: {running_loss/total}")
 
         dvclive.next_step()
         scheduler.step()
