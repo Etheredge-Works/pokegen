@@ -70,7 +70,10 @@ jobs:
         run: dvc pull --run-cache train@vae
 
       - name: hyper
-        run: python src/hyper/run.py vae 10 reports/hyper.yaml
+        run: |
+          git config --global user.name "Benjamin Etheredge"
+          git config --global user.email "benjamin.etheredge@gmail.com
+          python src/hyper/run.py vae 1000 reports/hyper.yaml
 
       - name: report
         run: |
