@@ -101,8 +101,15 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: dvc push -r s3
 
-      # Update to final report
       - name: report_all
+        if: steps.auto-commit-action.outputs.changes_detected == 'true'
         run: |
           scripts/all_autoencoder_reports.sh > report.md
+
+      - name: no_changes
+        if: steps.auto-commit-action.outputs.changes_detected == 'false'
+        run: |
+          echo "No changes" > report.md
+
+      - name: final_report
           cml-send-comment report.md
