@@ -11,12 +11,15 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
     expose:
       - 3306 
+    networks:
+      - traefik_proxy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pokegen_hyper_db.rule=Host(`${DB_URL}`)"
       - "traefik.http.routers.pokegen_hyper_db.entrypoints=websecure"
       - "traefik.http.routers.pokegen_hyper_db.tls.certresolver=myresolver"
     
-volumes:
-  db_data: {}
-  wordpress_data: {}
+networks:
+    traefik_proxy:
+        external:
+            name: "traefik_proxy"
