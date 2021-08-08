@@ -51,7 +51,7 @@ def main(name, trails_count, param_path):
             study_name='aehyper',
             direction="minimize",
             load_if_exists=True,
-            storage=f"mysql://user:{db_password}@{db_url}")
+            storage=f"mysql://root:{db_password}@{db_url}/db")
     study.optimize(objective, n_trials=trails_count)
     print(study.best_params)
     with open(param_path) as f:
