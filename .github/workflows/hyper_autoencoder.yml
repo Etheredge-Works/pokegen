@@ -29,7 +29,7 @@ jobs:
       - name: deploy
         run: docker-compose -f hyper/docker-compose.yaml down --remove-orphans
 
-  run:
+  sweeper:
     needs: setup_sql
     runs-on: [self-hosted,gpu,training]
     strategy:
@@ -68,7 +68,7 @@ jobs:
       - name: hyper
         run: python src/hyper/run.py vae 1 reports/hyper.yaml
 
-      - name: repoort
+      - name: report
         run: |
           ./script/hyper_report.sh reports/hyper.yaml > report.md
           cml-send-github-check report.md 
