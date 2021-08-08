@@ -48,6 +48,7 @@ def main(name, trails_count, param_path):
         study = optuna.create_study(direction="minimize")
     else:
         study = optuna.create_study(
+            study_name='aehyper'
             direction="minimize",
             load_if_exists=True,
             storage=f"mysql://user:{db_password}@{db_url}")
