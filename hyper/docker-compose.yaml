@@ -15,10 +15,11 @@ services:
       - traefik_proxy
     labels:
     - "traefik.enable=true"
-      - "traefik.tcp.routers.pokegen_hyper_db.rule=HostSNI(`*`)"
-      - "traefik.tcp.routers.pokegen_hyper_db.entrypoints=sql"
-      # TODO figure out tcp tls
-      - "traefik.tcp.services.pokegen_hyper_db.loadbalancer.server.port=3306"
+    # Figure out domain name for tcp
+    - "traefik.tcp.routers.pokegen_hyper_db.rule=HostSNI(`*`)"
+    - "traefik.tcp.routers.pokegen_hyper_db.entrypoints=sql"
+    # TODO figure out tcp tls
+    - "traefik.tcp.services.pokegen_hyper_db.loadbalancer.server.port=3306"
     
 networks:
     traefik_proxy:
