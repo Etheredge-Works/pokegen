@@ -35,9 +35,9 @@ jobs:
     needs: setup_sql
     runs-on: [self-hosted,big-gpu,training]
     strategy:
+      fail-fast: false
       matrix:
         _: [1, 2] # 3 gpu runners available
-        fail-fast: false
 
     container:
       image: etheredgeb/pokegen:cicd
