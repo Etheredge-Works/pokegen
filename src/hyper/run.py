@@ -5,6 +5,7 @@ import click
 import yaml
 import os
 import shutil
+os.environ['SHOULD_TQDM'] = '0'
 
 
 #@optuna.integration.try_gpu() where did copilot get this?
@@ -42,9 +43,7 @@ def main(name, trails_count, param_path, log_path):
         with open(f"{log_path}/logs.json") as f:
             log = yaml.safe_load(f)
             result = log['val_loss']
-        shutil.rmtree(log_path, ignore_errors=True)
         return result
-
 
     db_url = os.environ.get('DB_URL')
     db_password = os.environ.get('DB_PASSWORD')

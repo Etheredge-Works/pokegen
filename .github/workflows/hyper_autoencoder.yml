@@ -80,11 +80,11 @@ jobs:
         run: |
           git config --global user.name "Benjamin Etheredge"
           git config --global user.email "benjamin.etheredge@gmail.com"
-          python src/hyper/run.py vae ${{ github.event.inputs.n_trails }} reports/hyper.yaml
+          python src/hyper/run.py vae ${{ github.event.inputs.n_trails }} best.yaml
 
       - name: report
         run: |
-          cat reports/hyper.yaml > report.md
+          cat best.yaml > report.md
           cml-send-github-check report.md 
       # TODO retrain with best params (dvc will maybe have it in cache)
       # check in dvc.lock with latest run
