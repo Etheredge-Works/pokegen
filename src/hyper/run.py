@@ -40,9 +40,12 @@ def main(name, trails_count, param_path, log_path):
         print(command_text)
         subprocess.run(command_text, shell=True)
 
-        with open(f"{log_path}/logs.json") as f:
-            log = yaml.safe_load(f)
-            result = log['val_loss']
+        try:
+            with open(f"{log_path}/logs.json") as f:
+                log = yaml.safe_load(f)
+                result = log['val_loss']
+        except FileNotFoundError:
+            result = float('inf')
         return result
 
     db_url = os.environ.get('DB_URL')
