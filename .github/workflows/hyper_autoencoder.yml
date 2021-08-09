@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       duration:
-        description: "Number of Seconds to run on each runner"
+        description: "Number of seconds to run on each runner"
         required: true
         default: 7200 # 2 hours
 
