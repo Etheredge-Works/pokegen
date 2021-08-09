@@ -86,6 +86,7 @@ jobs:
         run: |
           cat best.yaml > report.md
           cml-send-github-check report.md 
+          cml-send-comment report.md
       # TODO retrain with best params (dvc will maybe have it in cache)
       # check in dvc.lock with latest run
           
