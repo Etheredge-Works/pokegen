@@ -6,10 +6,10 @@ name: VAE Hypers
 on:
   workflow_dispatch:
     inputs:
-      n_trails:
-        description: "Number of Trials"
+      duration:
+        description: "Number of Seconds to run on each runner"
         required: true
-        default: 100
+        default: 7200 # 2 hours
 
 concurrency: hyper
 
@@ -80,7 +80,7 @@ jobs:
         run: |
           git config --global user.name "Benjamin Etheredge"
           git config --global user.email "benjamin.etheredge@gmail.com"
-          python src/hyper/run.py vae ${{ github.event.inputs.n_trails }} best.yaml
+          python src/hyper/run.py vae ${{ github.event.inputs.duration }} best.yaml
 
       - name: report
         run: |

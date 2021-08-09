@@ -11,10 +11,10 @@ os.environ['SHOULD_TQDM'] = '0'
 #@optuna.integration.try_gpu() where did copilot get this?
 @click.command()
 @click.argument('name', type=click.STRING)
-@click.argument('trails-count', type=click.INT)
+@click.argument('trails-duration', type=click.INT)
 @click.argument('param-path', type=click.Path())
 @click.argument('log-path', type=click.Path(), default='hyper_logs')
-def main(name, trails_count, param_path, log_path):
+def main(name, trails_duration, param_path, log_path):
 
     def objective(trial):
         
@@ -58,7 +58,7 @@ def main(name, trails_count, param_path, log_path):
             direction="minimize",
             load_if_exists=True,
             storage=f"mysql://root:{db_password}@{db_url}:3306/db")
-    study.optimize(objective, n_trials=trails_count)
+    study.optimize(objective, timeout=trails_duration)
     print(study.best_params)
     with open(param_path, "w") as f:
         yaml.dump(study.best_params, f)
