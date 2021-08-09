@@ -4,6 +4,7 @@ import optuna
 import click
 import yaml
 import os
+import shutil
 
 
 #@optuna.integration.try_gpu() where did copilot get this?
@@ -11,7 +12,7 @@ import os
 @click.argument('name', type=click.STRING)
 @click.argument('trails-count', type=click.INT)
 @click.argument('param-path', type=click.Path())
-@click.argument('log-path', type=click.Path(), default='/tmp/logs')
+@click.argument('log-path', type=click.Path(), default='hyper_logs')
 def main(name, trails_count, param_path, log_path):
 
     def objective(trial):
@@ -32,6 +33,8 @@ def main(name, trails_count, param_path, log_path):
             f"--reg-type {trial.suggest_categorical('reg_type', ['l1', 'l2', None])}",
         ]
 
+        shutil.rmtree(log_path, ignore_errors=True)
+
         command_text = " ".join(command)
         print(command_text)
         subprocess.run(command_text, shell=True)
@@ -39,6 +42,7 @@ def main(name, trails_count, param_path, log_path):
         with open(f"{log_path}/logs.json") as f:
             log = yaml.safe_load(f)
             result = log['val_loss']
+        shutil.rmtree(log_path, ignore_errors=True)
         return result
 
 
