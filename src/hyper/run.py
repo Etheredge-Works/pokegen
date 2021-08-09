@@ -27,7 +27,7 @@ def main(name, trails_count, param_path, log_path):
             f"--latent-size {trial.suggest_int('latent_size', 1, 512)}",
             f"--log-dir {log_path}",
             f"--lr {trial.suggest_float('lr', 1e-6, 1e-2, log=True)}",
-            f"--val-ratio 0.1",
+            f"--val-ratio 0.2",
             f"--reg-rate {trial.suggest_float('reg_rate', 1e-10, 1, log=True)}",
             f"--reg-type {trial.suggest_categorical('reg_type', ['l1', 'l2', None])}",
         ]
