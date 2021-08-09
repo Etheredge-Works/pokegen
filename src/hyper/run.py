@@ -23,7 +23,7 @@ def main(name, trails_count, param_path, log_path):
             f"--ae-type {name}",
             f"--model-path /tmp/model",
             f"--epochs {trial.suggest_int('epochs', 10, 1000, step=5)}",
-            f"--batch-size {trial.suggest_int('batch_size', 1, 1024)}",
+            f"--batch-size {trial.suggest_int('batch_size', 1, 256)}",
             f"--latent-size {trial.suggest_int('latent_size', 1, 512)}",
             f"--log-dir {log_path}",
             f"--lr {trial.suggest_float('lr', 1e-6, 1e-2, log=True)}",
