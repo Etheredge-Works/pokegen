@@ -17,6 +17,10 @@ os.environ['SHOULD_TQDM'] = '0'
 def main(name, trails_duration, param_path, log_path):
 
     def objective(trial):
+
+        # Translating helps limit range and preserve relation
+        size = trial.suggest_int('batch_size', 1, 9)
+        batch_size = 2**(size-1)
         
         command = [
             f"python", "src/autoencoder/train.py",
@@ -25,7 +29,7 @@ def main(name, trails_duration, param_path, log_path):
             f"--ae-type {name}",
             f"--model-path /tmp/model",
             f"--epochs {trial.suggest_int('epochs', 10, 500, step=5)}",
-            f"--batch-size {trial.suggest_int('batch_size', 1, 256)}",
+            f"--batch-size {batch_size}",
             #f"--latent-size {trial.suggest_int('latent_size', 1, 512)}",
             f"--latent-size 16",
             f"--log-dir {log_path}",
