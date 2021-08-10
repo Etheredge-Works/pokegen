@@ -46,7 +46,7 @@ def main(name, trails_duration, param_path, log_path):
                 log = yaml.safe_load(f)
                 result = log['val_loss']
         except FileNotFoundError:
-            result = float('inf')
+            result = 9999999999999
         return result
 
     db_url = os.environ.get('DB_URL')
