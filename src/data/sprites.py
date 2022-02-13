@@ -43,8 +43,8 @@ class PokemonDataset(Dataset):
             self.main_dir/self.shiny_dir/self.female_dir/'*.png')))
 
         # Models
-        self.files += list(self.sprites_path.glob(str(
-            self.main_dir/self.models_dir/'*.png')))
+        # self.files += list(self.sprites_path.glob(str(
+        #     self.main_dir/self.models_dir/'*.png')))
 
         # Backs
         """
