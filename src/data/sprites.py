@@ -29,8 +29,6 @@ class PokemonDataset(Dataset):
         self.sprites_path = Path(sprites_path)
         self.transform = transform
         self.target_transform = target_transform
-        if target_transform is None:
-            self.target_transform = self.transform
 
         self.files = []
         # Main area
@@ -108,9 +106,13 @@ class PokemonDataset(Dataset):
 
         if self.transform:
             transformed_image = self.transform(image)
+        else:
+            transformed_image = image
 
         if self.target_transform:
             label = self.target_transform(image)
+        else:
+            label = transformed_image
 
         # TODO consider dict when adding meta information
         #sample = {
@@ -186,6 +188,7 @@ def get_loader(
         pin_memory=True
     )
 
+    # TODO still inconsistent
     valloader = DataLoader(
         val, 
         batch_size=batch_size, 
