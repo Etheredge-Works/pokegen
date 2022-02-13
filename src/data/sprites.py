@@ -29,6 +29,8 @@ class PokemonDataset(Dataset):
         self.sprites_path = Path(sprites_path)
         self.transform = transform
         self.target_transform = target_transform
+        if target_transform is None:
+            self.target_transform = self.transform
 
         self.files = []
         # Main area
