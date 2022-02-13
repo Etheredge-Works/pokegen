@@ -167,7 +167,6 @@ def get_loader(
     ds = PokemonDataset(
         path,
         transform=transform,
-        target_transform=target_transform
     )
 
     val_count = int(len(ds) * val_ratio)
