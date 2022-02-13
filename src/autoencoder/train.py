@@ -29,7 +29,8 @@ def train_ae(
     valloader: DataLoader,
     ae: torch.nn.Module,
     lr=0.001,
-    should_tqdm=os.getenv('SHOULD_TQDM', 1)  # using env for github action running 
+    should_tqdm=os.getenv('SHOULD_TQDM', 1),  # using env for github action running 
+    gen_gifs=False
 ):
     log_dir = Path(log_dir)
     gen_dir = log_dir/'gen'
@@ -73,7 +74,7 @@ def train_ae(
         total_steps=epochs)
 
     for epoch in range(epochs):
-        print(f"{epoch}/{epochs}")
+        #print(f"{epoch}/{epochs}")
         running_loss = 0
         total = 0 # use total as drop_last=True
         ae.train()
@@ -99,7 +100,7 @@ def train_ae(
             running_loss += loss.item()
             total += transformed_image_b.size(0)
 
-        print(f"loss: {running_loss/total}")
+        #print(f"loss: {running_loss/total}")
         dvclive.log("loss", running_loss/total, epoch)
         dvclive.log("lr", scheduler.get_last_lr()[0])
         ae.eval()
@@ -124,29 +125,33 @@ def train_ae(
                     str(gen_dir),
                     epoch)
         dvclive.log("val_loss", running_loss/total, epoch)
-        print(f"val_loss: {running_loss/total}")
+        #print(f"val_loss: {running_loss/total}")
 
         dvclive.next_step()
         scheduler.step()
-    utils.make_gifs(str(gen_dir))
 
-    # save off some final results
-    data = next(iter(trainloader))
-    batch = data['label']
-    ae.eval()
-    # TODO torchvision.make_grid
-    with torch.no_grad():
-        utils.save(
-            batch[:8].cpu(), # slice after incase of batch norm or something
-            str(results_dir),
-            'raw'
-        )
-        results = ae.predict(batch.to(device))
-        utils.save(
-            results[:8].cpu(), # slice after incase of batch norm or something
-            str(results_dir),
-            'encdec'
-        )
+        ae.epoch_reset()
+    
+    if gen_gifs:
+        utils.make_gifs(str(gen_dir))
+
+        # save off some final results
+        data = next(iter(trainloader))
+        batch = data['label']
+        ae.eval()
+        # TODO torchvision.make_grid
+        with torch.no_grad():
+            utils.save(
+                batch[:8].cpu(), # slice after incase of batch norm or something
+                str(results_dir),
+                'raw'
+            )
+            results = ae.predict(batch.to(device))
+            utils.save(
+                results[:8].cpu(), # slice after incase of batch norm or something
+                str(results_dir),
+                'encdec'
+            )
 
 
 @click.command()
@@ -162,6 +167,7 @@ def train_ae(
 @click.option("--val-ratio", type=click.FLOAT)
 @click.option("--reg-type", type=click.STRING)
 @click.option("--reg-rate", type=click.FLOAT)
+@click.option("--gen-gifs", type=click.BOOL)
 def main(
     encoder_type,
     decoder_type,
@@ -174,7 +180,8 @@ def main(
     batch_size,
     val_ratio,
     reg_type,
-    reg_rate
+    reg_rate,
+    gen_gifs
 ):
 
     # TODO pull out so train file doesn't need these imported
@@ -201,7 +208,8 @@ def main(
         trainloader=trainloader, 
         valloader=valloader, 
         ae=ae,
-        lr=lr)
+        lr=lr,
+        gen_gifs=gen_gifs)
 
     # Save model
     torch.save(ae.state_dict(), str(model_path)+'.pt')

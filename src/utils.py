@@ -5,7 +5,7 @@ from PIL import Image
 
 # https://www.geeksforgeeks.org/smallest-power-of-2-greater-than-or-equal-to-n/
 def nextPowerOf2(n):
-    count = 0;
+    count = 0
  
     # First n in the below
     # condition is for the
@@ -17,7 +17,7 @@ def nextPowerOf2(n):
         n >>= 1
         count += 1
      
-    return 1 << count;
+    return 1 << count
 
 
 def display(tensor):
@@ -60,5 +60,4 @@ def make_gif(path):
 def make_gifs(path):
     path = pathlib.Path(path)
     for dir in path.iterdir():
-        print(dir)
         make_gif(dir)

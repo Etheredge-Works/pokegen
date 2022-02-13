@@ -6,16 +6,17 @@ name: VAE Hypers
 on:
   workflow_dispatch:
     inputs:
-      n_trails:
-        description: "Number of Trials"
+      duration:
+        description: "Number of seconds to run on each runner"
         required: true
-        default: 100
+        default: 7200 # 2 hours
 
 concurrency: hyper
 
 jobs:
   setup_sql:
     runs-on: [self-hosted,ec2-micro,deploy]
+    timeout-minutes: 10
     env: 
       DB_URL: ${{ secrets.DB_URL }}
       # TODO swap this for random value
@@ -29,6 +30,7 @@ jobs:
     if: always()
     needs: [setup_sql, sweeper]
     runs-on: [self-hosted,ec2-micro,deploy]
+    timeout-minutes: 10
     env: 
       DB_URL: ${{ secrets.DB_URL }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
@@ -40,10 +42,11 @@ jobs:
   sweeper:
     needs: setup_sql
     runs-on: [self-hosted,gpu,training]
+    timeout-minutes: 1440  # Increased job runtime since ML is slow
     strategy:
       fail-fast: false
       matrix:
-        _: [1, 2, 3, 4, 5, 6, 7, 8] # 3 gpu runners available but extras help with failures
+        _: [1, 2, 3] # 3 gpu runners available
 
     container:
       image: etheredgeb/pokegen:cicd
@@ -55,7 +58,6 @@ jobs:
         DB_URL: ${{ secrets.DB_URL }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       options: --gpus all --shm-size=1G
-    timeout-minutes: 1440  # Increased job runtime since ML is slow
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -78,12 +80,13 @@ jobs:
         run: |
           git config --global user.name "Benjamin Etheredge"
           git config --global user.email "benjamin.etheredge@gmail.com"
-          python src/hyper/run.py vae ${{ github.event.inputs.n_trails }} reports/hyper.yaml
+          python src/hyper/run.py vae ${{ github.event.inputs.duration }} best.yaml
 
       - name: report
         run: |
-          ./script/hyper_report.sh reports/hyper.yaml > report.md
-          cml-send-github-check report.md 
+          cat best.yaml
+          cat best.yaml > report.md
+          cml-send-comment report.md
       # TODO retrain with best params (dvc will maybe have it in cache)
       # check in dvc.lock with latest run
           
