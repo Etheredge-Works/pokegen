@@ -48,7 +48,7 @@ jobs:
 
       - name: pull_repros
         continue-on-error: true
-        run: dvc pull train@ae_dense train@ae_conv train@vae_dense train@vae_conv
+        run: dvc pull --run-cache train@ae_dense train@ae_conv train@vae_dense train@vae_conv train@vae
 
       - name: train_ae_dense
         run: |
@@ -90,6 +90,16 @@ jobs:
           scripts/autoencoder_report.sh vae conv >> report.md
           cml-send-github-check report.md 
 
+      - name: train_vae
+        run: |
+          dvc repro train@vae
+          dvc push train@vae
+
+      - name: report_vae
+        run: |
+          scripts/autoencoder_report.sh vae vae >> report.md
+          cml-send-github-check report.md 
+
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Latest Github Action DVC Run"
@@ -101,8 +111,13 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: dvc push -r s3
 
-      # Update to final report
       - name: report_all
-        run: |
-          scripts/all_autoencoder_reports.sh > report.md
-          cml-send-comment report.md
+        if: steps.auto-commit-action.outputs.changes_detected == 'true'
+        run: scripts/all_autoencoder_reports.sh > report.md
+
+      - name: no_changes
+        if: steps.auto-commit-action.outputs.changes_detected == 'false'
+        run: echo "No changes" > report.md
+
+      - name: final_report
+        run: cml-send-comment report.md

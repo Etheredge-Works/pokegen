@@ -47,6 +47,7 @@ class PokemonDataset(Dataset):
             self.main_dir/self.models_dir/'*.png')))
 
         # Backs
+        """
         self.files += list(self.sprites_path.glob(str(
             self.main_dir/self.back_dir/'*.png')))
         self.files += list(self.sprites_path.glob(str(
@@ -56,10 +57,10 @@ class PokemonDataset(Dataset):
             self.main_dir/self.back_dir/self.shiny_dir/'*.png')))
         self.files += list(self.sprites_path.glob(str(
             self.main_dir/self.back_dir/self.shiny_dir/self.female_dir/'*.png')))
-
         # Art
         #self.files += list(self.sprites_path.glob(str(
             #self.main_dir/self.art_dir/'*.png')))
+        """
 
         
         # TODO create shiny flag to make generation shiny.
