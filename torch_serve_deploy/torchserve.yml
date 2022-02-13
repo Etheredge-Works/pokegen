@@ -1,0 +1,37 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy TorchServe
+
+# Controls when the action will run. 
+on:
+  push:
+    #branches: [ main ] # TODO uncomment out when merging
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  deploy:
+    concurrency: pokegen-torchserve
+    # The type of runner that the job will run on
+    runs-on: [self-hosted,deploy,gpu]
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.MINIO_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.MINIO_AWS_SECRET_ACCESS_KEY }}
+      DOMAIN_URL: ${{ secrets.DOMAIN_URL }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: deploy
+        run: |
+          scripts/
+          dvc pull create_serving_model
+          torchserve --stop --model-store  models/serving
+          torchserve --start --model-store  models/serving
