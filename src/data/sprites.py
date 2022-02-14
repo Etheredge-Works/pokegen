@@ -75,7 +75,7 @@ class PokemonDataset(Dataset):
         self.files = [file for file in self.files if "10180.png" not in file]
 
         # Remove "?" image
-        self.files = [file for file in self.files if "0.png" not in file]
+        self.files = [file for file in self.files if "/0.png" not in file]
 
     
     def __len__(self):
