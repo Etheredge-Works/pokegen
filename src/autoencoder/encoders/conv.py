@@ -76,7 +76,7 @@ class ConvEncoder(torch.nn.Module):
         #for layer, batch_norm in self.convs:
         for layer, batch_norm in self.convs:
             x = layer(x)
-            #x = batch_norm(x)
+            x = batch_norm(x)
             F.leaky_relu_(x)
             self.activations_total += self.act_reg_func(x)
 

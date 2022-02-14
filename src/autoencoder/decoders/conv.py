@@ -81,7 +81,7 @@ class ConvDecoder(nn.Module):
         #for conv_layer, batch_norm_layer in self.convs:
         for conv_layer, batch_norm in self.convs:
             x = conv_layer(x)
-            #x = batch_norm_layer(x)
+            x = batch_norm(x)
             F.leaky_relu_(x)
             self.activations_total += self.act_reg_func(x)
 
