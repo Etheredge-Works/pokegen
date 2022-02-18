@@ -34,7 +34,7 @@ class ConvDecoder(nn.Module):
             #     nn.BatchNorm2d(256)
             # ),
             (
-                nn.ConvTranspose2d(256, 128, 4, stride=2, padding=1, output_padding=0, bias=True),
+                nn.ConvTranspose2d(256, 128, 4, stride=2, padding=1, output_padding=0, bias=False),
                 nn.BatchNorm2d(128)
             ),
             # (
@@ -42,7 +42,7 @@ class ConvDecoder(nn.Module):
             #     nn.BatchNorm2d(128)
             # ),
             (
-                nn.ConvTranspose2d(128, 64, 4, stride=2, padding=1, output_padding=0, bias=True),
+                nn.ConvTranspose2d(128, 64, 4, stride=2, padding=1, output_padding=0, bias=False),
                 nn.BatchNorm2d(64)
             ),
             # (
@@ -50,7 +50,7 @@ class ConvDecoder(nn.Module):
             #     nn.BatchNorm2d(64)
             # ),
             (
-                nn.ConvTranspose2d(64, 32, 4, stride=2, padding=1, output_padding=0, bias=True),
+                nn.ConvTranspose2d(64, 32, 4, stride=2, padding=1, output_padding=0, bias=False),
                 nn.BatchNorm2d(32)
             ),
             # (
@@ -58,7 +58,7 @@ class ConvDecoder(nn.Module):
             #     nn.BatchNorm2d(32)
             # ),
             (
-                nn.ConvTranspose2d(32, 16, 4, stride=2, padding=1, output_padding=0, bias=True),
+                nn.ConvTranspose2d(32, 16, 4, stride=2, padding=1, output_padding=0, bias=False),
                 nn.BatchNorm2d(16)
             ),
             # (

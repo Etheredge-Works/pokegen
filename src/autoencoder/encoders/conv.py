@@ -20,7 +20,7 @@ class ConvEncoder(torch.nn.Module):
         # TODO enlarge kernel
         conv_layers = [
             (
-                nn.Conv2d(input_shape[0], 16, 3, stride=1, padding=1, bias=True),
+                nn.Conv2d(input_shape[0], 16, 3, stride=1, padding=1, bias=False),
                 nn.BatchNorm2d(16)
             ),
             # (
@@ -28,7 +28,7 @@ class ConvEncoder(torch.nn.Module):
             #     nn.BatchNorm2d(16)
             # ),
             (
-                nn.Conv2d(16, 32, 4, stride=2, padding=1, bias=True),
+                nn.Conv2d(16, 32, 4, stride=2, padding=1, bias=False),
                 nn.BatchNorm2d(32)
             ),
             # (
@@ -36,7 +36,7 @@ class ConvEncoder(torch.nn.Module):
             #     nn.BatchNorm2d(32)
             # ),
             (
-                nn.Conv2d(32, 64, 4, stride=2, padding=1, bias=True),
+                nn.Conv2d(32, 64, 4, stride=2, padding=1, bias=False),
                 nn.BatchNorm2d(64)
             ),
             # (
@@ -44,7 +44,7 @@ class ConvEncoder(torch.nn.Module):
             #     nn.BatchNorm2d(64)
             # ),
             (
-                nn.Conv2d(64, 128, 4, stride=2, padding=1, bias=True),
+                nn.Conv2d(64, 128, 4, stride=2, padding=1, bias=False),
                 nn.BatchNorm2d(128)
             ),
             # (
@@ -52,7 +52,7 @@ class ConvEncoder(torch.nn.Module):
             #     nn.BatchNorm2d(128)
             # ),
             (
-                nn.Conv2d(128, 256, 4, stride=2, padding=1, bias=True),
+                nn.Conv2d(128, 256, 4, stride=2, padding=1, bias=False),
                 nn.BatchNorm2d(256)
             ),
             # (
@@ -69,6 +69,7 @@ class ConvEncoder(torch.nn.Module):
 
         # TODO test laten features from conv layer
         self.fc = nn.Linear(256*6*6, latent_shape)
+        # TODO shrink num layers
         self.activations_total = None
 
     def forward(self, x):
