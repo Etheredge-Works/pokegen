@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 import torch
 from autoencoder.encoders import DenseEncoder, ConvEncoder
 from autoencoder.decoders import DenseDecoder, ConvDecoder
@@ -53,7 +54,8 @@ class VAE(torch.nn.Module):
         :param mu: mean from the encoder's latent space
         :param log_var: log variance from the encoder's latent space
         """
-        std = torch.exp(log_var * 0.5)
+        #std = torch.exp(log_var * 0.5)
+        std = torch.exp(log_var / 2)
         #q = torch.distributions.Normal(mu, std)
         #z = q.rsample()
         eps = torch.randn_like(std)
@@ -119,6 +121,7 @@ class VAE(torch.nn.Module):
         mean = x_hat
         dist = torch.distributions.Normal(mean, scale)
 
+
         # measure prob of seeing image under p(x|z)
         log_pxz = dist.log_prob(x)
         return log_pxz.sum(dim=(1, 2, 3))
@@ -129,8 +132,10 @@ class VAE(torch.nn.Module):
         recon_loss = self.gaussian_likelihood(x_hat, self.log_scale, y)
         #recon_loss = self.bce(x_hat, y)
 
-        kl = self.kl_divergence(z, mu, std)
+        #kl = self.kl_divergence(z, mu, std)
+        kl = torch.mean(-0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp(), dim = 1), dim = 0)
 
+        #elbo = ((self.beta*kl) - recon_loss)
         elbo = ((self.beta*kl) - recon_loss)
         loss =  elbo.mean() + self.encoder.activations_total + self.decoder.activations_total
 
