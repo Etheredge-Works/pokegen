@@ -1,13 +1,15 @@
-click==8.0.1
-dvc[s3]==2.5.0
+click
+dvc[s3]
 dvclive==0.0.10
-jupyter==1.0.0
-pillow==8.2.0
+
+jupyter
+pillow
 pip-tools
+networkx==2.5.1
 
 # Optuna
-optuna==2.9.1
-mysqlclient==2.0.3
+optuna
+mysqlclient
 
 # Torch
 -f https://download.pytorch.org/whl/torch_stable.html
@@ -21,3 +23,6 @@ torchsummary==1.5.1
 torchserve==0.4.1
 torch-model-archiver==0.4.1
 torch-workflow-archiver==0.1.1
+
+tensorboardX
+tensorboard

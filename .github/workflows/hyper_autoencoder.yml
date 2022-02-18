@@ -65,6 +65,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }} # https://github.com/stefanzweifel/git-auto-commit-action
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      # - uses: actions/setup-python@v2
+      #   with:
+      #     python-version: '3.x'
+      - uses: iterative/setup-cml@v1
 
       - name: Install as local package
         run: pip install -e .
