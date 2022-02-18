@@ -5,3 +5,4 @@ report.md
 logs/
 .env
 build/
+runs/

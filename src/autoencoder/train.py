@@ -15,11 +15,22 @@ from autoencoder.decoders import DenseDecoder, ConvDecoder
 from torchsummary import summary
 from contextlib import redirect_stdout
 import os
+torch.autograd.set_detect_anomaly(True) 
 
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 # TODO why does 0 go to gpu1, how does torch order gpus?
 #device = 'cuda' if torch.cuda.is_available() else 'cpu'
+from tensorboardX import SummaryWriter
+#logger = SummaryWriter('tensorboard/')
+logger = SummaryWriter()
+    
+def log_gradients_in_model(model, logger, step):
+    for tag, value in model.named_parameters():
+        if value.grad is not None:
+            logger.add_histogram(tag + "/grad", value.grad.cpu(), step)
+        # TODO add weights
+        
 
 def train_ae(
     model_path: str,
@@ -83,7 +94,7 @@ def train_ae(
         else:
             iter_trainloader = trainloader
 
-        for data in iter_trainloader:
+        for step, data in enumerate(iter_trainloader):
             transformed_image_b, label_b = data['transformed_image'], data['label']
             transformed_image_b = transformed_image_b.to(device)
             label_b = label_b.to(device)
@@ -94,6 +105,8 @@ def train_ae(
             loss = ae.criterion(y_pred, transformed_image_b)
 
             loss.backward()
+            #if int(should_tqdm) != 0:
+                #log_gradients_in_model(ae, logger, step + epoch * len(trainloader))
             torch.nn.utils.clip_grad_norm_(ae.parameters(), max_norm=1) #TODO param
             optimizer.step()
 
@@ -142,6 +155,7 @@ def train_ae(
         # TODO torchvision.make_grid
         with torch.no_grad():
             utils.save(
+                # TODO unhardcode
                 batch[:8].cpu(), # slice after incase of batch norm or something
                 str(results_dir),
                 'raw'

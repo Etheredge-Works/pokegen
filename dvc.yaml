@@ -35,7 +35,8 @@ stages:
       plots:
         - ${item.log_dir}/logs
       metrics:
-        - ${item.log_dir}/logs.json
+        - ${item.log_dir}/logs.json:
+            cache: false
 
   #create_serving_model:
     #foreach: ${autoencoders}
