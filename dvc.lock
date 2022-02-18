@@ -592,26 +592,26 @@ stages:
       size: 1544
   train@vae_conv:
     cmd: "python src/autoencoder/train.py --encoder-type conv --decoder-type conv\
-      \ --ae-type vae --model-path models/vae_conv --epochs 1000 --batch-size 128\
-      \ --latent-size 8 --log-dir reports/vae/conv --lr 0.001 --val-ratio 0.1 --reg-rate\
-      \ 0.001 --reg-type l2 --gen-gifs true\n"
+      \ --ae-type vae --model-path models/vae_conv --epochs 1000 --batch-size 64 --latent-size\
+      \ 3 --log-dir reports/vae/conv --lr 0.0001 --val-ratio 0.1 --reg-rate 0.001\
+      \ --reg-type l2 --gen-gifs true\n"
     deps:
     - path: data/external/sprites
       md5: 640cb98abd46245d2ce478deb25ee8e1.dir
       size: 387131152
       nfiles: 45310
     - path: src/autoencoder/decoders/conv.py
-      md5: 0e71f6a5c47754a46796af11169b202d
-      size: 3207
+      md5: 019f56d09f5491dae6aae1ce3480a08b
+      size: 3211
     - path: src/autoencoder/encoders/conv.py
-      md5: 575711b13752e1ec4cb41945e5240405
-      size: 2907
+      md5: 1a8f3564d997a010292a17fd25b67ea9
+      size: 2945
     - path: src/autoencoder/models/variational_model.py
-      md5: e2d2b81e1fb7aa50e428d5b013f25fd5
-      size: 5084
+      md5: db3d1938ddead09a4ff11194b88dde1e
+      size: 5316
     - path: src/autoencoder/train.py
-      md5: 6e684cbe4dd8afaec6a669ca63b2e8c5
-      size: 6854
+      md5: eee258200c89ca96eea5084a1f99a1fa
+      size: 7419
     - path: src/data/sprites.py
       md5: c8c9d8c92f3561da761a4e1606c1b83d
       size: 6221
@@ -620,28 +620,28 @@ stages:
       size: 1408
     outs:
     - path: models/vae_conv.pt
-      md5: 3334fd21a16cc31a9d05f44018f66c9d
-      size: 6533075
+      md5: 0c4597ea273e9e608d040b0bbbbd2819
+      size: 5974254
     - path: models/vae_conv_kwargs.yaml
-      md5: bea03948adf0d9f7606a189dd8dad036
+      md5: fe3408ebd760c6f43f1bcdb6390842c3
       size: 124
     - path: reports/vae/conv/gen
-      md5: bd463397266120e5c91074a1edcce22b.dir
-      size: 511443
+      md5: 082d91b3987d772f4dc1348300974a61.dir
+      size: 851136
       nfiles: 120
     - path: reports/vae/conv/logs
-      md5: e47e2c1133e1635814de7c46f8f23844.dir
-      size: 117764
+      md5: 1ecf1544fc2bb91aa700c87292588065.dir
+      size: 117120
       nfiles: 3
     - path: reports/vae/conv/logs.json
-      md5: e874e649c647ac506f50090e9dc16d42
-      size: 106
+      md5: 9f5e7972f3ef03b6607f93e3c0711f9e
+      size: 122
     - path: reports/vae/conv/results
-      md5: 9a72ee3dee8adef2d051d7d582174672.dir
-      size: 23701
+      md5: a1431e5c2197b2b9bf48130db56e0d04.dir
+      size: 26555
       nfiles: 16
     - path: reports/vae/conv/summary.txt
-      md5: 8047bd670ccd1e18e3193f222cb35b24
+      md5: e6c95c23c2a3e86501a2edfed1d252ed
       size: 2181
   train@ae_conv:
     cmd: "python src/autoencoder/train.py --encoder-type conv --decoder-type conv\
