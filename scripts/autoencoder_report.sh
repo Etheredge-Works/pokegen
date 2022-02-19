@@ -28,9 +28,21 @@ vl2png /tmp/vega.json | cml-publish --md
 dvc plots diff --target $log_dir/logs/val_loss.tsv --show-vega main > /tmp/vega.json
 vl2png /tmp/vega.json | cml-publish --md
 
+
 echo "### LR"
 dvc plots diff --target $log_dir/logs/lr.tsv --show-vega main > /tmp/vega.json
 vl2png /tmp/vega.json | cml-publish --md
+
+
+echo "## Latent Space"
+latent_dir=$log_dir/latent
+
+for f in $(ls $latent_dir/*/*.png))
+do
+    echo $f
+    cml-publish "$f" --md 
+done
+
 
 echo "## Encoded/Decoded"
 results_dir=reports/$model/$version/results
@@ -41,6 +53,7 @@ do
     cml-publish "$results_dir/$f/encdec.jpg" --md 
     echo "---"
 done
+
 
 echo "## Generated"
 gen_dir=$log_dir/gen
