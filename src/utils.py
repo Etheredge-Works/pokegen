@@ -40,7 +40,7 @@ def save_latents(
     #print(len(latents[0]))
     #print(latent_size)
     if len(latents[0]) == 2*latent_size:
-        df = pd.DataFrame(latents, columns=['x1', 'y1', 'x2', 'y2'])
+        df = pd.DataFrame(latents, columns=['x1', 'y1', 'z1', 'x2', 'y2', 'z2'])
 
         #fig = px.scatter_3d(df, x="x1", y="y1") #, z="z1")
         fig = px.scatter(df, x="x1", y="y1") #, z="z1")
