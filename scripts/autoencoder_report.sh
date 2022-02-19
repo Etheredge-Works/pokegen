@@ -37,7 +37,7 @@ vl2png /tmp/vega.json | cml-publish --md
 echo "## Latent Space"
 latent_dir=$log_dir/latent
 
-for f in $(ls $latent_dir/*/*.png))
+for f in $(ls $latent_dir/*/*.png)
 do
     echo $f
     cml-publish "$f" --md 
