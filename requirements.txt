@@ -31,7 +31,7 @@ asttokens==2.0.5
 async-timeout==4.0.2
     # via aiohttp
 atpublic==3.0.1
-    # via flufl-lock
+    # via flufl.lock
 attrs==21.4.0
     # via
     #   aiohttp
@@ -120,7 +120,7 @@ executing==0.8.2
     # via stack-data
 flatten-dict==0.4.2
     # via dvc
-flufl-lock==3.2
+flufl.lock==3.2
     # via dvc
 frozenlist==1.3.0
     # via
@@ -223,6 +223,8 @@ jupyterlab-pygments==0.1.2
     # via nbconvert
 jupyterlab-widgets==1.0.2
     # via ipywidgets
+kaleido==0.2.1
+    # via -r requirements.in
 mailchecker==4.1.10
     # via python-benedict
 mako==1.1.6
@@ -277,6 +279,7 @@ numpy==1.22.1
     # via
     #   cmaes
     #   optuna
+    #   pandas
     #   scipy
     #   tensorboard
     #   tensorboardx
@@ -292,6 +295,8 @@ packaging==21.3
     #   optuna
     #   qtpy
     #   torchserve
+pandas==1.4.1
+    # via -r requirements.in
 pandocfilters==1.5.0
     # via nbconvert
 parso==0.8.3
@@ -389,11 +394,14 @@ python-dateutil==2.8.2
     # via
     #   botocore
     #   jupyter-client
+    #   pandas
     #   python-benedict
 python-fsutil==0.6.0
     # via python-benedict
 python-slugify==5.0.2
     # via python-benedict
+pytz==2021.3
+    # via pandas
 pyyaml==6.0
     # via
     #   cliff
@@ -420,10 +428,10 @@ rich==11.1.0
     # via dvc
 rsa==4.8
     # via google-auth
-ruamel-yaml==0.17.20
+ruamel.yaml==0.17.21
     # via dvc
-ruamel-yaml-clib==0.2.6
-    # via ruamel-yaml
+ruamel.yaml.clib==0.2.6
+    # via ruamel.yaml
 s3fs==2021.6.1
     # via dvc
 s3transfer==0.3.7
@@ -558,7 +566,7 @@ xmltodict==0.12.0
     # via python-benedict
 yarl==1.7.2
     # via aiohttp
-zc-lockfile==2.0
+zc.lockfile==2.0
     # via dvc
 zipp==3.7.0
     # via

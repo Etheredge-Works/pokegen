@@ -121,7 +121,6 @@ class VAE(torch.nn.Module):
         mean = x_hat
         dist = torch.distributions.Normal(mean, scale)
 
-
         # measure prob of seeing image under p(x|z)
         log_pxz = dist.log_prob(x)
         return log_pxz.sum(dim=(1, 2, 3))
@@ -129,15 +128,26 @@ class VAE(torch.nn.Module):
     def criterion(self, y_hat, y):
         x_hat, z, mu, log_var, std = y_hat
 
-        recon_loss = self.gaussian_likelihood(x_hat, self.log_scale, y)
+        #recon_loss = self.gaussian_likelihood(x_hat, self.log_scale, y)
+        #recon_loss = self.gl(x_hat)
         #recon_loss = self.bce(x_hat, y)
+        recon_loss = torch.nn.functional.binary_cross_entropy(x_hat, y, reduction='mean')
 
         #kl = self.kl_divergence(z, mu, std)
-        kl = torch.mean(-0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp(), dim = 1), dim = 0)
+        #kl = torch.mean(-0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp(), dim = 1), dim = 0)
+        #recon_loss = torch.nn.binary_cross_entropy(x_hat, y, size_average=False) / y.size(0)
+        kl_loss = torch.mean(0.5 * torch.sum(torch.exp(log_var) + mu**2 - 1. - log_var))
+        loss = recon_loss + kl_loss
 
+
+        #return recon_loss
+        #loss = recon_loss + kl
+        #loss = recon_loss + (self.beta * kl)
         #elbo = ((self.beta*kl) - recon_loss)
-        elbo = ((self.beta*kl) - recon_loss)
-        loss =  elbo.mean() + self.encoder.activations_total + self.decoder.activations_total
+        # elbo = ((self.beta*kl) - recon_loss)
+        # elbo = kl - recon_loss
+        # return elbo.mean()
+        # loss =  elbo.mean() + self.encoder.activations_total + self.decoder.activations_total
 
         return loss
 
@@ -153,3 +163,4 @@ class VAE(torch.nn.Module):
         else:
             self.beta = min(self.beta+self.beta_rate, 1.0)
         # TODO use mlflow and log both losses
+        dvclive.log('beta', self.beta)

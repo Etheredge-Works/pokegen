@@ -103,9 +103,6 @@ def train_ae(
             transformed_image_b = transformed_image_b.to(device)
             label_b = label_b.to(device)
 
-            optimizer.zero_grad()
-            ae.reset()
-
             y_pred = ae(transformed_image_b)
 
             loss = ae.criterion(y_pred, transformed_image_b)
@@ -122,6 +119,9 @@ def train_ae(
             latent_encoding = ae.latent
             #print(latent_encoding.shape)
             latent_spaces += latent_encoding
+
+            optimizer.zero_grad()
+            ae.reset()
 
         #assert len(latent_spaces) == len(trainloader), f"{len(latent_spaces)} != {len(trainloader.dataset)}"
         utils.save_latents(

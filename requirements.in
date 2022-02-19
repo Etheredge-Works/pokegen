@@ -7,6 +7,7 @@ pillow
 pip-tools
 plotly
 kaleido
+pandas
 
 # Optuna
 optuna
