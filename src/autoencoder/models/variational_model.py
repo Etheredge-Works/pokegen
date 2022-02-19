@@ -43,12 +43,12 @@ class VAE(torch.nn.Module):
                                            input_shape,
                                            activation_regularization_func=reg_func)
 
-        #self.bce = torch.nn.BCELoss(reduction='sum')
-        self.bce = torch.nn.MSELoss()
+        #self.bce = torch.nn.BCELoss(reduction='mean')
         self.log_scale = torch.nn.Parameter(torch.Tensor([0.0]))
         self.beta = beta
         self.beta_rate = beta_rate
         self.beta_max = beta_max
+        self.latent = None
         self.reset()
     
     @staticmethod
@@ -58,7 +58,7 @@ class VAE(torch.nn.Module):
         :param log_var: log variance from the encoder's latent space
         """
         #std = torch.exp(log_var * 0.5)
-        std = torch.exp(log_var / 2)
+        std = torch.exp(0.5*log_var)
         #q = torch.distributions.Normal(mu, std)
         #z = q.rsample()
         eps = torch.randn_like(std)
