@@ -89,9 +89,9 @@ class VAE(torch.nn.Module):
         #      Since two returns on forward breaks things
         #encoder_activations = self.encoder.activation_total
 
-        x = x.view(-1, 2, self.latent_size)
-        mu = x[:, 0, :]
-        log_var = x[:, 1, :]
+        mu = x[:, :self.latent_size]
+        log_var = x[:, self.latent_size:]
+        self.latent = x.tolist()
 
         z, std = self.reparameterize(mu, log_var)
 

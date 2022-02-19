@@ -45,8 +45,10 @@ def train_ae(
 ):
     log_dir = Path(log_dir)
     gen_dir = log_dir/'gen'
+    latent_dir = log_dir/'latent'
     dvclive_dir = log_dir/'logs'
     gen_dir.mkdir(exist_ok=True, parents=True)
+    latent_dir.mkdir(exist_ok=True, parents=True)
 
     results_dir = log_dir/'results'
     results_dir.mkdir(exist_ok=True, parents=True)
@@ -94,29 +96,45 @@ def train_ae(
         else:
             iter_trainloader = trainloader
 
+        latent_spaces = []
         for step, data in enumerate(iter_trainloader):
+
             transformed_image_b, label_b = data['transformed_image'], data['label']
             transformed_image_b = transformed_image_b.to(device)
             label_b = label_b.to(device)
-            y_pred = ae(transformed_image_b)
 
             optimizer.zero_grad()
             ae.reset()
+
+            y_pred = ae(transformed_image_b)
+
             loss = ae.criterion(y_pred, transformed_image_b)
 
             loss.backward()
             #if int(should_tqdm) != 0:
                 #log_gradients_in_model(ae, logger, step + epoch * len(trainloader))
-            torch.nn.utils.clip_grad_norm_(ae.parameters(), max_norm=1) #TODO param
+            #torch.nn.utils.clip_grad_norm_(ae.parameters(), max_norm=1) #TODO param
             optimizer.step()
 
             running_loss += loss.item()
             total += transformed_image_b.size(0)
 
+            latent_encoding = ae.latent
+            #print(latent_encoding.shape)
+            latent_spaces += latent_encoding
+
+        #assert len(latent_spaces) == len(trainloader), f"{len(latent_spaces)} != {len(trainloader.dataset)}"
+        utils.save_latents(
+            latent_spaces,
+            ae.latent_size,
+            str(latent_dir/"train"),
+        )
+
         #print(f"loss: {running_loss/total}")
         dvclive.log("loss", running_loss/total, epoch)
         dvclive.log("lr", scheduler.get_last_lr()[0])
         ae.eval()
+        val_latent_spaces = []
         with torch.no_grad():
             running_loss = 0
             total = 0
@@ -133,10 +151,19 @@ def train_ae(
             
             if epoch % (epochs//10) == 0 or epoch == (epochs-1):
                 generations = ae.generate(random_tensors)
-                utils.save(
+                utils.save_image(
                     generations.cpu(),
                     str(gen_dir),
                     epoch)
+
+            val_latent_encoding = ae.encoder(label_b).detach().cpu()
+            val_latent_spaces += val_latent_encoding.tolist()
+            utils.save_latents(
+                val_latent_spaces,
+                ae.latent_size,
+                str(latent_dir/"val"),
+            )
+        
         dvclive.log("val_loss", running_loss/total, epoch)
         #print(f"val_loss: {running_loss/total}")
 
@@ -154,14 +181,14 @@ def train_ae(
         ae.eval()
         # TODO torchvision.make_grid
         with torch.no_grad():
-            utils.save(
+            utils.save_image(
                 # TODO unhardcode
                 batch[:8].cpu(), # slice after incase of batch norm or something
                 str(results_dir),
                 'raw'
             )
             results = ae.predict(batch.to(device))
-            utils.save(
+            utils.save_image(
                 results[:8].cpu(), # slice after incase of batch norm or something
                 str(results_dir),
                 'encdec'

@@ -30,6 +30,7 @@ stages:
         - ${item.model_path}.pt
         - ${item.model_path}_kwargs.yaml
         - ${item.log_dir}/gen
+        - ${item.log_dir}/latent
         - ${item.log_dir}/results
         - ${item.log_dir}/summary.txt:
             cache: false

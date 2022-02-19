@@ -25,7 +25,39 @@ def display(tensor):
     im.show()
 
 
-def save(
+import plotly.express as px
+import pandas as pd
+def save_latents(
+    latents, 
+    latent_size,
+    path: Path, 
+    step=None
+):
+    path = pathlib.Path(path)
+    path.mkdir(exist_ok=True, parents=True)
+    #df = pd.DataFrame(latents, columns=['x1', 'y1', 'z1', 'x2', 'y2', 'z2'])
+    #print(latents)
+    #print(len(latents[0]))
+    #print(latent_size)
+    if len(latents[0]) == 2*latent_size:
+        df = pd.DataFrame(latents, columns=['x1', 'y1', 'x2', 'y2'])
+
+        #fig = px.scatter_3d(df, x="x1", y="y1") #, z="z1")
+        fig = px.scatter(df, x="x1", y="y1") #, z="z1")
+        fig.write_image(path/'mu.png')
+        #fig2 = px.scatter_3d(df, x="x2", y="y2") #, z="z1")
+        fig2 = px.scatter(df, x="x2", y="y2") #, z="z1")
+        fig2.write_image(path/'log_var.png')
+    else:
+        df = pd.DataFrame(latents, columns=[str(idx) for idx in range(latent_size)])
+
+        #fig = px.scatter_3d(df, x="x1", y="y1") #, z="z1")
+        fig = px.scatter(df, x="0", y="1") #, z="z1")
+        fig.write_image(path/'latent.png')
+
+
+
+def save_image(
     tensor, 
     path: Path, 
     step=None

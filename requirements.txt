@@ -268,9 +268,7 @@ nest-asyncio==1.5.4
     #   nbclient
     #   notebook
 networkx==2.5.1
-    # via
-    #   -r requirements.in
-    #   dvc
+    # via dvc
 notebook==6.4.8
     # via
     #   jupyter
@@ -323,6 +321,8 @@ pip-tools==6.4.0
     # via -r requirements.in
 platformdirs==2.4.1
     # via black
+plotly==5.6.0
+    # via -r requirements.in
 ply==3.11
     # via
     #   dvc
@@ -445,6 +445,7 @@ six==1.16.0
     #   google-auth
     #   grpcio
     #   jsonpath-ng
+    #   plotly
     #   python-benedict
     #   python-dateutil
 smmap==5.0.0
@@ -459,6 +460,8 @@ stevedore==3.5.0
     # via cliff
 tabulate==0.8.9
     # via dvc
+tenacity==8.0.1
+    # via plotly
 tensorboard==2.8.0
     # via -r requirements.in
 tensorboard-data-server==0.6.1
