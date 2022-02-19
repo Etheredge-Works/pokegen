@@ -6,8 +6,8 @@ pokemon_sprites:
   data_dir: data/external/sprites
 
 epochs: 1000
-latent_size: 2
-batch_size: 128
+latent_size: 4
+batch_size: 64
 lr: 0.0001
 val_ratio: 0.1
 
@@ -45,7 +45,7 @@ autoencoders:
     decoder_src: src/autoencoder/decoders/conv.py
     model_path: models/vae_conv
     reg_rate: 0.001
-    reg_type: None
+    reg_type: l2
     model_file: src/autoencoder/models/variational_model.py
 
   ae_dense:
