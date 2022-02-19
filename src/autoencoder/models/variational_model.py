@@ -17,8 +17,9 @@ class VAE(torch.nn.Module):
         reg_rate,
         encoder_type,
         decoder_type,
-        beta=0.,
+        beta=0.0,
         beta_rate=0.01,
+        beta_max=1.
     ):
         super(VAE, self).__init__()
 
@@ -47,6 +48,7 @@ class VAE(torch.nn.Module):
         self.log_scale = torch.nn.Parameter(torch.Tensor([0.0]))
         self.beta = beta
         self.beta_rate = beta_rate
+        self.beta_max = beta_max
         self.reset()
     
     @staticmethod
@@ -138,7 +140,7 @@ class VAE(torch.nn.Module):
         #kl = torch.mean(-0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp(), dim = 1), dim = 0)
         #recon_loss = torch.nn.binary_cross_entropy(x_hat, y, size_average=False) / y.size(0)
         kl_loss = torch.mean(0.5 * torch.sum(torch.exp(log_var) + mu**2 - 1. - log_var))
-        loss = recon_loss + kl_loss
+        loss = recon_loss + (self.beta * kl_loss)
 
 
         #return recon_loss
@@ -162,6 +164,6 @@ class VAE(torch.nn.Module):
         if beta is not None:
             self.beta = beta
         else:
-            self.beta = min(self.beta+self.beta_rate, 1.0)
+            self.beta = min(self.beta+self.beta_rate, self.beta_max)
         # TODO use mlflow and log both losses
         dvclive.log('beta', self.beta)
