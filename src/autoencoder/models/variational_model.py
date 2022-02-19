@@ -2,6 +2,7 @@ from multiprocessing.sharedctypes import Value
 import torch
 from autoencoder.encoders import DenseEncoder, ConvEncoder
 from autoencoder.decoders import DenseDecoder, ConvDecoder
+import dvclive
 
 # TODO cleanup
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
