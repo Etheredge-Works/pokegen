@@ -188,7 +188,7 @@ def train_ae(
             utils.save_image(
                 results[:8].cpu(), # slice after incase of batch norm or something
                 str(results_dir),
-                'encoded'
+                'encdec'
             )
     if gen_gifs:
         utils.make_gifs(str(gen_dir))
