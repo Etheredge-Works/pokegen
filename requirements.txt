@@ -13,7 +13,9 @@ aiobotocore[boto3]==1.3.0
     #   dvc
     #   s3fs
 aiohttp==3.8.1
-    # via aiobotocore
+    # via
+    #   aiobotocore
+    #   fsspec
 aioitertools==0.8.0
     # via aiobotocore
 aiosignal==1.2.0
@@ -126,9 +128,10 @@ frozenlist==1.3.0
     # via
     #   aiohttp
     #   aiosignal
-fsspec==2021.6.1
+fsspec[http]==2021.6.1
     # via
     #   dvc
+    #   pytorch-lightning
     #   s3fs
 ftfy==6.0.3
     # via python-benedict
@@ -137,6 +140,7 @@ funcy==1.17
 future==0.18.2
     # via
     #   grandalf
+    #   pytorch-lightning
     #   torch-model-archiver
     #   torchserve
 gitdb==4.0.9
@@ -225,6 +229,8 @@ jupyterlab-widgets==1.0.2
     # via ipywidgets
 kaleido==0.2.1
     # via -r requirements.in
+lightning-bolts==0.5.0
+    # via -r requirements.in
 mailchecker==4.1.10
     # via python-benedict
 mako==1.1.6
@@ -280,9 +286,11 @@ numpy==1.22.1
     #   cmaes
     #   optuna
     #   pandas
+    #   pytorch-lightning
     #   scipy
     #   tensorboard
     #   tensorboardx
+    #   torchmetrics
     #   torchvision
 oauthlib==3.2.0
     # via requests-oauthlib
@@ -292,8 +300,11 @@ packaging==21.3
     # via
     #   bleach
     #   dvc
+    #   lightning-bolts
     #   optuna
+    #   pytorch-lightning
     #   qtpy
+    #   torchmetrics
     #   torchserve
 pandas==1.4.1
     # via -r requirements.in
@@ -363,6 +374,10 @@ pyasn1-modules==0.2.8
     # via google-auth
 pycparser==2.21
     # via cffi
+pydeprecate==0.3.1
+    # via
+    #   pytorch-lightning
+    #   torchmetrics
 pydot==1.4.2
     # via dvc
 pygit2==1.7.2
@@ -400,6 +415,10 @@ python-fsutil==0.6.0
     # via python-benedict
 python-slugify==5.0.2
     # via python-benedict
+pytorch-lightning==1.5.10
+    # via
+    #   -r requirements.in
+    #   lightning-bolts
 pytz==2021.3
     # via pandas
 pyyaml==6.0
@@ -407,6 +426,7 @@ pyyaml==6.0
     #   cliff
     #   optuna
     #   python-benedict
+    #   pytorch-lightning
 pyzmq==22.3.0
     # via
     #   jupyter-client
@@ -419,6 +439,7 @@ qtpy==2.0.0
 requests==2.27.1
     # via
     #   dvc
+    #   fsspec
     #   python-benedict
     #   requests-oauthlib
     #   tensorboard
@@ -471,7 +492,9 @@ tabulate==0.8.9
 tenacity==8.0.1
     # via plotly
 tensorboard==2.8.0
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   pytorch-lightning
 tensorboard-data-server==0.6.1
     # via tensorboard
 tensorboard-plugin-wit==1.8.1
@@ -495,7 +518,10 @@ tomli==1.2.3
 torch==1.9.0+cu111
     # via
     #   -r requirements.in
+    #   lightning-bolts
+    #   pytorch-lightning
     #   torchaudio
+    #   torchmetrics
     #   torchvision
 torch-model-archiver==0.4.1
     # via -r requirements.in
@@ -503,6 +529,10 @@ torch-workflow-archiver==0.1.1
     # via -r requirements.in
 torchaudio==0.9.0
     # via -r requirements.in
+torchmetrics==0.7.2
+    # via
+    #   lightning-bolts
+    #   pytorch-lightning
 torchserve==0.4.1
     # via -r requirements.in
 torchsummary==1.5.1
@@ -519,6 +549,7 @@ tqdm==4.62.3
     # via
     #   dvc
     #   optuna
+    #   pytorch-lightning
 traitlets==5.1.1
     # via
     #   ipykernel
@@ -536,6 +567,7 @@ typing-extensions==4.0.1
     # via
     #   black
     #   dvc
+    #   pytorch-lightning
     #   torch
 urllib3==1.26.8
     # via
