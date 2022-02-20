@@ -7,7 +7,7 @@ pokemon_sprites:
 
 epochs: 500
 latent_size: 16
-batch_size: 64
+batch_size: 128
 lr: 0.001
 val_ratio: 0.1
 
