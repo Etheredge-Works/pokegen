@@ -20,6 +20,6 @@ services:
       - "traefik.http.routers.pokegen_demo.tls.certresolver=myresolver"
 
 networks:
-    traefik_proxy:
+    proxynet:
         external:
-            name: "traefik_proxy"
+            name: "proxynet"
