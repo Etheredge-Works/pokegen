@@ -10,7 +10,7 @@ services:
       - API_PASSWORD=${API_PASSWORD}
     build: .
     networks:
-      - traefik_proxy
+      - proxynet
     expose:
       - 8501
     labels:
