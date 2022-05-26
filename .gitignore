@@ -6,3 +6,8 @@ logs/
 .env
 build/
 runs/
+**/gan_test/
+**/MNIST/
+**/wandb/
+**/lightning_logs/
+**/*.png

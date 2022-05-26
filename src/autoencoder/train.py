@@ -41,7 +41,8 @@ def train_ae(
     ae: torch.nn.Module,
     lr=0.001,
     should_tqdm=os.getenv('SHOULD_TQDM', 1),  # using env for github action running 
-    gen_gifs=False
+    gen_gifs=False,
+    early_stopping_threshold=20,
 ):
     log_dir = Path(log_dir)
     gen_dir = log_dir/'gen'
@@ -86,7 +87,13 @@ def train_ae(
         max_lr=lr,
         total_steps=epochs)
 
+    early_stopping_count = 0
+    best_val_loss = float("inf")
+
     for epoch in range(epochs):
+        if early_stopping_count > early_stopping_threshold:
+            break
+
         #print(f"{epoch}/{epochs}")
         running_loss = 0
         total = 0 # use total as drop_last=True
@@ -164,10 +171,11 @@ def train_ae(
                 str(latent_dir/"val"),
             )
         
-        dvclive.log("val_loss", running_loss/total, epoch)
+        val_loss = running_loss / total
+        dvclive.log("val_loss", val_loss, epoch)
+
         #print(f"val_loss: {running_loss/total}")
 
-        dvclive.next_step()
         scheduler.step()
 
         ae.epoch_reset()
@@ -190,6 +198,16 @@ def train_ae(
                 str(results_dir),
                 'encdec'
             )
+
+        if val_loss > best_val_loss:
+            early_stopping_count += 1
+        else:
+            early_stopping_count = 0
+            best_val_loss = val_loss
+        
+        dvclive.log("best_val_loss", best_val_loss, epoch)
+        dvclive.next_step()
+
     if gen_gifs:
         utils.make_gifs(str(gen_dir))
 

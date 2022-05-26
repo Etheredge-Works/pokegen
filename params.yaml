@@ -6,7 +6,7 @@ pokemon_sprites:
   data_dir: data/external/sprites
 
 epochs: 500
-latent_size: 16
+latent_size: 32
 batch_size: 128
 lr: 0.001
 val_ratio: 0.1

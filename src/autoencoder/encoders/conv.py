@@ -10,11 +10,15 @@ class ConvEncoder(torch.nn.Module):
         self, 
         input_shape, 
         latent_shape,
-        activation_regularization_func=lambda _: 0
+        activation_regularization_func=lambda _: 0,
+        final_activation=lambda x: x,
+        dropout_rate=0.0,
     ):
         super(ConvEncoder, self).__init__()
 
         self.act_reg_func = activation_regularization_func
+        self.final_activation = final_activation
+        self.dropout_rate = dropout_rate
 
         flattened_size = torch.prod(torch.tensor(input_shape), 0)
         # TODO enlarge kernel
@@ -79,6 +83,8 @@ class ConvEncoder(torch.nn.Module):
             x = layer(x)
             x = batch_norm(x)
             F.leaky_relu_(x)
+            # x = F.dropout(x, p=self.dropout_rate)
+
             self.activations_total += self.act_reg_func(x)
 
         # TODO was pooling used just to make it easier to construct model? no mathing dims
@@ -87,6 +93,10 @@ class ConvEncoder(torch.nn.Module):
 
         x = self.flatten(x)
         x = self.fc(x)
+        # x = F.dropout(x, p=self.dropout_rate)
+
+        x = self.final_activation(x)
+        
         #total += self.act_reg_func(x) TODO here?
 
         return x

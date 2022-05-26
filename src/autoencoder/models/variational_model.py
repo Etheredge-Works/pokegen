@@ -48,23 +48,30 @@ class VAE(torch.nn.Module):
         self.beta = beta
         self.beta_rate = beta_rate
         self.beta_max = beta_max
-        self.latent = None
+        self._latent = None
         self.reset()
     
     @staticmethod
-    def reparameterize(mu, log_var):
+    def sample(mu, log_var):
         """
         :param mu: mean from the encoder's latent space
         :param log_var: log variance from the encoder's latent space
         """
         #std = torch.exp(log_var * 0.5)
-        std = torch.exp(0.5*log_var)
-        #q = torch.distributions.Normal(mu, std)
-        #z = q.rsample()
-        eps = torch.randn_like(std)
-        z = mu + (eps*std)
+        # std = torch.exp(0.5*log_var)
+        # #q = torch.distributions.Normal(mu, std)
+        # #z = q.rsample()
+        # eps = torch.randn_like(std)
+        # z = mu + (eps*std)
+        # return z, std
+        
+        std = torch.exp(log_var / 2)
+        p = torch.distributions.Normal(torch.zeros_like(mu), torch.ones_like(std))
+        q = torch.distributions.Normal(mu, std)
+        z = q.rsample()
+        return p,q, z
 
-        return z, std
+
     
     # https://towardsdatascience.com/variational-autoencoder-demystified-with-pytorch-implementation-3a06bee395ed
     def kl_divergence(self, z, mu, std):
@@ -94,15 +101,19 @@ class VAE(torch.nn.Module):
 
         mu = x[:, :self.latent_size]
         log_var = x[:, self.latent_size:]
-        self.latent = x.tolist()
+        self._latent = x
 
-        z, std = self.reparameterize(mu, log_var)
+        p, q, z = self.sample(mu, log_var)
 
         x_hat = self.decoder(z)
         #decoder_activations = self.decoder.activation_total
         # TODO sigmoid at end?
 
-        return x_hat, z, mu, log_var, std
+        return x_hat, z, p, q
+    
+    @property
+    def latent(self):
+        return self._latent.tolist()
 
     def predict(self, x):
         self.eval()
@@ -129,13 +140,17 @@ class VAE(torch.nn.Module):
         return log_pxz.sum(dim=(1, 2, 3))
 
     def criterion(self, y_hat, y):
-        x_hat, z, mu, log_var, std = y_hat
+        x_hat, z, p, q = y_hat
 
-        recon_loss = self.gaussian_likelihood(x_hat, self.log_scale, y)
+        # recon_loss = self.gaussian_likelihood(x_hat, self.log_scale, y)
+        recon_loss = torch.nn.functional.mse_loss(x_hat, y)
         #recon_loss = self.gl(x_hat)
         #recon_loss = self.bce(x_hat, y)
 
-        kl = self.kl_divergence(z, mu, std)
+        # kl = self.kl_divergence(z, mu, std)
+        kl = torch.distributions.kl_divergence(q, p)
+        kl = kl.mean()
+        
         #kl = torch.mean(-0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp(), dim = 1), dim = 0)
         #recon_loss = torch.nn.binary_cross_entropy(x_hat, y, size_average=False) / y.size(0)
 
@@ -149,7 +164,7 @@ class VAE(torch.nn.Module):
         #return recon_loss
         #loss = recon_loss + kl
         #loss = recon_loss + (self.beta * kl)
-        elbo = ((self.beta*kl) - recon_loss)
+        elbo = ((self.beta*kl) + recon_loss)
         # elbo = ((self.beta*kl) - recon_loss)
         # elbo = kl - recon_loss
         # return elbo.mean()

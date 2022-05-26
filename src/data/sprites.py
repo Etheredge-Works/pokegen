@@ -121,6 +121,7 @@ class PokemonDataset(Dataset):
 
         # TODO return meta information (mega, evo, types, etc)
         # Return 3 so trainer has more flexibility
+        # return transformed_image, label
         return {
             #'pil_image': transforms.ToTensor()(transforms.Reseize(image),
             'transformed_image': transformed_image, 
@@ -131,7 +132,6 @@ class PokemonDataset(Dataset):
 # TODO put this inside get loader to not use it in main scope
 with open("params.yaml") as f:
     config = yaml.safe_load(f)['pokemon_sprites']
-
 
 # TODO pull to config file
 def denormalize(data):
@@ -162,11 +162,11 @@ def get_loader(
         #transforms.RandomErasing(),
     ])
 
-    target_transform = T.Compose([
-        T.Resize(resize_shape),
-        T.ToTensor(),
-        #T.Normalize(normalize_mean, normalize_std)
-    ])
+    # target_transform = T.Compose([
+    #     T.Resize(resize_shape),
+    #     T.ToTensor(),
+    #     #T.Normalize(normalize_mean, normalize_std)
+    # ])
 
     ds = PokemonDataset(
         path,
