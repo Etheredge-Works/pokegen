@@ -609,48 +609,48 @@ stages:
       size: 387131152
       nfiles: 45310
     - path: src/autoencoder/decoders/conv.py
-      md5: 76c168fd8e96e6a47804bedd8cadd024
-      size: 3213
+      md5: 019f56d09f5491dae6aae1ce3480a08b
+      size: 3211
     - path: src/autoencoder/encoders/conv.py
-      md5: 0df9b4b89f9cd4aba0d2c810b3a92a22
-      size: 3245
+      md5: 091f9b2b27adbd54ddc39bc6d2ff21e3
+      size: 3248
     - path: src/autoencoder/models/variational_model.py
       md5: f74a8a7d46df85cfc8c906e43f572c54
       size: 6410
     - path: src/autoencoder/train.py
-      md5: 98e3a406917819709eee27632dbc6183
-      size: 8679
+      md5: 186343056dfe12aaafd8f0ea734e5598
+      size: 8683
     - path: src/data/sprites.py
-      md5: 4e77bf1f81cfb7febe15ea64ca7c9b97
-      size: 6271
+      md5: 54bae63af26a96215ce05e81ad76a158
+      size: 6272
     - path: src/utils.py
       md5: d3a9b49a5c0a1adb952270944d0cf9ff
       size: 2870
     outs:
     - path: models/vae_conv.pt
-      md5: 0dcf098b3b031ccca621ec3070850e5e
+      md5: 7e8445800338f4a7babf015c70659e57
       size: 9181678
     - path: models/vae_conv_kwargs.yaml
       md5: 1b7aeb34c710ce8010a2753c2d08c80b
       size: 127
     - path: reports/vae/conv/gen
-      md5: 03c6d77e5742033af8884f8f8ea8f3d6.dir
-      size: 115748
-      nfiles: 30
+      md5: 2789ca35f7149a8fd0f853df3cc69ec8.dir
+      size: 577616
+      nfiles: 120
     - path: reports/vae/conv/latent
-      md5: 227751c6911769719f87e0efe72c38d3.dir
-      size: 267979
+      md5: 74bb18ba9e46bef0fe0be4096904c243.dir
+      size: 267213
       nfiles: 6
     - path: reports/vae/conv/logs
-      md5: 1eb0b3e4c6b38d3e5e0a4698f3347383.dir
-      size: 17450
+      md5: da1fa55404dd17f2a4f6a6cfe2af5df9.dir
+      size: 94326
       nfiles: 5
     - path: reports/vae/conv/logs.json
-      md5: 8360808221406d20cca832f95c95cdc1
-      size: 196
+      md5: 0b1db1331934904d21c4b1f8390953ec
+      size: 171
     - path: reports/vae/conv/results
-      md5: 6c6d8c79fb408bd6fb86d364ebe86cfd.dir
-      size: 26658
+      md5: 014d5e029a8f25efd079a45173bdf697.dir
+      size: 24563
       nfiles: 16
     - path: reports/vae/conv/summary.txt
       md5: 6f4cdf889c956c2f5cc493e85d705e93
@@ -666,48 +666,48 @@ stages:
       size: 387131152
       nfiles: 45310
     - path: src/autoencoder/decoders/conv.py
-      md5: 76c168fd8e96e6a47804bedd8cadd024
-      size: 3213
+      md5: 019f56d09f5491dae6aae1ce3480a08b
+      size: 3211
     - path: src/autoencoder/encoders/conv.py
-      md5: 0df9b4b89f9cd4aba0d2c810b3a92a22
-      size: 3245
+      md5: 091f9b2b27adbd54ddc39bc6d2ff21e3
+      size: 3248
     - path: src/autoencoder/models/vanilla_model.py
       md5: 7ba86b539657d56bdd050958ac8b3bde
       size: 2449
     - path: src/autoencoder/train.py
-      md5: 98e3a406917819709eee27632dbc6183
-      size: 8679
+      md5: 186343056dfe12aaafd8f0ea734e5598
+      size: 8683
     - path: src/data/sprites.py
-      md5: 4e77bf1f81cfb7febe15ea64ca7c9b97
-      size: 6271
+      md5: 54bae63af26a96215ce05e81ad76a158
+      size: 6272
     - path: src/utils.py
       md5: d3a9b49a5c0a1adb952270944d0cf9ff
       size: 2870
     outs:
     - path: models/ae_conv.pt
-      md5: 5e086f4a1ec9368e9b7a7d5d6951ab14
+      md5: 5faba7a375b23284033342579f080b26
       size: 8001649
     - path: models/ae_conv_kwargs.yaml
       md5: 1b7aeb34c710ce8010a2753c2d08c80b
       size: 127
     - path: reports/ae/conv/gen
-      md5: d5267081fe52156b072a04cccda4987b.dir
-      size: 100395
-      nfiles: 50
+      md5: 83d9aff36426ebb9e5b18a61f9637394.dir
+      size: 296832
+      nfiles: 120
     - path: reports/ae/conv/latent
-      md5: 4f62cdf776aeb9e2ae2d0ee31669cb22.dir
-      size: 82525
+      md5: 66e73e7d2bcecb42afcf8ba8c65b11c4.dir
+      size: 89615
       nfiles: 2
     - path: reports/ae/conv/logs
-      md5: 889301c6a15e714c852c04d89a5dcb61.dir
-      size: 25548
+      md5: 6ceca13eabd6479fb9023e4adbce092b.dir
+      size: 81396
       nfiles: 4
     - path: reports/ae/conv/logs.json
-      md5: dd97ee55d68ff96cb0b1345ed67cff1f
-      size: 163
+      md5: 8dfd29a4cf9fb3aefbd456e9eeb25e03
+      size: 154
     - path: reports/ae/conv/results
-      md5: 51f1f6d882376929ea71f995627af158.dir
-      size: 38174
+      md5: 7a056ef33c0b6dfe930f8b5d55ac3722.dir
+      size: 30338
       nfiles: 16
     - path: reports/ae/conv/summary.txt
       md5: ae273602060039580edb5ad2aaad63f3

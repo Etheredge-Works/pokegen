@@ -91,8 +91,8 @@ def train_ae(
     best_val_loss = float("inf")
 
     for epoch in range(epochs):
-        if early_stopping_count > early_stopping_threshold:
-            break
+        # if early_stopping_count > early_stopping_threshold:
+        #     break
 
         #print(f"{epoch}/{epochs}")
         running_loss = 0
@@ -248,11 +248,11 @@ def main(
 
     # TODO pull out shape
     ae = model_const(
-        (3, 96, 96), 
-        latent_size, 
+        (3, 96, 96),
+        latent_size,
         reg_type,
         reg_rate,
-        encoder_type, 
+        encoder_type,
         decoder_type)
 
     trainloader, valloader = sprites.get_loader(
@@ -262,10 +262,10 @@ def main(
 
     train_ae(
         model_path=model_path,
-        log_dir=log_dir, 
-        epochs=epochs, 
-        trainloader=trainloader, 
-        valloader=valloader, 
+        log_dir=log_dir,
+        epochs=epochs,
+        trainloader=trainloader,
+        valloader=valloader,
         ae=ae,
         lr=lr,
         gen_gifs=gen_gifs)
