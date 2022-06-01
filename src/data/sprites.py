@@ -43,8 +43,8 @@ class PokemonDataset(Dataset):
             self.main_dir/self.shiny_dir/self.female_dir/'*.png')))
 
         # Models
-        self.files += list(self.sprites_path.glob(str(
-            self.main_dir/self.models_dir/'*.png')))
+        # self.files += list(self.sprites_path.glob(str(
+        #     self.main_dir/self.models_dir/'*.png')))
 
         # Backs
         """
@@ -75,7 +75,7 @@ class PokemonDataset(Dataset):
         self.files = [file for file in self.files if "10180.png" not in file]
 
         # Remove "?" image
-        self.files = [file for file in self.files if "0.png" not in file]
+        self.files = [file for file in self.files if "/0.png" not in file]
 
     
     def __len__(self):
@@ -106,9 +106,13 @@ class PokemonDataset(Dataset):
 
         if self.transform:
             transformed_image = self.transform(image)
+        else:
+            transformed_image = image
 
         if self.target_transform:
             label = self.target_transform(image)
+        else:
+            label = transformed_image
 
         # TODO consider dict when adding meta information
         #sample = {
@@ -117,6 +121,7 @@ class PokemonDataset(Dataset):
 
         # TODO return meta information (mega, evo, types, etc)
         # Return 3 so trainer has more flexibility
+        # return transformed_image, label
         return {
             #'pil_image': transforms.ToTensor()(transforms.Reseize(image),
             'transformed_image': transformed_image, 
@@ -127,7 +132,6 @@ class PokemonDataset(Dataset):
 # TODO put this inside get loader to not use it in main scope
 with open("params.yaml") as f:
     config = yaml.safe_load(f)['pokemon_sprites']
-
 
 # TODO pull to config file
 def denormalize(data):
@@ -158,16 +162,15 @@ def get_loader(
         #transforms.RandomErasing(),
     ])
 
-    target_transform = T.Compose([
-        T.Resize(resize_shape),
-        T.ToTensor(),
-        #T.Normalize(normalize_mean, normalize_std)
-    ])
+    # target_transform = T.Compose([
+    #     T.Resize(resize_shape),
+    #     T.ToTensor(),
+    #     #T.Normalize(normalize_mean, normalize_std)
+    # ])
 
     ds = PokemonDataset(
         path,
         transform=transform,
-        target_transform=target_transform
     )
 
     val_count = int(len(ds) * val_ratio)
@@ -185,6 +188,7 @@ def get_loader(
         pin_memory=True
     )
 
+    # TODO still inconsistent
     valloader = DataLoader(
         val, 
         batch_size=batch_size, 

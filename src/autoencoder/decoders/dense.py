@@ -10,7 +10,7 @@ class DenseDecoder(nn.Module):
         latent_shape, 
         output_shape, 
         activation_regularization_func=lambda _: 0,
-        node_count=512,
+        node_count=256,
     ):
         super(DenseDecoder, self).__init__()
 
@@ -36,13 +36,13 @@ class DenseDecoder(nn.Module):
         self.activations_total = None
 
     def forward(self, x):
-        
-
         for layer in self.dense:
             x = layer(x)
-            F.leaky_relu_(x)
+            x = F.leaky_relu(x)
+            #F.relu_(x)
             self.activations_total += self.act_reg_func(x)
 
-        x = torch.sigmoid(self.fc(x))
+        x = self.fc(x)
+        x = torch.sigmoid(x)
         x = x.view(-1, *self.output_shape)
         return x

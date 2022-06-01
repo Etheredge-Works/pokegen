@@ -17,6 +17,7 @@ class AutoEncoder(torch.nn.Module):
 ):
         super(AutoEncoder, self).__init__()
 
+        self.reg_rate = reg_rate
         if reg_type == 'l1':
             reg_func = lambda x: reg_rate * x.abs().sum()
         elif reg_type == 'l2':
@@ -36,9 +37,13 @@ class AutoEncoder(torch.nn.Module):
                                            input_shape,
                                            activation_regularization_func=reg_func)
         self.reset()
+        self.raw_latent = None
+        self.latent = None
     
     def forward(self, x):
         x = self.encoder(x)
+        self.raw_latent = x
+        self.latent = x.tolist()
         x = self.decoder(x)
         return x
 
@@ -51,7 +56,10 @@ class AutoEncoder(torch.nn.Module):
         return self.decoder(x)
 
     def criterion(self, y_hat, y):
-        loss = torch.nn.functional.binary_cross_entropy(y_hat, y, reduction='sum') + self.encoder.activations_total + self.decoder.activations_total
+        loss = torch.nn.functional.binary_cross_entropy(y_hat, y, reduction='mean') + self.encoder.activations_total + self.decoder.activations_total
+        #loss = torch.nn.functional.binary_cross_entropy(y_hat, y, reduction='sum') 
+        #loss += self.reg_rate * torch.sqrt((self.raw_latent**2).sum())
+        #loss = torch.nn.functional.mse_loss(y_hat, y, reduction='sum') 
         return loss
     
     def reset(self):

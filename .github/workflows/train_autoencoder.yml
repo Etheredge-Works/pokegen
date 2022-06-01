@@ -43,6 +43,14 @@ jobs:
       - name: Install as local package
         run: pip install -e .
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      # - uses: actions/setup-python@v2
+      #   with:
+      #     python-version: '3.x'
+      - uses: iterative/setup-cml@v1
+
       - name: pull_data
         run: dvc pull data/external/sprites.dvc
 
@@ -100,10 +108,15 @@ jobs:
           scripts/autoencoder_report.sh vae vae >> report.md
           cml-send-github-check report.md 
 
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git pull
+
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Latest Github Action DVC Run"
-          file_pattern: dvc.lock
+          file_pattern: dvc.lock reports/*/*/summary.txt reports/*/*/logs.json
 
       - name: main_push
         env:

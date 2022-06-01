@@ -30,12 +30,15 @@ stages:
         - ${item.model_path}.pt
         - ${item.model_path}_kwargs.yaml
         - ${item.log_dir}/gen
+        - ${item.log_dir}/latent
         - ${item.log_dir}/results
-        - ${item.log_dir}/summary.txt
+        - ${item.log_dir}/summary.txt:
+            cache: false
       plots:
         - ${item.log_dir}/logs
       metrics:
-        - ${item.log_dir}/logs.json
+        - ${item.log_dir}/logs.json:
+            cache: false
 
   #create_serving_model:
     #foreach: ${autoencoders}
