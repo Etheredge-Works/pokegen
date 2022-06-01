@@ -31,3 +31,5 @@ torch-workflow-archiver==0.1.1
 
 tensorboardX
 tensorboard
+
+streamlit

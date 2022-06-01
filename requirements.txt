@@ -22,6 +22,8 @@ aiosignal==1.2.0
     # via aiohttp
 alembic==1.7.5
     # via optuna
+altair==4.2.0
+    # via streamlit
 appdirs==1.4.4
     # via dvc
 argon2-cffi==21.3.0
@@ -33,20 +35,27 @@ asttokens==2.0.5
 async-timeout==4.0.2
     # via aiohttp
 atpublic==3.0.1
-    # via flufl.lock
+    # via flufl-lock
 attrs==21.4.0
     # via
     #   aiohttp
     #   cmd2
     #   jsonschema
+    #   streamlit
 autopage==0.5.0
     # via cliff
 backcall==0.2.0
     # via ipython
+backports-zoneinfo==0.2.1
+    # via
+    #   pytz-deprecation-shim
+    #   tzlocal
 black==21.12b0
     # via ipython
 bleach==4.1.0
     # via nbconvert
+blinker==1.4
+    # via streamlit
 boto3==1.17.49
     # via aiobotocore
 botocore==1.20.49
@@ -55,7 +64,9 @@ botocore==1.20.49
     #   boto3
     #   s3transfer
 cachetools==5.0.0
-    # via google-auth
+    # via
+    #   google-auth
+    #   streamlit
 certifi==2021.10.8
     # via
     #   dulwich
@@ -73,6 +84,7 @@ click==8.0.1
     #   -r requirements.in
     #   black
     #   pip-tools
+    #   streamlit
 cliff==3.10.0
     # via optuna
 cmaes==0.8.2
@@ -96,6 +108,7 @@ decorator==4.4.2
     #   ipython
     #   jsonpath-ng
     #   networkx
+    #   validators
 defusedxml==0.7.1
     # via nbconvert
 dictdiffer==0.9.0
@@ -114,6 +127,7 @@ dvclive==0.0.10
     # via -r requirements.in
 entrypoints==0.3
     # via
+    #   altair
     #   jupyter-client
     #   nbconvert
 enum-compat==0.0.3
@@ -122,7 +136,7 @@ executing==0.8.2
     # via stack-data
 flatten-dict==0.4.2
     # via dvc
-flufl.lock==3.2
+flufl-lock==3.2
     # via dvc
 frozenlist==1.3.0
     # via
@@ -146,7 +160,9 @@ future==0.18.2
 gitdb==4.0.9
     # via gitpython
 gitpython==3.1.26
-    # via dvc
+    # via
+    #   dvc
+    #   streamlit
 google-auth==2.6.0
     # via
     #   google-auth-oauthlib
@@ -167,6 +183,7 @@ importlib-metadata==4.10.1
     # via
     #   alembic
     #   markdown
+    #   streamlit
 importlib-resources==5.4.0
     # via
     #   alembic
@@ -177,6 +194,7 @@ ipykernel==6.7.0
     #   jupyter
     #   jupyter-console
     #   notebook
+    #   pydeck
     #   qtconsole
 ipython==8.0.1
     # via
@@ -190,13 +208,17 @@ ipython-genutils==0.2.0
     #   notebook
     #   qtconsole
 ipywidgets==7.6.5
-    # via jupyter
+    # via
+    #   jupyter
+    #   pydeck
 jedi==0.18.1
     # via ipython
 jinja2==3.0.3
     # via
+    #   altair
     #   nbconvert
     #   notebook
+    #   pydeck
 jmespath==0.10.0
     # via
     #   boto3
@@ -204,7 +226,9 @@ jmespath==0.10.0
 jsonpath-ng==1.5.3
     # via dvc
 jsonschema==4.4.0
-    # via nbformat
+    # via
+    #   altair
+    #   nbformat
 jupyter==1.0.0
     # via -r requirements.in
 jupyter-client==7.1.2
@@ -283,11 +307,15 @@ notebook==6.4.8
     #   widgetsnbextension
 numpy==1.22.1
     # via
+    #   altair
     #   cmaes
     #   optuna
     #   pandas
+    #   pyarrow
+    #   pydeck
     #   pytorch-lightning
     #   scipy
+    #   streamlit
     #   tensorboard
     #   tensorboardx
     #   torchmetrics
@@ -304,10 +332,14 @@ packaging==21.3
     #   optuna
     #   pytorch-lightning
     #   qtpy
+    #   streamlit
     #   torchmetrics
     #   torchserve
 pandas==1.4.1
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   altair
+    #   streamlit
 pandocfilters==1.5.0
     # via nbconvert
 parso==0.8.3
@@ -331,6 +363,7 @@ pickleshare==0.7.5
 pillow==8.2.0
     # via
     #   -r requirements.in
+    #   streamlit
     #   torchserve
     #   torchvision
 pip-tools==6.4.0
@@ -353,6 +386,7 @@ prompt-toolkit==3.0.26
     #   jupyter-console
 protobuf==3.19.4
     # via
+    #   streamlit
     #   tensorboard
     #   tensorboardx
 psutil==5.9.0
@@ -365,6 +399,8 @@ ptyprocess==0.7.0
     #   terminado
 pure-eval==0.2.2
     # via stack-data
+pyarrow==8.0.0
+    # via streamlit
 pyasn1==0.4.8
     # via
     #   dvc
@@ -374,6 +410,8 @@ pyasn1-modules==0.2.8
     # via google-auth
 pycparser==2.21
     # via cffi
+pydeck==0.7.1
+    # via streamlit
 pydeprecate==0.3.1
     # via
     #   pytorch-lightning
@@ -392,6 +430,8 @@ pygments==2.11.2
     #   rich
 pygtrie==2.4.2
     # via dvc
+pympler==1.0.1
+    # via streamlit
 pyparsing==2.4.7
     # via
     #   cliff
@@ -411,6 +451,7 @@ python-dateutil==2.8.2
     #   jupyter-client
     #   pandas
     #   python-benedict
+    #   streamlit
 python-fsutil==0.6.0
     # via python-benedict
 python-slugify==5.0.2
@@ -421,6 +462,8 @@ pytorch-lightning==1.5.10
     #   lightning-bolts
 pytz==2021.3
     # via pandas
+pytz-deprecation-shim==0.1.0.post0
+    # via tzlocal
 pyyaml==6.0
     # via
     #   cliff
@@ -442,6 +485,7 @@ requests==2.27.1
     #   fsspec
     #   python-benedict
     #   requests-oauthlib
+    #   streamlit
     #   tensorboard
 requests-oauthlib==1.3.1
     # via google-auth-oauthlib
@@ -449,16 +493,18 @@ rich==11.1.0
     # via dvc
 rsa==4.8
     # via google-auth
-ruamel.yaml==0.17.21
+ruamel-yaml==0.17.21
     # via dvc
-ruamel.yaml.clib==0.2.6
-    # via ruamel.yaml
+ruamel-yaml-clib==0.2.6
+    # via ruamel-yaml
 s3fs==2021.6.1
     # via dvc
 s3transfer==0.3.7
     # via boto3
 scipy==1.7.3
     # via optuna
+semver==2.13.0
+    # via streamlit
 send2trash==1.8.0
     # via notebook
 shortuuid==1.0.8
@@ -487,6 +533,8 @@ stack-data==0.1.4
     # via ipython
 stevedore==3.5.0
     # via cliff
+streamlit==1.9.2
+    # via -r requirements.in
 tabulate==0.8.9
     # via dvc
 tenacity==8.0.1
@@ -511,10 +559,13 @@ toml==0.10.2
     # via
     #   dvc
     #   python-benedict
+    #   streamlit
 tomli==1.2.3
     # via
     #   black
     #   pep517
+toolz==0.11.2
+    # via altair
 torch==1.9.0+cu111
     # via
     #   -r requirements.in
@@ -544,6 +595,7 @@ tornado==6.1
     #   ipykernel
     #   jupyter-client
     #   notebook
+    #   streamlit
     #   terminado
 tqdm==4.62.3
     # via
@@ -562,20 +614,30 @@ traitlets==5.1.1
     #   nbconvert
     #   nbformat
     #   notebook
+    #   pydeck
     #   qtconsole
 typing-extensions==4.0.1
     # via
     #   black
     #   dvc
     #   pytorch-lightning
+    #   streamlit
     #   torch
+tzdata==2022.1
+    # via pytz-deprecation-shim
+tzlocal==4.2
+    # via streamlit
 urllib3==1.26.8
     # via
     #   botocore
     #   dulwich
     #   requests
+validators==0.19.0
+    # via streamlit
 voluptuous==0.12.2
     # via dvc
+watchdog==2.1.8
+    # via streamlit
 wcwidth==0.2.5
     # via
     #   cmd2
@@ -598,7 +660,7 @@ xmltodict==0.12.0
     # via python-benedict
 yarl==1.7.2
     # via aiohttp
-zc.lockfile==2.0
+zc-lockfile==2.0
     # via dvc
 zipp==3.7.0
     # via
