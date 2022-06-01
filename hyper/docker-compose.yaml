@@ -1,0 +1,27 @@
+version: "3.9"
+    
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    expose:
+      - 3306 
+    networks:
+      - traefik_proxy
+    labels:
+    - "traefik.enable=true"
+    # Figure out domain name for tcp
+    - "traefik.tcp.routers.pokegen_hyper_db.rule=HostSNI(`*`)"
+    - "traefik.tcp.routers.pokegen_hyper_db.entrypoints=sql"
+    # TODO figure out tcp tls
+    - "traefik.tcp.services.pokegen_hyper_db.loadbalancer.server.port=3306"
+    
+networks:
+    traefik_proxy:
+        external:
+            name: "traefik_proxy"

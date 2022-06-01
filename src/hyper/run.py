@@ -4,43 +4,70 @@ import optuna
 import click
 import yaml
 import os
+import shutil
+os.environ['SHOULD_TQDM'] = '0'
 
 
 #@optuna.integration.try_gpu() where did copilot get this?
 @click.command()
-@click.argument('name')
-def main(name):
+@click.argument('name', type=click.STRING)
+@click.argument('trails-duration', type=click.INT)
+@click.argument('param-path', type=click.Path())
+@click.argument('log-path', type=click.Path(), default='hyper_logs')
+def main(name, trails_duration, param_path, log_path):
 
     def objective(trial):
+
+        # Translating helps limit range and preserve relation
+        size = trial.suggest_int('batch_size', 1, 9)
+        batch_size = 2**(size-1)
         
-        params = {
-            #"epochs": trial.suggest_int("epochs", 10, 1000, step=5),
-            "epochs": 5,
-            "latent_size": trial.suggest_int("latent_size", 1, 512, log=True),
-            "batch_size": trial.suggest_int("batch_size", 1, 1024, log=True),
-            "lr": trial.suggest_float("lr", 1e-6, 1e-2, log=True),
-            f"{name}.reg_type": trial.suggest_categorical("reg_type", ['l1', 'l2', None]),
-            f"{name}.type": trial.suggest_categorical("type", ['conv', 'dense']),
-            f"{name}.reg_rate": trial.suggest_float("reg_rate", 1e-10, 1, log=True),
-        }
-        #if params[f"{name}.reg_type"] is not None:
-            #params[f"{name}.reg_rate"] = trial.suggest_float(
-                #"reg_rate", 1e-10, 1, log=True),
+        command = [
+            f"python", "src/autoencoder/train.py",
+            f"--encoder-type {trial.suggest_categorical('encoder_type', ['conv', 'dense'])}",
+            f"--decoder-type {trial.suggest_categorical('decoder_type', ['conv', 'dense'])}",
+            f"--ae-type {name}",
+            f"--model-path /tmp/model",
+            f"--epochs {trial.suggest_int('epochs', 10, 500, step=5)}",
+            f"--batch-size {batch_size}",
+            #f"--latent-size {trial.suggest_int('latent_size', 1, 512)}",
+            f"--latent-size 16",
+            f"--log-dir {log_path}",
+            f"--lr {trial.suggest_float('lr', 1e-6, 1e-2, log=True)}",
+            f"--val-ratio 0.2",
+            f"--reg-rate {trial.suggest_float('reg_rate', 1e-10, 1, log=True)}",
+            f"--reg-type {trial.suggest_categorical('reg_type', ['l1', 'l2', None])}",
+        ]
 
-        param_list = [f"-S {key}={value}" for key, value in params.items()]
-        command = ["dvc", "exp", "run", f"train@{name}",
-                        " ".join(param_list)]
-        command_txt = " ".join(command)
-        print(command_txt)
-        subprocess.run(command)
+        shutil.rmtree(log_path, ignore_errors=True)
 
-        with open(f"reports/{name}/{name}/logs.json") as f:
-            log = yaml.safe_load(f)
-            result = log['val_loss']
+        command_text = " ".join(command)
+        print(command_text)
+        subprocess.run(command_text, shell=True)
+
+        try:
+            with open(f"{log_path}/logs.json") as f:
+                log = yaml.safe_load(f)
+                result = log['val_loss']
+        except FileNotFoundError:
+            result = 9999999999999
         return result
 
-    study = optuna.create_study(direction="minimize")
-    study.optimize(objective, n_trials=3)
+    db_url = os.environ.get('DB_URL')
+    db_password = os.environ.get('DB_PASSWORD')
+    if db_url is None or db_password is None:
+        study = optuna.create_study(direction="minimize")
+    else:
+        study = optuna.create_study(
+            study_name='aehyper',
+            direction="minimize",
+            load_if_exists=True,
+            storage=f"mysql://root:{db_password}@{db_url}:3306/db")
+    study.optimize(objective, timeout=trails_duration)
+    print(study.best_params)
+    with open(param_path, "w") as f:
+        yaml.dump(study.best_params, f)
+    
 
 if __name__ == "__main__":
     main()

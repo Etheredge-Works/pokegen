@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 import torch.nn.functional as F
+import utils
 
 
 class DenseDecoder(nn.Module):
@@ -9,7 +10,7 @@ class DenseDecoder(nn.Module):
         latent_shape, 
         output_shape, 
         activation_regularization_func=lambda _: 0,
-        node_count=256,
+        node_count=512,
     ):
         super(DenseDecoder, self).__init__()
 
@@ -20,6 +21,10 @@ class DenseDecoder(nn.Module):
 
         input_count = latent_shape
         layers = []
+        next_count = utils.nextPowerOf2(input_count)
+        layers.append(nn.Linear(input_count, next_count))
+        input_count = next_count
+
         while(input_count < node_count):
             layers.append(nn.Linear(input_count, input_count*2))
             input_count *= 2

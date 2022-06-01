@@ -3,6 +3,22 @@ import pathlib
 from pathlib import Path
 from PIL import Image
 
+# https://www.geeksforgeeks.org/smallest-power-of-2-greater-than-or-equal-to-n/
+def nextPowerOf2(n):
+    count = 0
+ 
+    # First n in the below
+    # condition is for the
+    # case where n is 0
+    if (n and not(n & (n - 1))):
+        return n
+     
+    while( n != 0):
+        n >>= 1
+        count += 1
+     
+    return 1 << count
+
 
 def display(tensor):
     im = transforms.ToPILImage()(tensor)
@@ -44,5 +60,4 @@ def make_gif(path):
 def make_gifs(path):
     path = pathlib.Path(path)
     for dir in path.iterdir():
-        print(dir)
         make_gif(dir)
