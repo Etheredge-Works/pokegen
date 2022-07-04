@@ -1,0 +1,5 @@
+outs:
+- md5: 563f931b5aa3d66aaee35ca9ea59ff3e.dir
+  size: 66544770
+  nfiles: 8
+  path: MNIST
