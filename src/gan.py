@@ -1,4 +1,5 @@
 
+from cProfile import label
 from data import sprites
 
 from pl_bolts.models.gans import GAN, DCGAN
@@ -117,8 +118,8 @@ class CustomDCGAN(DCGAN):
         # Randomly swap labels
         swap_chances = torch.rand_like(real_pred)
         # print(swap_chances.shape)
-        real_gt = torch.where(swap_chances < self.swap_prob, fake_gt, real_gt)
-        fake_gt = torch.where(swap_chances < self.swap_prob, real_gt, fake_gt)
+        # real_gt = torch.where(swap_chances < self.swap_prob, fake_gt, real_gt)
+        # fake_gt = torch.where(swap_chances < self.swap_prob, real_gt, fake_gt)
 
         # Loss
         real_loss = self.criterion(real_pred, real_gt)
@@ -160,7 +161,8 @@ from pytorch_lightning import loggers as pl_loggers
 from torchvision.datasets import CelebA, LFWPairs, MNIST
 
 if __name__ == "__main__":
-    latent_dim = 128
+    label_dim = 41
+    latent_dim = 32 + label_dim
     ROWS = 16
     BATCH_SIZE = 256
 
@@ -175,11 +177,11 @@ if __name__ == "__main__":
         # feature_maps_disc=32, 
         # feature_maps_gen=64
         feature_maps_disc=16, 
-        feature_maps_gen=128,
-        swap_prob=0.00,
-        soften_lower=0.3,
-        soften_upper=0.7,
-        noise_std=0.1,
+        feature_maps_gen=64,
+        swap_prob=0.05,
+        soften_lower=0.0,
+        soften_upper=0.9,
+        noise_std=0.0,
         )
     # gan = DCGAN(image_channels=3)
     # gan = SRResNet()
@@ -208,12 +210,12 @@ if __name__ == "__main__":
     #         torchvision.transforms.Normalize((0.5,), (0.5,)),
     #     ]))
 
-    data = sprites.PokemonDataset("data/sprites", "data/sprites/train.csv", "data/sprites/test.csv")
-    tb_logger = pl_loggers.TensorBoardLogger(save_dir=f"{data.__class__.__name__}_gan_logs/")
+    data = sprites.PokemonDataset("data/sprites")
+    # tb_logger = pl_loggers.TensorBoardLogger(save_dir=f"{data.__class__.__name__}_gan_logs/")
     wandb_logger = pl_loggers.WandbLogger(
-        project=f"{data.__class__.__name__}_gan",
+        # project=f"{data.__class__.__name__}_gan",
+        # name=None
     )
-    import wandb
     # wandb.init(project=f"{data.__class__.__name__}_gan", sync_tensorboard=True)
 
     trainer = Trainer(
@@ -225,17 +227,17 @@ if __name__ == "__main__":
         # logger=[tb_logger, wandb_logger],
         callbacks=[
             WandbGenerativeModelImageSampler(
-                interpolate_epoch_interval=4, 
+                interpolate_epoch_interval=10, 
                 num_samples=BATCH_SIZE, 
                 nrow=ROWS, 
                 normalize=True, ),
             # TensorboardGenerativeModelImageSampler(num_samples=BATCH_SIZE, nrow=ROWS, normalize=True, ),
             # TensorboardGenerativeModelImageSampler(num_samples=BATCH_SIZE, nrow=ROWS, normalize=True, ),
-            LatentDimInterpolator(interpolate_epoch_interval=4, normalize=True),
+            LatentDimInterpolator(interpolate_epoch_interval=10, normalize=True),
             # StochasticWeightAveraging(),
         ],
         # strategy="dp",
-        max_epochs=5000
+        max_epochs=2000
         # track_grad_norm=2,
         )
 
