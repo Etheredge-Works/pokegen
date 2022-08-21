@@ -1,25 +1,29 @@
 ----------------------------------------------------------------
         Layer (type)               Output Shape         Param #
 ================================================================
-           Flatten-1                [-1, 27648]               0
-            Linear-2                  [-1, 256]       7,078,144
-            Linear-3                  [-1, 128]          32,896
-            Linear-4                   [-1, 64]           8,256
-            Linear-5                   [-1, 32]           2,080
-      DenseEncoder-6                   [-1, 32]               0
-            Linear-7                   [-1, 32]           1,056
-            Linear-8                   [-1, 64]           2,112
-            Linear-9                  [-1, 128]           8,320
-           Linear-10                  [-1, 256]          33,024
-           Linear-11                [-1, 27648]       7,105,536
-     DenseDecoder-12            [-1, 3, 96, 96]               0
+           Flatten-1                [-1, 12288]               0
+            Linear-2                 [-1, 1024]      12,583,936
+            Linear-3                  [-1, 512]         524,800
+            Linear-4                  [-1, 256]         131,328
+            Linear-5                  [-1, 128]          32,896
+            Linear-6                   [-1, 64]           8,256
+            Linear-7                   [-1, 32]           2,080
+      DenseEncoder-8                   [-1, 32]               0
+            Linear-9                   [-1, 32]           1,056
+           Linear-10                   [-1, 64]           2,112
+           Linear-11                  [-1, 128]           8,320
+           Linear-12                  [-1, 256]          33,024
+           Linear-13                  [-1, 512]         131,584
+           Linear-14                 [-1, 1024]         525,312
+           Linear-15                [-1, 12288]      12,595,200
+     DenseDecoder-16            [-1, 3, 64, 64]               0
 ================================================================
-Total params: 14,271,424
-Trainable params: 14,271,424
+Total params: 26,579,904
+Trainable params: 26,579,904
 Non-trainable params: 0
 ----------------------------------------------------------------
-Input size (MB): 0.11
-Forward/backward pass size (MB): 0.64
-Params size (MB): 54.44
-Estimated Total Size (MB): 55.19
+Input size (MB): 0.05
+Forward/backward pass size (MB): 0.31
+Params size (MB): 101.39
+Estimated Total Size (MB): 101.75
 ----------------------------------------------------------------

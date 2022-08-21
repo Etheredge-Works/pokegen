@@ -1,14 +1,16 @@
 pokemon_sprites:
-  input_shape: [3, 96, 96]
-  resize_shape: [96, 96]
-  normalize_mean: [0.485, 0.456, 0.406]
-  normalize_std: [0.229, 0.224, 0.225]
+  input_shape: [3, 64, 64]
+  resize_shape: [64, 64]
+  # normalize_mean: [0.485, 0.456, 0.406]
+  # normalize_std: [0.229, 0.224, 0.225]
+  normalize_mean: [0.5, 0.5, 0.5]
+  normalize_std: [0.5, 0.5, 0.5]
   data_dir: data/external/sprites
 
 epochs: 500
 latent_size: 32
-batch_size: 128
-lr: 0.001
+batch_size: 64
+lr: 0.0001
 val_ratio: 0.1
 
 autoencoders:

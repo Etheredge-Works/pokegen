@@ -11,3 +11,5 @@ runs/
 **/wandb/
 **/lightning_logs/
 **/*.png
+**/.ipynb_checkpoints/
+**/runs/

@@ -1,8 +1,23 @@
 import torch
 from torch import nn
 import torch.nn.functional as F
-import utils
+# from utils import nextPowerOf2
 
+# https://www.geeksforgeeks.org/smallest-power-of-2-greater-than-or-equal-to-n/
+def nextPowerOf2(n):
+    count = 0
+ 
+    # First n in the below
+    # condition is for the
+    # case where n is 0
+    if (n and not(n & (n - 1))):
+        return n
+     
+    while( n != 0):
+        n >>= 1
+        count += 1
+     
+    return 1 << count
 
 class DenseDecoder(nn.Module):
     def __init__(
@@ -10,7 +25,7 @@ class DenseDecoder(nn.Module):
         latent_shape, 
         output_shape, 
         activation_regularization_func=lambda _: 0,
-        node_count=256,
+        node_count=1024,
     ):
         super(DenseDecoder, self).__init__()
 
@@ -21,11 +36,13 @@ class DenseDecoder(nn.Module):
 
         input_count = latent_shape
         layers = []
-        next_count = utils.nextPowerOf2(input_count)
+        next_count = nextPowerOf2(input_count)
         layers.append(nn.Linear(input_count, next_count))
         input_count = next_count
+        print("input_count:", input_count)
 
         while(input_count < node_count):
+            print("input_count:", input_count)
             layers.append(nn.Linear(input_count, input_count*2))
             input_count *= 2
 

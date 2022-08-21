@@ -14,7 +14,7 @@ class AutoEncoder(torch.nn.Module):
         reg_rate,
         encoder_type,
         decoder_type
-):
+    ):
         super(AutoEncoder, self).__init__()
 
         self.reg_rate = reg_rate
@@ -37,13 +37,16 @@ class AutoEncoder(torch.nn.Module):
                                            input_shape,
                                            activation_regularization_func=reg_func)
         self.reset()
-        self.raw_latent = None
-        self.latent = None
+        self._latent = None
+    
+    @property
+    def latent(self):
+        # Doing this lazily because it's a bit expensive
+        return self._latent.detach().cpu().numpy()
     
     def forward(self, x):
         x = self.encoder(x)
-        self.raw_latent = x
-        self.latent = x.tolist()
+        self._latent = x
         x = self.decoder(x)
         return x
 
@@ -56,15 +59,19 @@ class AutoEncoder(torch.nn.Module):
         return self.decoder(x)
 
     def criterion(self, y_hat, y):
-        loss = torch.nn.functional.binary_cross_entropy(y_hat, y, reduction='mean') + self.encoder.activations_total + self.decoder.activations_total
-        #loss = torch.nn.functional.binary_cross_entropy(y_hat, y, reduction='sum') 
+        assert self.encoder.activations_total >= 0
+        assert self.decoder.activations_total >= 0
+        # loss = torch.nn.functional.binary_cross_entropy(y_hat, y, reduction='mean') + self.encoder.activations_total + self.decoder.activations_total
+        #loss = torch.nn.functional.binary_cross_entropy(y_hat, y, reduction='sum')
         #loss += self.reg_rate * torch.sqrt((self.raw_latent**2).sum())
-        #loss = torch.nn.functional.mse_loss(y_hat, y, reduction='sum') 
+        loss = torch.nn.functional.mse_loss(y_hat, y, reduction='mean') 
+        # loss = loss + self.reg_rate * torch.sqrt((self.raw_latent**2).sum())
+        # loss += self.encoder.activations_total + self.decoder.activations_total
         return loss
     
     def reset(self):
-        self.decoder.activations_total = torch.tensor([0.0]).to(DEVICE)
-        self.encoder.activations_total = torch.tensor([0.0]).to(DEVICE)
+        self.decoder.activations_total = torch.tensor([0.0], device=DEVICE)
+        self.encoder.activations_total = torch.tensor([0.0], device=DEVICE)
     
     def epoch_reset(self):
         pass

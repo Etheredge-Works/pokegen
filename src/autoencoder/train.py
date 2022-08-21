@@ -15,7 +15,7 @@ from autoencoder.decoders import DenseDecoder, ConvDecoder
 from torchsummary import summary
 from contextlib import redirect_stdout
 import os
-torch.autograd.set_detect_anomaly(True) 
+# torch.autograd.set_detect_anomaly(True) 
 
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -42,7 +42,7 @@ def train_ae(
     lr=0.001,
     should_tqdm=os.getenv('SHOULD_TQDM', 1),  # using env for github action running 
     gen_gifs=False,
-    early_stopping_threshold=20,
+    early_stopping_threshold=100,
 ):
     log_dir = Path(log_dir)
     gen_dir = log_dir/'gen'
@@ -58,7 +58,7 @@ def train_ae(
 
     with open(log_dir/"summary.txt", 'w') as f:
         with redirect_stdout(f):
-            summary(ae, input_size=(3, 96, 96))
+            summary(ae, input_size=(3, 64, 64))
 
     dvclive.init(str(dvclive_dir), summary=True)
 
@@ -83,12 +83,12 @@ def train_ae(
     optimizer = torch.optim.Adam(ae.parameters(), lr=lr)
     #scheduler = torch.optim.lr_scheduler.CosineAnnealingLR( NOTE cosine decay seems not as good
     scheduler = torch.optim.lr_scheduler.OneCycleLR(
-        optimizer, 
+        optimizer,
         max_lr=lr,
         total_steps=epochs)
 
     early_stopping_count = 0
-    best_val_loss = float("inf")
+    best_loss = float("inf")
 
     for epoch in range(epochs):
         # if early_stopping_count > early_stopping_threshold:
@@ -106,12 +106,14 @@ def train_ae(
         latent_spaces = []
         for step, data in enumerate(iter_trainloader):
 
-            transformed_image_b, label_b = data['transformed_image'], data['label']
+            # transformed_image_b, label_b = data['transformed_image'], data['label']
+            transformed_image_b, label_b = data
             transformed_image_b = transformed_image_b.to(device)
-            label_b = label_b.to(device)
+            # label_b = label_b.to(device)
 
             y_pred = ae(transformed_image_b)
 
+            # print(y_pred.shape)
             loss = ae.criterion(y_pred, transformed_image_b)
 
             loss.backward()
@@ -125,17 +127,18 @@ def train_ae(
 
             latent_encoding = ae.latent
             #print(latent_encoding.shape)
-            latent_spaces += latent_encoding
+            latent_spaces += list(latent_encoding)
 
             optimizer.zero_grad()
             ae.reset()
 
         #assert len(latent_spaces) == len(trainloader), f"{len(latent_spaces)} != {len(trainloader.dataset)}"
-        utils.save_latents(
-            latent_spaces,
-            ae.latent_size,
-            str(latent_dir/"train"),
-        )
+        if epoch % 10 == 0 or epoch == (epochs-1):
+            utils.save_latents(
+                latent_spaces,
+                ae.latent_size,
+                str(latent_dir/"train"),
+            )
 
         #print(f"loss: {running_loss/total}")
         dvclive.log("loss", running_loss/total, epoch)
@@ -146,30 +149,35 @@ def train_ae(
             running_loss = 0
             total = 0
             for data in valloader:
-                label_b = data['label']
+                # label_b = data['label']
+                transformed_image_b, label_b = data
 
-                label_b = label_b.to(device)
-                y_pred = ae(label_b)
+                # label_b = label_b.to(device)
+                transformed_image_b = transformed_image_b.to(device)
+                y_pred = ae(transformed_image_b)
 
-                loss = ae.criterion(y_pred, label_b)
+                loss = ae.criterion(y_pred, transformed_image_b)
 
                 running_loss += loss.item()
-                total += label_b.size(0)
+                total += transformed_image_b.size(0)
             
-            if epoch % (epochs//10) == 0 or epoch == (epochs-1):
+            if epoch % 10 == 0 or epoch == (epochs-1):
                 generations = ae.generate(random_tensors)
                 utils.save_image(
                     generations.cpu(),
                     str(gen_dir),
-                    epoch)
+                    epoch,
+                    convert_func=utils.reverse_norm
+                )
 
-            val_latent_encoding = ae.encoder(label_b).detach().cpu()
-            val_latent_spaces += val_latent_encoding.tolist()
-            utils.save_latents(
-                val_latent_spaces,
-                ae.latent_size,
-                str(latent_dir/"val"),
-            )
+            if epoch % 10 == 0 or epoch == (epochs-1):
+                val_latent_encoding = ae.encoder(transformed_image_b).detach().cpu()
+                val_latent_spaces += val_latent_encoding.tolist()
+                utils.save_latents(
+                    val_latent_spaces,
+                    ae.latent_size,
+                    str(latent_dir/"val"),
+                )
         
         val_loss = running_loss / total
         dvclive.log("val_loss", val_loss, epoch)
@@ -182,7 +190,7 @@ def train_ae(
     
         # save off some results
         data = next(iter(trainloader))
-        batch = data['label']
+        batch, _ = data
         ae.eval()
         # TODO torchvision.make_grid
         with torch.no_grad():
@@ -190,22 +198,25 @@ def train_ae(
                 # TODO unhardcode
                 batch[:8].cpu(), # slice after incase of batch norm or something
                 str(results_dir),
-                'raw'
+                'raw',
+                convert_func=utils.reverse_norm
             )
             results = ae.predict(batch.to(device))
             utils.save_image(
                 results[:8].cpu(), # slice after incase of batch norm or something
                 str(results_dir),
-                'encdec'
+                'encdec',
+                convert_func=utils.reverse_norm
             )
 
-        if val_loss > best_val_loss:
+        loss = loss.item()
+        if loss > best_loss:
             early_stopping_count += 1
         else:
             early_stopping_count = 0
-            best_val_loss = val_loss
+            best_loss = loss
         
-        dvclive.log("best_val_loss", best_val_loss, epoch)
+        dvclive.log("best_loss", best_loss, epoch)
         dvclive.next_step()
 
     if gen_gifs:
@@ -248,7 +259,7 @@ def main(
 
     # TODO pull out shape
     ae = model_const(
-        (3, 96, 96),
+        (3, 64, 64),
         latent_size,
         reg_type,
         reg_rate,
@@ -275,7 +286,7 @@ def main(
     with open(str(model_path)+"_kwargs.yaml", 'w') as f:
         #yaml.dump(locals(), f)  NOTE cool locals() thing
         kwargs = {
-            "input_shape": (3, 96, 96),
+            "input_shape": (3, 64, 64),
             "latent_size": latent_size,
             "reg_type": reg_type,
             "reg_rate": reg_rate,

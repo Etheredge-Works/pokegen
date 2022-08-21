@@ -4,9 +4,9 @@
 #
 #    pip-compile
 #
---find-links https://download.pytorch.org/whl/torch_stable.html
+--extra-index-url https://download.pytorch.org/whl/cu116
 
-absl-py==1.0.0
+absl-py==1.2.0
     # via tensorboard
 aiobotocore[boto3]==1.3.0
     # via
@@ -16,11 +16,11 @@ aiohttp==3.8.1
     # via
     #   aiobotocore
     #   fsspec
-aioitertools==0.8.0
+aioitertools==0.10.0
     # via aiobotocore
 aiosignal==1.2.0
     # via aiohttp
-alembic==1.7.5
+alembic==1.8.1
     # via optuna
 altair==4.2.0
     # via streamlit
@@ -30,19 +30,18 @@ argon2-cffi==21.3.0
     # via notebook
 argon2-cffi-bindings==21.2.0
     # via argon2-cffi
-asttokens==2.0.5
+asttokens==2.0.8
     # via stack-data
 async-timeout==4.0.2
     # via aiohttp
 atpublic==3.0.1
     # via flufl-lock
-attrs==21.4.0
+attrs==22.1.0
     # via
     #   aiohttp
     #   cmd2
     #   jsonschema
-    #   streamlit
-autopage==0.5.0
+autopage==0.5.1
     # via cliff
 backcall==0.2.0
     # via ipython
@@ -50,11 +49,11 @@ backports-zoneinfo==0.2.1
     # via
     #   pytz-deprecation-shim
     #   tzlocal
-black==21.12b0
-    # via ipython
-bleach==4.1.0
+beautifulsoup4==4.11.1
     # via nbconvert
-blinker==1.4
+bleach==5.0.1
+    # via nbconvert
+blinker==1.5
     # via streamlit
 boto3==1.17.49
     # via aiobotocore
@@ -63,51 +62,51 @@ botocore==1.20.49
     #   aiobotocore
     #   boto3
     #   s3transfer
-cachetools==5.0.0
+build==0.8.0
+    # via pip-tools
+cachetools==5.2.0
     # via
     #   google-auth
     #   streamlit
-certifi==2021.10.8
+certifi==2022.6.15
     # via
     #   dulwich
     #   requests
-cffi==1.15.0
+    #   sentry-sdk
+cffi==1.15.1
     # via
     #   argon2-cffi-bindings
     #   pygit2
-charset-normalizer==2.0.10
+charset-normalizer==2.1.0
     # via
     #   aiohttp
     #   requests
-click==8.0.1
+click==8.1.3
     # via
     #   -r requirements.in
-    #   black
     #   pip-tools
     #   streamlit
-cliff==3.10.0
+    #   wandb
+cliff==4.0.0
     # via optuna
 cmaes==0.8.2
     # via optuna
-cmd2==2.3.3
+cmd2==2.4.2
     # via cliff
-colorama==0.4.4
-    # via
-    #   dvc
-    #   rich
+colorama==0.4.5
+    # via dvc
 colorlog==6.6.0
     # via optuna
 commonmark==0.9.1
     # via rich
 configobj==5.0.6
     # via dvc
-debugpy==1.5.1
+debugpy==1.6.3
     # via ipykernel
-decorator==4.4.2
+decorator==5.1.1
     # via
     #   ipython
     #   jsonpath-ng
-    #   networkx
     #   validators
 defusedxml==0.7.1
     # via nbconvert
@@ -115,30 +114,32 @@ dictdiffer==0.9.0
     # via dvc
 diskcache==5.4.0
     # via dvc
-distro==1.6.0
+distro==1.7.0
     # via dvc
-dpath==2.0.5
+docker-pycreds==0.4.0
+    # via wandb
+dpath==2.0.6
     # via dvc
-dulwich==0.20.32
+dulwich==0.20.45
     # via dvc
 dvc[s3]==2.5.0
     # via -r requirements.in
 dvclive==0.0.10
     # via -r requirements.in
-entrypoints==0.3
+entrypoints==0.4
     # via
     #   altair
     #   jupyter-client
     #   nbconvert
-enum-compat==0.0.3
-    # via torch-model-archiver
-executing==0.8.2
+executing==0.10.0
     # via stack-data
+fastjsonschema==2.16.1
+    # via nbformat
 flatten-dict==0.4.2
     # via dvc
 flufl-lock==3.2
     # via dvc
-frozenlist==1.3.0
+frozenlist==1.3.1
     # via
     #   aiohttp
     #   aiosignal
@@ -147,23 +148,20 @@ fsspec[http]==2021.6.1
     #   dvc
     #   pytorch-lightning
     #   s3fs
-ftfy==6.0.3
+ftfy==6.1.1
     # via python-benedict
 funcy==1.17
     # via dvc
 future==0.18.2
-    # via
-    #   grandalf
-    #   pytorch-lightning
-    #   torch-model-archiver
-    #   torchserve
+    # via grandalf
 gitdb==4.0.9
     # via gitpython
-gitpython==3.1.26
+gitpython==3.1.27
     # via
     #   dvc
     #   streamlit
-google-auth==2.6.0
+    #   wandb
+google-auth==2.10.0
     # via
     #   google-auth-oauthlib
     #   tensorboard
@@ -173,22 +171,23 @@ grandalf==0.6
     # via dvc
 greenlet==1.1.2
     # via sqlalchemy
-grpcio==1.44.0
+grpcio==1.47.0
     # via tensorboard
 idna==3.3
     # via
     #   requests
     #   yarl
-importlib-metadata==4.10.1
+importlib-metadata==4.12.0
     # via
     #   alembic
+    #   cliff
     #   markdown
     #   streamlit
-importlib-resources==5.4.0
+importlib-resources==5.9.0
     # via
     #   alembic
     #   jsonschema
-ipykernel==6.7.0
+ipykernel==6.15.1
     # via
     #   ipywidgets
     #   jupyter
@@ -196,7 +195,7 @@ ipykernel==6.7.0
     #   notebook
     #   pydeck
     #   qtconsole
-ipython==8.0.1
+ipython==8.4.0
     # via
     #   ipykernel
     #   ipywidgets
@@ -204,16 +203,15 @@ ipython==8.0.1
 ipython-genutils==0.2.0
     # via
     #   ipywidgets
-    #   nbformat
     #   notebook
     #   qtconsole
-ipywidgets==7.6.5
+ipywidgets==7.7.1
     # via
     #   jupyter
     #   pydeck
 jedi==0.18.1
     # via ipython
-jinja2==3.0.3
+jinja2==3.1.2
     # via
     #   altair
     #   nbconvert
@@ -223,49 +221,55 @@ jmespath==0.10.0
     # via
     #   boto3
     #   botocore
+joblib==1.1.0
+    # via scikit-learn
 jsonpath-ng==1.5.3
     # via dvc
-jsonschema==4.4.0
+jsonschema==4.10.2
     # via
     #   altair
     #   nbformat
 jupyter==1.0.0
     # via -r requirements.in
-jupyter-client==7.1.2
+jupyter-client==7.3.4
     # via
     #   ipykernel
     #   jupyter-console
     #   nbclient
     #   notebook
     #   qtconsole
-jupyter-console==6.4.0
+jupyter-console==6.4.4
     # via jupyter
-jupyter-core==4.9.1
+jupyter-core==4.11.1
     # via
     #   jupyter-client
     #   nbconvert
     #   nbformat
     #   notebook
     #   qtconsole
-jupyterlab-pygments==0.1.2
+jupyterlab-pygments==0.2.2
     # via nbconvert
-jupyterlab-widgets==1.0.2
+jupyterlab-widgets==1.1.1
     # via ipywidgets
 kaleido==0.2.1
     # via -r requirements.in
 lightning-bolts==0.5.0
     # via -r requirements.in
-mailchecker==4.1.10
+lxml==4.9.1
+    # via nbconvert
+mailchecker==4.1.19
     # via python-benedict
-mako==1.1.6
+mako==1.2.1
     # via alembic
-markdown==3.3.6
+markdown==3.4.1
     # via tensorboard
-markupsafe==2.0.1
+markupsafe==2.1.1
     # via
     #   jinja2
     #   mako
-matplotlib-inline==0.1.3
+    #   nbconvert
+    #   werkzeug
+matplotlib-inline==0.1.5
     # via
     #   ipykernel
     #   ipython
@@ -275,37 +279,34 @@ multidict==6.0.2
     # via
     #   aiohttp
     #   yarl
-mypy-extensions==0.4.3
-    # via black
-mysqlclient==2.0.3
+mysqlclient==2.1.1
     # via -r requirements.in
 nanotime==0.5.2
     # via dvc
-nbclient==0.5.10
+nbclient==0.6.6
     # via nbconvert
-nbconvert==6.4.1
+nbconvert==6.5.3
     # via
     #   jupyter
     #   notebook
-nbformat==5.1.3
+nbformat==5.4.0
     # via
-    #   ipywidgets
     #   nbclient
     #   nbconvert
     #   notebook
-nest-asyncio==1.5.4
+nest-asyncio==1.5.5
     # via
     #   ipykernel
     #   jupyter-client
     #   nbclient
     #   notebook
-networkx==2.5.1
+networkx==2.8.5
     # via dvc
-notebook==6.4.8
+notebook==6.4.12
     # via
     #   jupyter
     #   widgetsnbextension
-numpy==1.22.1
+numpy==1.23.2
     # via
     #   altair
     #   cmaes
@@ -314,6 +315,7 @@ numpy==1.22.1
     #   pyarrow
     #   pydeck
     #   pytorch-lightning
+    #   scikit-learn
     #   scipy
     #   streamlit
     #   tensorboard
@@ -322,20 +324,21 @@ numpy==1.22.1
     #   torchvision
 oauthlib==3.2.0
     # via requests-oauthlib
-optuna==2.9.1
+optuna==2.10.1
     # via -r requirements.in
 packaging==21.3
     # via
-    #   bleach
+    #   build
     #   dvc
+    #   ipykernel
     #   lightning-bolts
+    #   nbconvert
     #   optuna
     #   pytorch-lightning
     #   qtpy
     #   streamlit
     #   torchmetrics
-    #   torchserve
-pandas==1.4.1
+pandas==1.4.3
     # via
     #   -r requirements.in
     #   altair
@@ -345,42 +348,41 @@ pandocfilters==1.5.0
 parso==0.8.3
     # via jedi
 pathspec==0.9.0
-    # via
-    #   black
-    #   dvc
-pbr==5.8.0
-    # via
-    #   cliff
-    #   stevedore
-pep517==0.12.0
-    # via pip-tools
+    # via dvc
+pathtools==0.1.2
+    # via wandb
+pbr==5.10.0
+    # via stevedore
+pep517==0.13.0
+    # via build
 pexpect==4.8.0
     # via ipython
-phonenumbers==8.12.41
+phonenumbers==8.12.53
     # via python-benedict
 pickleshare==0.7.5
     # via ipython
-pillow==8.2.0
+pillow==9.2.0
     # via
     #   -r requirements.in
     #   streamlit
-    #   torchserve
     #   torchvision
-pip-tools==6.4.0
+pip-tools==6.8.0
     # via -r requirements.in
-platformdirs==2.4.1
-    # via black
-plotly==5.6.0
+pkgutil-resolve-name==1.3.10
+    # via jsonschema
+plotly==5.10.0
     # via -r requirements.in
 ply==3.11
     # via
     #   dvc
     #   jsonpath-ng
-prettytable==3.0.0
+prettytable==3.3.0
     # via cliff
-prometheus-client==0.13.1
+prometheus-client==0.14.1
     # via notebook
-prompt-toolkit==3.0.26
+promise==2.3
+    # via wandb
+prompt-toolkit==3.0.30
     # via
     #   ipython
     #   jupyter-console
@@ -389,17 +391,19 @@ protobuf==3.19.4
     #   streamlit
     #   tensorboard
     #   tensorboardx
-psutil==5.9.0
+    #   wandb
+psutil==5.9.1
     # via
     #   dvc
-    #   torchserve
+    #   ipykernel
+    #   wandb
 ptyprocess==0.7.0
     # via
     #   pexpect
     #   terminado
 pure-eval==0.2.2
     # via stack-data
-pyarrow==8.0.0
+pyarrow==9.0.0
     # via streamlit
 pyasn1==0.4.8
     # via
@@ -412,29 +416,25 @@ pycparser==2.21
     # via cffi
 pydeck==0.7.1
     # via streamlit
-pydeprecate==0.3.1
-    # via
-    #   pytorch-lightning
-    #   torchmetrics
+pydeprecate==0.3.2
+    # via pytorch-lightning
 pydot==1.4.2
     # via dvc
-pygit2==1.7.2
+pygit2==1.10.0
     # via dvc
-pygments==2.11.2
+pygments==2.13.0
     # via
     #   ipython
     #   jupyter-console
-    #   jupyterlab-pygments
     #   nbconvert
     #   qtconsole
     #   rich
-pygtrie==2.4.2
+pygtrie==2.5.0
     # via dvc
 pympler==1.0.1
     # via streamlit
 pyparsing==2.4.7
     # via
-    #   cliff
     #   dvc
     #   grandalf
     #   packaging
@@ -443,7 +443,7 @@ pyperclip==1.8.2
     # via cmd2
 pyrsistent==0.18.1
     # via jsonschema
-python-benedict==0.24.3
+python-benedict==0.25.2
     # via dvc
 python-dateutil==2.8.2
     # via
@@ -452,15 +452,15 @@ python-dateutil==2.8.2
     #   pandas
     #   python-benedict
     #   streamlit
-python-fsutil==0.6.0
+python-fsutil==0.6.1
     # via python-benedict
-python-slugify==5.0.2
+python-slugify==6.1.2
     # via python-benedict
-pytorch-lightning==1.5.10
+pytorch-lightning==1.7.1
     # via
     #   -r requirements.in
     #   lightning-bolts
-pytz==2021.3
+pytz==2022.2.1
     # via pandas
 pytz-deprecation-shim==0.1.0.post0
     # via tzlocal
@@ -470,16 +470,18 @@ pyyaml==6.0
     #   optuna
     #   python-benedict
     #   pytorch-lightning
-pyzmq==22.3.0
+    #   wandb
+pyzmq==23.2.1
     # via
+    #   ipykernel
     #   jupyter-client
     #   notebook
     #   qtconsole
-qtconsole==5.2.2
+qtconsole==5.3.1
     # via jupyter
-qtpy==2.0.0
+qtpy==2.2.0
     # via qtconsole
-requests==2.27.1
+requests==2.28.1
     # via
     #   dvc
     #   fsspec
@@ -487,11 +489,15 @@ requests==2.27.1
     #   requests-oauthlib
     #   streamlit
     #   tensorboard
+    #   torchvision
+    #   wandb
 requests-oauthlib==1.3.1
     # via google-auth-oauthlib
-rich==11.1.0
-    # via dvc
-rsa==4.8
+rich==12.5.1
+    # via
+    #   dvc
+    #   streamlit
+rsa==4.9
     # via google-auth
 ruamel-yaml==0.17.21
     # via dvc
@@ -501,45 +507,57 @@ s3fs==2021.6.1
     # via dvc
 s3transfer==0.3.7
     # via boto3
-scipy==1.7.3
-    # via optuna
+scikit-learn==1.1.2
+    # via -r requirements.in
+scipy==1.9.0
+    # via
+    #   optuna
+    #   scikit-learn
 semver==2.13.0
     # via streamlit
 send2trash==1.8.0
     # via notebook
-shortuuid==1.0.8
-    # via dvc
-shtab==1.5.3
+sentry-sdk==1.9.5
+    # via wandb
+setproctitle==1.3.2
+    # via wandb
+shortuuid==1.0.9
+    # via
+    #   dvc
+    #   wandb
+shtab==1.5.5
     # via dvc
 six==1.16.0
     # via
-    #   absl-py
     #   bleach
     #   configobj
+    #   docker-pycreds
     #   flatten-dict
     #   google-auth
     #   grpcio
     #   jsonpath-ng
-    #   plotly
-    #   python-benedict
+    #   promise
     #   python-dateutil
+    #   wandb
 smmap==5.0.0
     # via gitdb
-sqlalchemy==1.4.31
+soupsieve==2.3.2.post1
+    # via beautifulsoup4
+sqlalchemy==1.4.40
     # via
     #   alembic
     #   optuna
-stack-data==0.1.4
+stack-data==0.4.0
     # via ipython
-stevedore==3.5.0
+stevedore==4.0.0
     # via cliff
-streamlit==1.9.2
+streamlit==1.12.0
     # via -r requirements.in
-tabulate==0.8.9
+tabulate==0.8.10
     # via dvc
 tenacity==8.0.1
     # via plotly
-tensorboard==2.8.0
+tensorboard==2.10.0
     # via
     #   -r requirements.in
     #   pytorch-lightning
@@ -547,26 +565,28 @@ tensorboard-data-server==0.6.1
     # via tensorboard
 tensorboard-plugin-wit==1.8.1
     # via tensorboard
-tensorboardx==2.4.1
+tensorboardx==2.5.1
     # via -r requirements.in
-terminado==0.13.1
+terminado==0.15.0
     # via notebook
-testpath==0.5.0
-    # via nbconvert
 text-unidecode==1.3
     # via python-slugify
+threadpoolctl==3.1.0
+    # via scikit-learn
+tinycss2==1.1.1
+    # via nbconvert
 toml==0.10.2
     # via
     #   dvc
     #   python-benedict
     #   streamlit
-tomli==1.2.3
+tomli==2.0.1
     # via
-    #   black
+    #   build
     #   pep517
-toolz==0.11.2
+toolz==0.12.0
     # via altair
-torch==1.9.0+cu111
+torch==1.12.1+cu116
     # via
     #   -r requirements.in
     #   lightning-bolts
@@ -574,35 +594,29 @@ torch==1.9.0+cu111
     #   torchaudio
     #   torchmetrics
     #   torchvision
-torch-model-archiver==0.4.1
+torchaudio==0.12.1+cu116
     # via -r requirements.in
-torch-workflow-archiver==0.1.1
-    # via -r requirements.in
-torchaudio==0.9.0
-    # via -r requirements.in
-torchmetrics==0.7.2
+torchmetrics==0.9.3
     # via
     #   lightning-bolts
     #   pytorch-lightning
-torchserve==0.4.1
-    # via -r requirements.in
 torchsummary==1.5.1
     # via -r requirements.in
-torchvision==0.10.0+cu111
+torchvision==0.13.1+cu116
     # via -r requirements.in
-tornado==6.1
+tornado==6.2
     # via
     #   ipykernel
     #   jupyter-client
     #   notebook
     #   streamlit
     #   terminado
-tqdm==4.62.3
+tqdm==4.64.0
     # via
     #   dvc
     #   optuna
     #   pytorch-lightning
-traitlets==5.1.1
+traitlets==5.3.0
     # via
     #   ipykernel
     #   ipython
@@ -616,27 +630,32 @@ traitlets==5.1.1
     #   notebook
     #   pydeck
     #   qtconsole
-typing-extensions==4.0.1
+typing-extensions==4.3.0
     # via
-    #   black
+    #   aioitertools
     #   dvc
     #   pytorch-lightning
+    #   rich
     #   streamlit
     #   torch
-tzdata==2022.1
+    #   torchvision
+tzdata==2022.2
     # via pytz-deprecation-shim
 tzlocal==4.2
     # via streamlit
-urllib3==1.26.8
+urllib3==1.26.11
     # via
     #   botocore
     #   dulwich
     #   requests
-validators==0.19.0
+    #   sentry-sdk
+validators==0.20.0
     # via streamlit
-voluptuous==0.12.2
+voluptuous==0.13.1
     # via dvc
-watchdog==2.1.8
+wandb==0.13.1
+    # via -r requirements.in
+watchdog==2.1.9
     # via streamlit
 wcwidth==0.2.5
     # via
@@ -645,24 +664,26 @@ wcwidth==0.2.5
     #   prettytable
     #   prompt-toolkit
 webencodings==0.5.1
-    # via bleach
-werkzeug==2.0.3
+    # via
+    #   bleach
+    #   tinycss2
+werkzeug==2.2.2
     # via tensorboard
 wheel==0.37.1
     # via
     #   pip-tools
     #   tensorboard
-widgetsnbextension==3.5.2
+widgetsnbextension==3.6.1
     # via ipywidgets
-wrapt==1.13.3
+wrapt==1.14.1
     # via aiobotocore
-xmltodict==0.12.0
+xmltodict==0.13.0
     # via python-benedict
-yarl==1.7.2
+yarl==1.8.1
     # via aiohttp
 zc-lockfile==2.0
     # via dvc
-zipp==3.7.0
+zipp==3.8.1
     # via
     #   importlib-metadata
     #   importlib-resources

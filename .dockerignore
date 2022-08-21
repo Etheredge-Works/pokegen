@@ -5,3 +5,4 @@ data
 reports
 notebooks
 logs
+wandb

@@ -18,8 +18,8 @@ class VAE(torch.nn.Module):
         encoder_type,
         decoder_type,
         beta=0.0,
-        beta_rate=0.01,
-        beta_max=1.
+        beta_rate=0.001,
+        beta_max=0.1
     ):
         super(VAE, self).__init__()
 
@@ -50,7 +50,8 @@ class VAE(torch.nn.Module):
         self.beta_max = beta_max
         self._latent = None
         self.reset()
-    
+
+    # https://github.com/PyTorchLightning/lightning-bolts/blob/master/pl_bolts/models/autoencoders/basic_vae/basic_vae_module.py
     @staticmethod
     def sample(mu, log_var):
         """
@@ -67,31 +68,34 @@ class VAE(torch.nn.Module):
         
         std = torch.exp(log_var / 2)
         p = torch.distributions.Normal(torch.zeros_like(mu), torch.ones_like(std))
-        q = torch.distributions.Normal(mu, std)
+        try:
+            q = torch.distributions.Normal(mu, std)
+        except ValueError as e:
+            print(log_var)
+            print(std)
+            raise e
         z = q.rsample()
         return p,q, z
 
-
-    
     # https://towardsdatascience.com/variational-autoencoder-demystified-with-pytorch-implementation-3a06bee395ed
-    def kl_divergence(self, z, mu, std):
-        # --------------------------
-        # Monte carlo KL divergence
-        # --------------------------
-        # 1. define the first two probabilities (in this case Normal for both)
-        p = torch.distributions.Normal(torch.zeros_like(mu), torch.ones_like(std))
-        q = torch.distributions.Normal(mu, std)
+    # def kl_divergence(self, z, mu, std):
+    #     # --------------------------
+    #     # Monte carlo KL divergence
+    #     # --------------------------
+    #     # 1. define the first two probabilities (in this case Normal for both)
+    #     p = torch.distributions.Normal(torch.zeros_like(mu), torch.ones_like(std))
+    #     q = torch.distributions.Normal(mu, std)
 
-        # 2. get the probabilities from the equation
-        log_qzx = q.log_prob(z)
-        log_pz = p.log_prob(z)
+    #     # 2. get the probabilities from the equation
+    #     log_qzx = q.log_prob(z)
+    #     log_pz = p.log_prob(z)
 
-        # kl
-        kl = (log_qzx - log_pz)
+    #     # kl
+    #     kl = (log_qzx - log_pz)
         
-        # sum over last dim to go from single dim distribution to multi-dim
-        kl = kl.sum(-1)
-        return kl
+    #     # sum over last dim to go from single dim distribution to multi-dim
+    #     kl = kl.sum(-1)
+    #     return kl
 
     def forward(self, x):
         x = self.encoder(x)
@@ -110,10 +114,10 @@ class VAE(torch.nn.Module):
         # TODO sigmoid at end?
 
         return x_hat, z, p, q
-    
+
     @property
     def latent(self):
-        return self._latent.tolist()
+        return self._latent.detach().cpu().numpy()
 
     def predict(self, x):
         self.eval()
@@ -129,7 +133,7 @@ class VAE(torch.nn.Module):
         #z = self.reparameterize(mu, log_var)
         x_hat = self.decoder(x)
         return x_hat
-        
+
     def gaussian_likelihood(self, x_hat, logscale, x):
         scale = torch.exp(logscale)
         mean = x_hat
@@ -140,16 +144,20 @@ class VAE(torch.nn.Module):
         return log_pxz.sum(dim=(1, 2, 3))
 
     def criterion(self, y_hat, y):
+        assert self.encoder.activations_total >= 0
+        assert self.decoder.activations_total >= 0
         x_hat, z, p, q = y_hat
 
         # recon_loss = self.gaussian_likelihood(x_hat, self.log_scale, y)
-        recon_loss = torch.nn.functional.mse_loss(x_hat, y)
+        recon_loss = torch.nn.functional.mse_loss(x_hat, y, reduction='mean')
+
+        # TODO binary cross encropy needs images to be between 0 and 1 (so no normalization?)
+        # recon_loss = torch.nn.functional.binary_cross_entropy(x_hat, y, reduction='mean')
         #recon_loss = self.gl(x_hat)
         #recon_loss = self.bce(x_hat, y)
 
         # kl = self.kl_divergence(z, mu, std)
-        kl = torch.distributions.kl_divergence(q, p)
-        kl = kl.mean()
+        kl = torch.distributions.kl_divergence(q, p).mean()
         
         #kl = torch.mean(-0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp(), dim = 1), dim = 0)
         #recon_loss = torch.nn.binary_cross_entropy(x_hat, y, size_average=False) / y.size(0)
@@ -168,13 +176,15 @@ class VAE(torch.nn.Module):
         # elbo = ((self.beta*kl) - recon_loss)
         # elbo = kl - recon_loss
         # return elbo.mean()
-        loss =  elbo.mean() + self.encoder.activations_total + self.decoder.activations_total
+        # loss =  elbo + self.encoder.activations_total + self.decoder.activations_total
+        loss =  elbo + self.encoder.activations_total + self.decoder.activations_total
+        # loss =  elbo.mean() + self.encoder.activations_total + self.decoder.activations_total
 
         return loss
 
     def reset(self):
-        self.decoder.activations_total = torch.tensor([0.]).to(DEVICE)
-        self.encoder.activations_total = torch.tensor([0.]).to(DEVICE)
+        self.decoder.activations_total = torch.tensor([0.], device=DEVICE)
+        self.encoder.activations_total = torch.tensor([0.], device=DEVICE)
 
     def epoch_reset(self, beta=None):
         # https://stats.stackexchange.com/questions/341954/balancing-reconstruction-vs-kl-loss-variational-autoencoder
@@ -183,5 +193,6 @@ class VAE(torch.nn.Module):
             self.beta = beta
         else:
             self.beta = min(self.beta+self.beta_rate, self.beta_max)
+            self.beta = max(0.0, self.beta)
         # TODO use mlflow and log both losses
         dvclive.log('beta', self.beta)
