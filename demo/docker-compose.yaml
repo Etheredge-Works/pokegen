@@ -8,7 +8,9 @@ services:
       - API_URL=${API_URL}
       - API_USERNAME=${API_USERNAME}
       - API_PASSWORD=${API_PASSWORD}
-    build: .
+    build: 
+      context: ..
+      dockerfile: demo/Dockerfile
     networks:
       - proxynet
     expose:
