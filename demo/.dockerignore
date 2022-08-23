@@ -1,0 +1,8 @@
+.devcontainer
+.dvc
+.vscode
+data
+**/reports
+notebooks
+**/logs
+**/wandb

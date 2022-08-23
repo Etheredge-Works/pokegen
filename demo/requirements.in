@@ -1,0 +1,16 @@
+# dvclive<=0.0.10
+dvc[s3]
+
+pillow
+pandas
+
+# Torch
+torch
+torchvision
+torchaudio 
+--extra-index-url https://download.pytorch.org/whl/cu116
+
+pytorch-lightning
+# git+https://github.com/Etheredge-Works/pokegen
+
+streamlit
