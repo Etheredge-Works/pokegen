@@ -11,6 +11,6 @@ torchaudio
 --extra-index-url https://download.pytorch.org/whl/cu116
 
 pytorch-lightning
-# git+https://github.com/Etheredge-Works/pokegen
+git+https://github.com/Etheredge-Works/pokegen
 
 streamlit
