@@ -35,7 +35,7 @@ asttokens==2.0.8
 async-timeout==4.0.2
     # via aiohttp
 atpublic==3.0.1
-    # via flufl-lock
+    # via flufl.lock
 attrs==22.1.0
     # via
     #   aiohttp
@@ -45,7 +45,7 @@ autopage==0.5.1
     # via cliff
 backcall==0.2.0
     # via ipython
-backports-zoneinfo==0.2.1
+backports.zoneinfo==0.2.1
     # via
     #   pytz-deprecation-shim
     #   tzlocal
@@ -137,7 +137,7 @@ fastjsonschema==2.16.1
     # via nbformat
 flatten-dict==0.4.2
     # via dvc
-flufl-lock==3.2
+flufl.lock==3.2
     # via dvc
 frozenlist==1.3.1
     # via
@@ -499,10 +499,10 @@ rich==12.5.1
     #   streamlit
 rsa==4.9
     # via google-auth
-ruamel-yaml==0.17.21
+ruamel.yaml==0.17.21
     # via dvc
-ruamel-yaml-clib==0.2.6
-    # via ruamel-yaml
+ruamel.yaml.clib==0.2.6
+    # via ruamel.yaml
 s3fs==2021.6.1
     # via dvc
 s3transfer==0.3.7
@@ -681,7 +681,7 @@ xmltodict==0.13.0
     # via python-benedict
 yarl==1.8.1
     # via aiohttp
-zc-lockfile==2.0
+zc.lockfile==2.0
     # via dvc
 zipp==3.8.1
     # via
