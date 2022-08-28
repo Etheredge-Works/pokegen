@@ -38,11 +38,6 @@ for key, model_const, model_path, kwargs_path in model_paths:
         # st.write(model)
     models_dict[key] = model
 
-
-
-
-
-
 PAGES = {
     "Autoencoder": models_dict["ae"],
     "Variational Autoencoder": models_dict["vae"],
@@ -50,6 +45,7 @@ PAGES = {
 st.sidebar.title('Model Selection')
 st.title("Pokegen Demo Site")
 st.write("This is a simple demo site for my experiment in generative AI through Pokemon datasets.")
+st.write("For better results, see [here](https://wandb.ai/benjamin-etheredge/PokemonDataset_gan) and [here](https://wandb.ai/benjamin-etheredge/pokegen-vae).")
 selection = st.sidebar.radio("Go to", list(PAGES.keys()))
 model = PAGES[selection]
 button = st.button("Shuffle Noise")
